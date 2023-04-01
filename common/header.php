@@ -30,8 +30,6 @@ if($id>0){
 }
 
 
-
-
 $website = _fetch("website","id=1");
 $limit_setting = _fetch("limit_setting","id=$id");
 $general_setting = _fetch("general_setting","id=1");

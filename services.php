@@ -73,8 +73,7 @@
             <div class="col-span-5">
               <div>
                 <a href="service.php?service_id=<?php echo $data['id']?>">
-                <img class="rounded"
-                  src="admin/upload/<?php echo $data['file_name1']?>">
+                <img style="height:150px;" class="rounded" src="admin/upload/<?php echo $data['file_name1']?>">
                 </a>
               </div>
             </div>

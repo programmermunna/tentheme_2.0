@@ -84,7 +84,7 @@ if (all_ds_title && all_ds_ul) {
   }
 
   all_ds_title.forEach((title) => {
-    let open = false;
+    let open = true;
     title.addEventListener("click", function () {
       const title_ref = this.dataset?.ref;
 
@@ -127,7 +127,7 @@ if (all_ds_title && all_ds_ul) {
           title_ref?.toLowerCase() === item?.dataset?.ref?.toLowerCase()
         ) {
         } else {
-          item.style.height = "0px";
+          // item.style.height = "0px";
         }
       });
     }, 0);
@@ -168,35 +168,110 @@ if (
   });
 }
 
-
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   const popup_msg = document.getElementById("popup_msg");
   if (popup_msg) {
     popup_msg.innerHTML = `
   <div id="popup_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:#31B0D5; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-  <span style="font-size:18px;"> 
+  <span style="font-size:18px;">
   <i class="fa-solid fa-check"></i>
   </span>
   <h6 style="background:black;color:white;">
   ${popup_msg?.dataset?.text} </div>
-  </h6> `
+  </h6> `;
     setTimeout(() => {
-      popup_msg.innerHTML = ''
-    }, popup_msg?.dataset?.time || 2000)}
+      popup_msg.innerHTML = "";
+    }, popup_msg?.dataset?.time || 2000);
+  }
 
-    const error_msg = document.getElementById("error_msg");
-    if (error_msg) {
-      error_msg.innerHTML = `
+  const error_msg = document.getElementById("error_msg");
+  if (error_msg) {
+    error_msg.innerHTML = `
     <div id="error_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:red; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-    <span style="font-size:18px;"> 
+    <span style="font-size:18px;">
     <i class="fa-solid fa-triangle-exclamation"></i>
     </span>
     <h6 style="background:black;color:white;">
     ${error_msg?.dataset?.text} </div>
-    </h6> `
-      setTimeout(() => {
-        error_msg.innerHTML = ''
-      }, error_msg?.dataset?.time || 2000)}
-  })
+    </h6> `;
+    setTimeout(() => {
+      error_msg.innerHTML = "";
+    }, error_msg?.dataset?.time || 2000);
+  }
+});
 
+const all_side_anchors = document.querySelectorAll(".ds_ul li a");
+all_side_anchors.forEach((a) => {
+  a.addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      localStorage.setItem("sidebar_scroll", sidebar.scrollTop);
+    }
+  });
 
+  let location_pathname = location.pathname.split("/");
+  let location_linkname = location_pathname[location_pathname.length - 1];
+  const href = a.getAttribute("href").replace("./", "").replace("/", "");
+  if (href === location_linkname) {
+    a.classList.add("active");
+    const sibling = a.parentElement.parentElement.previousElementSibling;
+    sibling.classList.add("active");
+  }
+});
+
+const admin_sidebar = document.getElementById("sidebar");
+if (admin_sidebar) {
+  const stop = localStorage.getItem("sidebar_scroll");
+  admin_sidebar.scrollTop = stop;
+}
+
+// Dashboard Sidebar
+const all_ds_title2 = document.querySelectorAll(".ds_title2");
+const all_ds_div2 = document.querySelectorAll(".ds_div2");
+if (all_ds_title2 && all_ds_div2) {
+  const heights = [];
+  for (let i = 0; i < all_ds_div2.length; i++) {
+    const ele = all_ds_div2[i];
+    heights.push(ele.clientHeight);
+    ele.style.height = ele.clientHeight + "px";
+  }
+
+  all_ds_title2.forEach((title) => {
+    let open = true;
+    title.addEventListener("click", function () {
+      const title_ref = this.dataset?.ref;
+
+      const icon = this.children[1];
+      if (open) {
+        icon.style.transform = "rotate(-90deg)";
+      } else {
+        icon.style.transform = "rotate(0deg)";
+      }
+
+      all_ds_div2.forEach((item, i) => {
+        const item_ref = item.dataset?.ref;
+        if (title_ref === item_ref) {
+          if (open) {
+            item.style.height = "0px";
+          } else {
+            item.style.height = heights[i] + "px";
+          }
+          open = !open;
+        }
+      });
+    });
+  });
+}
+
+// Dashboard Sidebar Buttons
+const all_theme_setting_a = document.querySelectorAll(".ds_div2 li a");
+if (all_theme_setting_a?.length > 0) {
+  all_theme_setting_a.forEach((a) => {
+    let location_pathname = location.pathname.split("/");
+    let location_linkname = location_pathname[location_pathname.length - 1];
+    const href = a.getAttribute("href").replace("./", "").replace("/", "");
+    if (href === location_linkname) {
+      a.classList.add("active");
+    }
+  });
+}

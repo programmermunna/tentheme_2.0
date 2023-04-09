@@ -1,35 +1,35 @@
-<?php include("admin/config/functions.php");
-_login("index","user");
+<?php include "admin/config/functions.php";
+_login("index", "user");
 
 $err = "";
-if(isset($_GET['email'])){
+if (isset($_GET['email'])) {
     $email = $_GET['email'];
     $pass = $_GET['pass'];
 
-    $row = _fetch("person","email='$email' AND password='$pass'");
-    if($row>0){
-    $id = $row['id'];
-    $_SESSION['user_id'] = $id;
-    setcookie('user_id', $id , time()+2580000);
-    header('location:dashboard.php?msg=Successfully Logged In');
-    }else{
-      $err = "Email Or Password is wrong";
-  } 
+    $row = _fetch("person", "email='$email' AND password='$pass'");
+    if ($row > 0) {
+        $id = $row['id'];
+        $_SESSION['user_id'] = $id;
+        setcookie('user_id', $id, time() + 2580000);
+        header('location:dashboard.php?msg=Successfully Logged In');
+    } else {
+        $err = "Email Or Password is wrong";
+    }
 }
 
 //============login========//
-if(isset($_POST['submit'])){
-  $email =$_POST['email'];
-  $pass = md5($_POST['pass']);
-    $row = _fetch("person","email='$email' AND password='$pass'");
-    if($row>0){
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $pass = md5($_POST['pass']);
+    $row = _fetch("person", "email='$email' AND password='$pass'");
+    if ($row > 0) {
         $id = $row['id'];
         $_SESSION['user_id'] = $id;
-        setcookie('user_id', $id , time()+2580000);
+        setcookie('user_id', $id, time() + 2580000);
         header('location:dashboard.php?msg=Successfully Logged In');
-    }else{
+    } else {
         $err = "Email Or Password is wrong";
-    } 
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -78,14 +78,10 @@ if(isset($_POST['submit'])){
             href="services.php">Services</a>
         </li>
         <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="posts.php">posts</a>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="blogs.php">Blogs</a>
         </li>
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="team.php">Team</a>
-        </li>
-        <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
-            href="investor.php">Investor</a>
         </li>
 
         <li class="relative header_sub_parent">
@@ -131,206 +127,166 @@ if(isset($_POST['submit'])){
     </div>
   </header>
 
-  <div style="min-height: calc(100vh - 80px);" class="w-full py-12 flex items-center justify-center">
-    <div
-      class="w-[96%] lg:w-[525px] mx-auto text-center bg-white rounded-lg relative overflow-hidden py-16 px-10 sm:px-12 md:px-[60px]">
-      <div class="mb-12 text-center">
-        <h3 class="text-xl font-semibold tracking-wide">Login</h3>
+  <div>
+    <div class="py-20 flex justify-center container">
+      <div class="w-full text-center bg-white rounded-lg relative overflow-hidden py-16 px-10 sm:px-12 md:px-[60px]">
+        <div class="mb-12 text-center">
+          <h3 class="text-xl font-semibold w-full text-left tracking-wide">Login</h3>
+        </div>
+        <form action="" method="POST">
+          <div class="mb-6"><input required="" name="email" type="email" placeholder="Email Address"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
+          <div class="mb-6"><input required="" name="pass" type="password" placeholder="Password"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
+
+          <button type="submit" name="submit"
+            class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base">Sign
+            in</button>
+          <a class="my-5 hover:underline text-blue-500 block" href="forgot-password.php">Forgot password</a>
+        </form>
+
+        <br>
+        <span class="mx-1">Already have an account?</span>
+
+        <a class="text-base text-blue-500 hover:underline" href="signup.php">Sign Up</a>
+
       </div>
-      <form action="" method="POST">
-        <div class="mb-6"><input required="" name="email" type="email" placeholder="Email Address"
-            class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
-        </div>
-        <div class="mb-6"><input required="" name="pass" type="password" placeholder="Password"
-            class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+
+      <div class="w-full text-center bg-white rounded-lg relative overflow-hidden py-16 px-10 sm:px-12 md:px-[60px]">
+        <div class="mb-12 text-center">
+          <h3 class="text-xl font-semibold tracking-wide w-full text-left">Create New Account</h3>
         </div>
 
-        <button type="submit" name="submit"
-          class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base">Sign
-          in</button>
-        <a class="my-5 hover:underline text-blue-500 block" href="forgot-password.php">Forgot password</a>
-      </form>
-      
-      <!-- <p class="text-base mb-6 text-[#adadad]">Connect With</p>
+        <form action="" method="POST">
+          <div class="mb-6"><input required="" name="name" type="text" placeholder="Your Name"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
 
-      <div class="flex gap-x-2 justify-center">
-        <button type=" button"
-          class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
-          <svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f"
-            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-            <path fill="currentColor"
-              d="M279.1 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.4 0 225.4 0c-73.22 0-121.1 44.38-121.1 124.7v70.62H22.89V288h81.39v224h100.2V288z">
-            </path>
-          </svg>
-          Sign in with Facebook
-        </button>
+          <div class="mb-6"><input required="" name="phone" type="text" placeholder="Phone Number"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
 
-        <button type="button"
-          class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
-          <svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google"
-            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-            <path fill="currentColor"
-              d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z">
-            </path>
-          </svg>
-          Sign in with Google
-        </button></div> -->
 
-      <br>
-      <span class="mx-1">Already have an account?</span>
+          <div class="mb-6"><input required="" name="email" type="email" placeholder="Email Address"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
+          <div class="mb-6"><input required="" name="pass" type="password" placeholder="Password"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
+          <div class="mb-6"><input required="" name="cpass" type="password" placeholder="Confirm Password"
+              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
+          </div>
 
-      <a class="text-base text-blue-500 hover:underline" href="signup.php">Sign Up</a>
-      <div><span class="absolute top-1 right-1"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <circle cx="1.39737" cy="38.6026" r="1.39737" transform="rotate(-90 1.39737 38.6026)" fill="#3056D3">
-            </circle>
-            <circle cx="1.39737" cy="1.99122" r="1.39737" transform="rotate(-90 1.39737 1.99122)" fill="#3056D3">
-            </circle>
-            <circle cx="13.6943" cy="38.6026" r="1.39737" transform="rotate(-90 13.6943 38.6026)" fill="#3056D3">
-            </circle>
-            <circle cx="13.6943" cy="1.99122" r="1.39737" transform="rotate(-90 13.6943 1.99122)" fill="#3056D3">
-            </circle>
-            <circle cx="25.9911" cy="38.6026" r="1.39737" transform="rotate(-90 25.9911 38.6026)" fill="#3056D3">
-            </circle>
-            <circle cx="25.9911" cy="1.99122" r="1.39737" transform="rotate(-90 25.9911 1.99122)" fill="#3056D3">
-            </circle>
-            <circle cx="38.288" cy="38.6026" r="1.39737" transform="rotate(-90 38.288 38.6026)" fill="#3056D3"></circle>
-            <circle cx="38.288" cy="1.99122" r="1.39737" transform="rotate(-90 38.288 1.99122)" fill="#3056D3"></circle>
-            <circle cx="1.39737" cy="26.3057" r="1.39737" transform="rotate(-90 1.39737 26.3057)" fill="#3056D3">
-            </circle>
-            <circle cx="13.6943" cy="26.3057" r="1.39737" transform="rotate(-90 13.6943 26.3057)" fill="#3056D3">
-            </circle>
-            <circle cx="25.9911" cy="26.3057" r="1.39737" transform="rotate(-90 25.9911 26.3057)" fill="#3056D3">
-            </circle>
-            <circle cx="38.288" cy="26.3057" r="1.39737" transform="rotate(-90 38.288 26.3057)" fill="#3056D3"></circle>
-            <circle cx="1.39737" cy="14.0086" r="1.39737" transform="rotate(-90 1.39737 14.0086)" fill="#3056D3">
-            </circle>
-            <circle cx="13.6943" cy="14.0086" r="1.39737" transform="rotate(-90 13.6943 14.0086)" fill="#3056D3">
-            </circle>
-            <circle cx="25.9911" cy="14.0086" r="1.39737" transform="rotate(-90 25.9911 14.0086)" fill="#3056D3">
-            </circle>
-            <circle cx="38.288" cy="14.0086" r="1.39737" transform="rotate(-90 38.288 14.0086)" fill="#3056D3"></circle>
-          </svg></span><span class="absolute left-1 bottom-1"><svg width="29" height="40" viewBox="0 0 29 40"
-            fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="2.288" cy="25.9912" r="1.39737" transform="rotate(-90 2.288 25.9912)" fill="#3056D3"></circle>
-            <circle cx="14.5849" cy="25.9911" r="1.39737" transform="rotate(-90 14.5849 25.9911)" fill="#3056D3">
-            </circle>
-            <circle cx="26.7216" cy="25.9911" r="1.39737" transform="rotate(-90 26.7216 25.9911)" fill="#3056D3">
-            </circle>
-            <circle cx="2.288" cy="13.6944" r="1.39737" transform="rotate(-90 2.288 13.6944)" fill="#3056D3"></circle>
-            <circle cx="14.5849" cy="13.6943" r="1.39737" transform="rotate(-90 14.5849 13.6943)" fill="#3056D3">
-            </circle>
-            <circle cx="26.7216" cy="13.6943" r="1.39737" transform="rotate(-90 26.7216 13.6943)" fill="#3056D3">
-            </circle>
-            <circle cx="2.288" cy="38.0087" r="1.39737" transform="rotate(-90 2.288 38.0087)" fill="#3056D3"></circle>
-            <circle cx="2.288" cy="1.39739" r="1.39737" transform="rotate(-90 2.288 1.39739)" fill="#3056D3"></circle>
-            <circle cx="14.5849" cy="38.0089" r="1.39737" transform="rotate(-90 14.5849 38.0089)" fill="#3056D3">
-            </circle>
-            <circle cx="26.7216" cy="38.0089" r="1.39737" transform="rotate(-90 26.7216 38.0089)" fill="#3056D3">
-            </circle>
-            <circle cx="14.5849" cy="1.39761" r="1.39737" transform="rotate(-90 14.5849 1.39761)" fill="#3056D3">
-            </circle>
-            <circle cx="26.7216" cy="1.39761" r="1.39737" transform="rotate(-90 26.7216 1.39761)" fill="#3056D3">
-            </circle>
-          </svg></span>
+          <div class="mb-10"><button type="submit" name="submit"
+              class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base">Register</button>
+          </div>
+        </form>
+
+
+        <br>
+        <span class="mx-1">Already have an account?</span>
+
+        <a class="text-base text-blue-500 hover:underline" href="login.php">Sign In</a>
+
       </div>
     </div>
-  </div>
 
-   <!-- Footer -->
-   <footer class="bg-white pt-[74px]">
-    <div class="container grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12">
+    <!-- Footer -->
+    <footer class="bg-white pt-[74px]">
+      <div class="container grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12">
 
-      <div class="space-y-6">
-        <img class="w-36" src="assets/images/logo.png" alt="">
-        <div class="flex space-x-5">
-          <a href="https://www.facebook.com/bangladeshisoftware"
-            class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
-            <i class="fa-brands fa-facebook"></i>
-            <small>Facebook</small>
-          </a>
-          <a href="https://www.facebook.com/bangladeshisoftware"
-            class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
-            <i class="fa-brands fa-youtube"></i>
-            <small>Youtube</small>
-          </a>
+        <div class="space-y-6">
+          <img class="w-36" src="assets/images/logo.png" alt="">
+          <div class="flex space-x-5">
+            <a href="https://www.facebook.com/tentheme"
+              class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
+              <i class="fa-brands fa-facebook"></i>
+              <small>Facebook</small>
+            </a>
+            <a href="https://www.facebook.com/tentheme"
+              class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
+              <i class="fa-brands fa-youtube"></i>
+              <small>Youtube</small>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p>tentheme  Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
+            Software.
+            We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
+        </div>
+
+        <div class="2xl:pl-20">
+          <ul class="w-fit 2xl:mx-auto space-y-4">
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="dmca.php">DMCA</a>
+            </li>
+
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="contact.php">Contact US</a>
+            </li>
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="cookies-policy.php">Cookies Policy</a>
+            </li>
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="privacy-policy.php">Privacy Policy</a>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="2xl:pl-20">
+          <ul class="w-fit 2xl:mx-auto space-y-4">
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="investor.php">Join Investor</a>
+            </li>
+
+
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="reseller.php">Join Reseller</a>
+            </li>
+
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="mailto:shamimlem@yahoo.com">shamimlem@yahoo.com</a>
+            </li>
+
+            <li class="space-x-2 text-sm font-medium hover:text-gray-600">
+              <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
+              <a href="tel:+08801719182586">+08801719182586</a>
+            </li>
+
+          </ul>
         </div>
       </div>
 
-      <div>
-        <p>Bangladeshi Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
-          Software.
-          We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
-      </div>
 
-      <div class="2xl:pl-20">
-        <ul class="w-fit 2xl:mx-auto space-y-4">
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="dmca.php">DMCA</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="contact.php">Contact US</a>
-          </li>
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="cookies-policy.php">Cookies Policy</a>
-          </li>
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="privacy-policy.php">Privacy Policy</a>
-          </li>
-
+      <div class="container flex flex-col xl:flex-row w-full justify-between items-center gap-y-4 xl:gap-y-0 py-12">
+        <ul class="flex items-center justify-start w-full xl:w-[400px] gap-x-4 flex-wrap">
+          <li> <a href="index.php" class="hover:text-blue-600 hover:underline">Products</a> </li>
+          <li> <a href="services.php" class="hover:text-blue-600 hover:underline">Services</a> </li>
+          <li> <a href="investor.php" class="hover:text-blue-600 hover:underline">Investor</a> </li>
+          <li> <a href="reseller.php" class="hover:text-blue-600 hover:underline">Reseller</a> </li>
         </ul>
+
+        <p class="w-full xl:text-right">
+          <span class="text-gray-700 text-base"> All Rights Reserved © tentheme  Software 2022 <span>SHAMIMLEM.</span>
+        </p>
       </div>
 
-      <div class="2xl:pl-20">
-        <ul class="w-fit 2xl:mx-auto space-y-4">
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="investor.php">Join Investor</a>
-          </li>
+    </footer>
+    <!-- Footer -->
 
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="reseller.php">Join Reseller</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="mailto:shamimlem@yahoo.com">shamimlem@yahoo.com</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="tel:+08801719182586">+08801719182586</a>
-          </li>
-
-        </ul>
-      </div>
-    </div>
-
-
-    <div class="container flex flex-col xl:flex-row w-full justify-between items-center gap-y-4 xl:gap-y-0 py-12">
-      <ul class="flex items-center justify-start w-full xl:w-[400px] gap-x-4 flex-wrap">
-        <li> <a href="index.php" class="hover:text-blue-600 hover:underline">Products</a> </li>
-        <li> <a href="services.php" class="hover:text-blue-600 hover:underline">Services</a> </li>
-        <li> <a href="investor.php" class="hover:text-blue-600 hover:underline">Investor</a> </li>
-        <li> <a href="reseller.php" class="hover:text-blue-600 hover:underline">Reseller</a> </li>
-      </ul>
-
-      <p class="w-full xl:text-right">
-        <span class="text-gray-700 text-base"> All Rights Reserved © Bangladeshi Software 2022 <span>SHAMIMLEM.</span>
-      </p>
-    </div>
-
-  </footer>
-  <!-- Footer -->
-
-  <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 
 </html>

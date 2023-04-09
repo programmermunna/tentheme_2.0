@@ -40,6 +40,7 @@ if (all_ds_title && all_ds_div) {
 const dashboard_options_handler = document.getElementById(
   "dashboard_options_handler"
 );
+
 const dashboard_options = document.getElementById("dashboard_options");
 if (dashboard_options_handler && dashboard_options) {
   let open = false;
@@ -173,7 +174,6 @@ if (all_item_content[0] && all_item_content_toggler[0]) {
 }
 
 // Slider
-
 const header_slider_slides = document.getElementById("header_slider_slides");
 const all_header_slides_toggle = document.querySelectorAll(
   ".header_slides_toggle"
@@ -182,7 +182,6 @@ const all_header_slides_toggle = document.querySelectorAll(
 const all_header_slides_image = document.querySelectorAll(
   ".header_slides_image"
 );
-
 const all_header_slides_text = document.querySelectorAll(".header_slides_text");
 
 if (
@@ -436,32 +435,81 @@ if (all_method_name) {
   });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   const popup_msg = document.getElementById("popup_msg");
   if (popup_msg) {
     popup_msg.innerHTML = `
   <div id="popup_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:#31B0D5; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-  <span style="font-size:18px;"> 
+  <span style="font-size:18px;">
   <i class="fa-solid fa-check"></i>
   </span>
   <h6 style="background:black;color:white;">
   ${popup_msg?.dataset?.text} </div>
-  </h6> `
+  </h6> `;
     setTimeout(() => {
-      popup_msg.innerHTML = ''
-    }, popup_msg?.dataset?.time || 2000)}
+      popup_msg.innerHTML = "";
+    }, popup_msg?.dataset?.time || 2000);
+  }
 
-    const error_msg = document.getElementById("error_msg");
-    if (error_msg) {
-      error_msg.innerHTML = `
+  const error_msg = document.getElementById("error_msg");
+  if (error_msg) {
+    error_msg.innerHTML = `
     <div id="error_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:red; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-    <span style="font-size:18px;"> 
+    <span style="font-size:18px;">
     <i class="fa-solid fa-triangle-exclamation"></i>
     </span>
     <h6 style="background:black;color:white;">
     ${error_msg?.dataset?.text} </div>
-    </h6> `
-      setTimeout(() => {
-        error_msg.innerHTML = ''
-      }, error_msg?.dataset?.time || 2000)}
-  })
+    </h6> `;
+    setTimeout(() => {
+      error_msg.innerHTML = "";
+    }, error_msg?.dataset?.time || 2000);
+  }
+});
+
+// Dashboard Sidebar Buttons
+const all_ds_li_a = document.querySelectorAll(".ds_div li a");
+if (all_ds_li_a?.length > 0) {
+  all_ds_li_a.forEach((a) => {
+    let location_pathname = location.pathname.split("/");
+    let location_linkname = location_pathname[location_pathname.length - 1];
+    const href = a.getAttribute("href").replace("./", "").replace("/", "");
+    if (href === location_linkname) {
+      a.classList.add("active");
+    }
+  });
+}
+
+// Review Box
+const all_review_start = document.querySelectorAll(".review-start");
+for (let i = 0; i < all_review_start.length; i++) {
+  const btn = all_review_start[i];
+  btn.addEventListener("click", (e) => {
+    const clicked_value = parseInt(btn?.dataset?.value);
+    localStorage.setItem("current_rating", clicked_value);
+    all_review_start.forEach((btn) => {
+      const btn_value = parseInt(btn?.dataset?.value);
+      if (clicked_value >= btn_value) {
+        btn.innerHTML = `<i class="fa-solid fa-star"></i>`;
+        btn.style.color = "rgb(234 179 8)";
+      } else {
+        btn.innerHTML = `<i class="fa-regular fa-star"></i>`;
+        btn.style.color = "#ddd";
+      }
+    });
+  });
+}
+
+// Checkout Payment
+const all_select_pay_btn = document.querySelectorAll(".select_pay_btn");
+
+all_select_pay_btn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    all_select_pay_btn.forEach((b) => {
+      b.style.background = "#fafafa";
+      b.style.borderBottom = "1px solid #e1e8ed";
+    });
+    btn.style.background = "#ffffff";
+    b.style.borderBottomColor = "#fff";
+  });
+});

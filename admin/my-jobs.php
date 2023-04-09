@@ -1,4 +1,4 @@
-<?php include("common/header-sidebar.php")?>
+<?php include "common/header-sidebar.php"?>
       <div class="x_container space-y-10 py-10">
         <div class="p-5 justify-between items-center bg-white rounded-lg shadow-md border border-[
         ] shadow-gray-200 sm:flex">
@@ -84,8 +84,8 @@
                       </td>
 
                       <td class="p-4 space-x-2 whitespace-nowrap lg:p-5">
-                        <a target="_blank" href="https://facebook.com/bangladeshisoftware"
-                          class="text-blue-600 hover:underline">https://facebook.com/bangladeshisoftware
+                        <a target="_blank" href="https://facebook.com/tentheme"
+                          class="text-blue-600 hover:underline">https://facebook.com/tentheme
                         </a>
                       </td>
                       <td class="p-4 space-x-2 whitespace-nowrap lg:p-5">

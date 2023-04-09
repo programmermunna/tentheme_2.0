@@ -1,38 +1,38 @@
 <!-- Header area -->
-  <?php include("admin/config/functions.php");?>
-  <?php _login("index","user");
-  $err = '';
-  if(isset($_POST['submit'])){
+<?php include "admin/config/functions.php";?>
+<?php _login("index", "user");
+$err = '';
+if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $pass = md5($_POST['pass']);
     $cpass = md5($_POST['cpass']);
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)){
-      $check = _fetch("person","email='$email'");
-    if($check>0){
-        $err = "Alrady Have Account. Please Login";
-      }else{
-      if($pass==$cpass){
-        $insert = _insert("person","name, phone, email, password, time","'$name','$phone', '$email', '$pass', '$time'");
-        $row = _fetch("person","email='$email' AND password='$pass'");
-        if($row>0){
-        $user_id = $row['id'];
-        $_SESSION['user_id'] = $user_id;
-        setcookie('user_id', $user_id , time()+2580000);
-        header('location:dashboard.php?msg=Congratulations for Signup Account');
-        }else{
-          $msg = "Something is worng!";
-          header("location:signup.php?msg=$msg");
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $check = _fetch("person", "email='$email'");
+        if ($check > 0) {
+            $err = "Alrady Have Account. Please Login";
+        } else {
+            if ($pass == $cpass) {
+                $insert = _insert("person", "name, phone, email, password, time", "'$name','$phone', '$email', '$pass', '$time'");
+                $row = _fetch("person", "email='$email' AND password='$pass'");
+                if ($row > 0) {
+                    $user_id = $row['id'];
+                    $_SESSION['user_id'] = $user_id;
+                    setcookie('user_id', $user_id, time() + 2580000);
+                    header('location:dashboard.php?msg=Congratulations for Signup Account');
+                } else {
+                    $msg = "Something is worng!";
+                    header("location:signup.php?msg=$msg");
+                }
+            } else {
+                $err = "Password and Confirm Password are not match!";
+            }
         }
-      }else{
-        $err = "Password and Confirm Password are not match!";
-      }
     }
-  }
 }
-  ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,16 +79,11 @@
             href="services.php">Services</a>
         </li>
         <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="posts.php">posts</a>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="blogs.php">Blogs</a>
         </li>
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="team.php">Team</a>
         </li>
-        <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
-            href="investor.php">Investor</a>
-        </li>
-
         <li class="relative header_sub_parent">
           <a class="header_sub_ul_toggle flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
             href="#">Pages</a>
@@ -250,5 +245,5 @@
   </div>
 
   <!-- Header area -->
-  <?php include("common/footer.php");?>
-<!-- Header area -->
+  <?php include "common/footer.php";?>
+  <!-- Header area -->

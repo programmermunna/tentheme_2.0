@@ -1,5 +1,5 @@
 <!-- Header area -->
-<?php include("common/header.php");?>
+<?php include "common/header.php";?>
 <!-- Header area -->
 
     <!-- Sub Header -->
@@ -34,7 +34,7 @@
       <div class="container flex flex-col lg:flex-row gap-y-5 lg:gap-y-0 lg:gap-x-5">
 
         <!-- Dashboard Sidebar -->
-        <?php include("common/dashboad_sidebar.php");?>
+        <?php include "common/dashboad_sidebar.php";?>
         <!-- Dashboard Sidebar -->
 
         <!-- Body Content -->
@@ -98,12 +98,12 @@
       <div class="space-y-6">
         <img class="w-36" src="assets/images/logo.png" alt="">
         <div class="flex space-x-5">
-          <a href="https://www.facebook.com/bangladeshisoftware"
+          <a href="https://www.facebook.com/tentheme"
             class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
             <i class="fa-brands fa-facebook"></i>
             <small>Facebook</small>
           </a>
-          <a href="https://www.facebook.com/bangladeshisoftware"
+          <a href="https://www.facebook.com/tentheme"
             class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
             <i class="fa-brands fa-youtube"></i>
             <small>Youtube</small>
@@ -112,7 +112,7 @@
       </div>
 
       <div>
-        <p>Bangladeshi Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
+        <p>tentheme  Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
           Software.
           We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
       </div>
@@ -177,7 +177,7 @@
       </ul>
 
       <p class="w-full xl:text-right">
-        <span class="text-gray-700 text-base"> All Rights Reserved © Bangladeshi Software 2022 <span>SHAMIMLEM.</span>
+        <span class="text-gray-700 text-base"> All Rights Reserved © tentheme  Software 2022 <span>SHAMIMLEM.</span>
       </p>
     </div>
 

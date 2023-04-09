@@ -1,12 +1,12 @@
-<?php include("admin/config/functions.php"); ?>
+<?php include "admin/config/functions.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <!--
-      theme name: Bangladeshi Software
+      theme name: tentheme  Software
       version: 1.0
-      author: @bangladeshisoftware
+      author: @tentheme
      -->
 
   <meta charset="UTF-8" />
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
 
   <title>Title</title>
-</head> 
+</head>
 
 <body>
   <!-- Header -->
@@ -50,7 +50,7 @@
             href="services.php">Services</a>
         </li>
         <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="posts.php">posts</a>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="blogs.php">Blogs</a>
         </li>
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="team.php">Team</a>
@@ -191,12 +191,12 @@
       <div class="space-y-6">
         <img class="w-36" src="assets/images/logo.png" alt="">
         <div class="flex space-x-5">
-          <a href="https://www.facebook.com/bangladeshisoftware"
+          <a href="https://www.facebook.com/tentheme"
             class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
             <i class="fa-brands fa-facebook"></i>
             <small>Facebook</small>
           </a>
-          <a href="https://www.facebook.com/bangladeshisoftware"
+          <a href="https://www.facebook.com/tentheme"
             class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
             <i class="fa-brands fa-youtube"></i>
             <small>Youtube</small>
@@ -205,7 +205,7 @@
       </div>
 
       <div>
-        <p>Bangladeshi Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
+        <p>tentheme  Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
           Software.
           We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
       </div>
@@ -270,7 +270,7 @@
       </ul>
 
       <p class="w-full xl:text-right">
-        <span class="text-gray-700 text-base"> All Rights Reserved © Bangladeshi Software 2022 <span>SHAMIMLEM.</span>
+        <span class="text-gray-700 text-base"> All Rights Reserved © tentheme  Software 2022 <span>SHAMIMLEM.</span>
       </p>
     </div>
 

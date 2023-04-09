@@ -30,7 +30,7 @@
   </header>
 
   <main style="min-height: calc(100vh - 80px)">
-    <div class="flex items-start py-6">
+    <div class="flex items-start py-16">
       <div class="container flex flex-col lg:flex-row gap-y-5 lg:gap-y-0 lg:gap-x-5">
 
         <!-- Dashboard Sidebar -->
@@ -44,24 +44,24 @@
             <span class="text-2xl font-medium tracking-wide">Add new ticket!</span>
           </div>
 
-          <?php 
+          <?php
           if(isset($_POST['submit'])){
             $subject = $_POST['subject'];
             $service_id = $_POST['select'];
             $message = $_POST['textarea'];
-            $ticket_id = rand(1000,10000000);                   
+            $ticket_id = rand(1000,10000000);
 
             if(!empty($service_id)){
               $insert = _insert("tickets","ticket_id,uid,pid,service_id,subject,message,time","'$ticket_id','$id','$id','$service_id','$subject','$message','$time'");
               if($insert){
                 $msg = "Successfully Created a new Ticket";
                 header("location:tickets.php?msg=$msg");
-              } 
+              }
             }else{
               $err = "Please Purchase First";
               header("location:ticket.php?err=$err");
             }
-                      
+
           }
           ?>
           <form class="grid grid-cols-12 gap-y-6 p-5" action="" method="POST" enctype="multipart/form-data">
@@ -75,13 +75,13 @@
             <div class="col-span-12"><label class="mb-2 block" for="subject">Select Order</label>
               <select name="select"
                 class="border-8 border-white bg-white ring-2 ring-gray-200 focus:ring-blue-600 w-full h-11 rounded outline-none">
-                <?php 
+                <?php
                 $cart = _get("cart","pid=$id AND type='service'");
                 while($data = mysqli_fetch_assoc($cart)){
-                  $cart_id = $data['cart_id']; 
+                  $cart_id = $data['cart_id'];
                   $service = _fetch("service","id=$cart_id");
                   ?>
-                  <option value="<?php echo $service['id']?>"><?php echo $service['title']?></option>                  
+                  <option value="<?php echo $service['id']?>"><?php echo $service['title']?></option>
               <?php }?>
               </select>
             </div>

@@ -28,7 +28,7 @@
             }else{
               $person_update = _update("person"," name='$name', email='$email',file_name='$file_name'","id=$id");
             }
-            
+
             if($person_update){
               $msg = "Successfully Updated";
               header("location:profile.php?msg=$msg");
@@ -54,6 +54,11 @@
               <div class="col-span-2 lg:col-span-1 flex flex-col gap-y-1">
                 <label for="email">Email</label>
                 <input name="email" class="input" type="email" id="email" placeholder="Enter Your Name" required value="<?php echo $person['email']?>">
+              </div>
+              <br>
+              <div class="col-span-2 lg:col-span-1 flex flex-col gap-y-1">
+                <label for="email">Present Role</label>
+                <input disabled class="input" type="text" id="email" placeholder="Present Role" value="<?php echo $person['role']?>">
               </div>
               <br>
               <div class="col-span-2 lg:col-span-1 flex flex-col gap-y-1">

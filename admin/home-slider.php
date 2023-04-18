@@ -26,25 +26,24 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <?php
+            <?php
+            $pagination = null;
+            if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                $page_no = $_GET['page_no'];} else { $page_no = 1;}
+            $total_records_per_page = 10;
+            $offset = ($page_no - 1) * $total_records_per_page;
+            $previous_page = $page_no - 1;
+            $next_page = $page_no + 1;
+            $adjacents = "2";
 
-$pagination = null;
-if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-    $page_no = $_GET['page_no'];} else { $page_no = 1;}
-$total_records_per_page = 10;
-$offset = ($page_no - 1) * $total_records_per_page;
-$previous_page = $page_no - 1;
-$next_page = $page_no + 1;
-$adjacents = "2";
+            $slider = _query("SELECT * FROM slider WHERE pg_name='index' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+            $total_records = mysqli_num_rows(_get("slider", "pg_name='index'"));
 
-$slider = _query("SELECT * FROM slider WHERE pg_name='index' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-$total_records = mysqli_num_rows(_get("slider", "pg_name='index'"));
-
-$total_no_of_pages = ceil($total_records / $total_records_per_page);
-$second_last = $total_no_of_pages - 1;
-$i = 0;
-while ($data = mysqli_fetch_assoc($slider)) {$i++
-    ?>
+            $total_no_of_pages = ceil($total_records / $total_records_per_page);
+            $second_last = $total_no_of_pages - 1;
+            $i = 0;
+            while ($data = mysqli_fetch_assoc($slider)) {$i++
+            ?>
               <tr class="hover:bg-gray-100">
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                   <img style="width: 200px;height:50px;object-fit:cover" src="upload/<?php echo $data['file_name'] ?>">
@@ -58,7 +57,7 @@ while ($data = mysqli_fetch_assoc($slider)) {$i++
                 <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <a href="edit-slider.php?src=home-slider&&table=slider&&id=<?php echo $data['id'] ?>"
                     class="popup_show btn bg-red-500 w-fit text-white">Edit</a>
-                  <!-- <a href="delete.php?src=home-slider&&table=slider&&id=<?php echo $data['id'] ?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a> -->
+                  <a href="delete.php?src=home-slider&&table=slider&&id=<?php echo $data['id'] ?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
                 </td>
               </tr>
               <?php }?>

@@ -38,7 +38,7 @@ if(isset($_POST['submit'])){
             <label for="pg_name">Title</label>
             <select name="pg_name" class="input">
               <option value="index">Home Page</option>
-              <option value="service">Service Page</option>
+              <option value="services">Service Page</option>
             </select>
           </div>
 

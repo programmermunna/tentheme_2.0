@@ -28,7 +28,7 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin-<?php echo $website['title'] ?></title>
+  <title>Admin-<?php echo $website['title'];?></title>
   
     <!-- Favicon -->
     <link rel="shortcut icon" href="upload/<?php echo $website['favicon_name'] ?>" type="image/x-icon" />
@@ -332,9 +332,13 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
               <div
                 class="header_options absolute w-full bg-white rounded shadow top-full right-0 transition-all origin-top transform scale-y-0">
 
-                <a target="_blank" href="../index.php" class="flex items-center gap-x-2 w-full  hover:bg-gray-100 p-3">
+                <a href="../website-setting.php" class="flex items-center gap-x-2 w-full  hover:bg-gray-100 p-3">
                   <i class="fa fa-internet-explorer"></i>
-                  <span class="text-sm font-medium">View Website</span></a>
+                  <span class="text-sm font-medium">Website Setting</span></a>
+
+                <a href="../profile.php" class="flex items-center gap-x-2 w-full  hover:bg-gray-100 p-3">
+                  <i class="fa-solid fa-user-tie"></i>
+                  <span class="text-sm font-medium">Profile Setting</span></a>
 
                 <a href="logout.php" class="flex items-center gap-x-2 w-full  hover:bg-gray-100 p-3">
                   <i class="fa-solid fa-arrow-right-from-bracket"></i><span

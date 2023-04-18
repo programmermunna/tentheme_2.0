@@ -9,11 +9,9 @@
             <div style="display:flex">
             </div>
             <div>
-              <div style="text-align: right;margin: 5px;padding-top: 10px;">
-                <a href="add-slider.php"
-                  style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Add
-                  new slider</a>
-              </div>
+            <div class="flex items-center justify-end pt-5 pr-5">
+              <a href="./add-slider.php" class="px-6 py-2 rounded focus:ring bg-blue-600 text-white">Add Slider</a>
+            </div>
             </div>
           </div>
 
@@ -63,7 +61,7 @@ while ($data = mysqli_fetch_assoc($slider)) {$i++
                 <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <a href="edit-slider.php?src=services-slider&&table=slider&&id=<?php echo $data['id'] ?>"
                     class="popup_show btn bg-red-500 w-fit text-white">Edit</a>
-                  <!-- <a href="delete.php?src=service-slider&&table=slider&&id=<?php echo $data['id'] ?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a> -->
+                  <a href="delete.php?src=services-slider&&table=slider&&id=<?php echo $data['id'] ?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
                 </td>
               </tr>
               <?php }?>

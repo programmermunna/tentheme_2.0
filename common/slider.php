@@ -4,7 +4,7 @@
           <div class="absolute z-10 inset-0 m-auto w-full h-full">
             <?php 
             $pg_name = trim("$cr_url",".php");
-            $sliders = _get("slider","pg_name='$pg_name' ORDER BY id ASC");
+            $sliders = _get("slider","pg_name='$pg_name'");
             $i = 0;
             while($slide = mysqli_fetch_assoc($sliders)){ $i++;
             ?>
@@ -38,7 +38,7 @@
             $i = 0;
             while($slide = mysqli_fetch_assoc($sliders)){ $i++;
             ?>
-          <button data-target="<?php echo $i; ?>"
+            <button data-target="<?php echo $i; ?>"
             class="header_slides_toggle w-9 h-9 rounded-full border ring shadow focus:ring-offset-2 focus:bg-white">
             <img class="w-full h-full object-cover rounded-full" src="admin/upload/<?php echo $slide['file_name']?>" alt=""> </button>
             <?php }?>

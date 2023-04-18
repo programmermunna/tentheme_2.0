@@ -173,6 +173,8 @@ if (all_item_content[0] && all_item_content_toggler[0]) {
   });
 }
 
+
+
 // Slider
 const header_slider_slides = document.getElementById("header_slider_slides");
 const all_header_slides_toggle = document.querySelectorAll(

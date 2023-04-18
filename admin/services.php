@@ -111,8 +111,9 @@ while ($data = mysqli_fetch_assoc($service)) {
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
-                  <td><img style="margin:0 auto;width:100;height:50px;object-fit:cover"
-                      src="upload/<?php echo $data['file_name1'] ?>"></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"> 
+                    <a target="_blank" href="../service.php?service_id=<?php echo $data['id'] ?>"><?php echo $data['title'] ?></a>
+                  </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['title'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
@@ -137,8 +138,6 @@ if ($data['status'] == 'Publish') {?>
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
                     <a href="delete.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
-                    <a href="delete.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">View</a>
                   </td>
                 </tr>
                 <?php }?>

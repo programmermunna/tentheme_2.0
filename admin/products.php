@@ -114,8 +114,9 @@ while ($data = mysqli_fetch_assoc($products)) {
                   </td>
                   <td><img style="margin:0 auto;width:100;height:50px;object-fit:cover"
                       src="upload/<?php echo $data['file_name1'] ?>"></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $data['title'] ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"> 
+                    <a target="_blank" href="../item.php?product_id=<?php echo $data['id'] ?>"><?php echo $data['title'] ?></a>
+                  </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['regular_price'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">

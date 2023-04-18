@@ -7,7 +7,8 @@ if ($notify_check > 0) {
 }
 ?>
 <?php
-$all_person = mysqli_num_rows(_get("person", "role!='Admin'"));
+$all_person = mysqli_num_rows(_get("person", "id !=''"));
+$admin_list = mysqli_num_rows(_get("person", "role='Admin'"));
 $moderators_list = mysqli_num_rows(_get("person", "role='Moderator'"));
 $users_list = mysqli_num_rows(_get("person", "role='User'"));
 ?>
@@ -39,20 +40,21 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
 
           <!-- Table -->
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("person", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:users.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("person", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:users.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <div class="top_link">
               <a href="users.php">All (<?php echo $all_person ?>)</a>
+              <a href="users.php?role=Admin">Admin (<?php echo $admin_list ?>)</a>
               <a href="users.php?role=Moderator">Moderators (<?php echo $moderators_list ?>)</a>
               <a href="users.php?role=User">Users (<?php echo $users_list ?>)</a>
               <input type="submit" name="check" value="Delete">
@@ -79,31 +81,31 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $person = _get("person", "role !='Admin' AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
-} elseif (isset($_GET['role'])) {
-    $src = trim($_GET['role']);
-    $person = _get("person", "role !='Admin' AND role='$src'");
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                  if (isset($_GET['src'])) {
+                      $src = trim($_GET['src']);
+                      $person = _get("person", "id !='' AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
+                  } elseif (isset($_GET['role'])) {
+                      $src = trim($_GET['role']);
+                      $person = _get("person", "role='$src'");
+                  } else {
+                      $pagination = "ON";
+                      if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $total_records_per_page = 10;
+                      $offset = ($page_no - 1) * $total_records_per_page;
+                      $previous_page = $page_no - 1;
+                      $next_page = $page_no + 1;
+                      $adjacents = "2";
 
-    $person = _query("SELECT * FROM person WHERE role !='Admin' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("person"));
+                      $person = _query("SELECT * FROM person WHERE id !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_getAll("person"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-$i = 0;
-while ($data = mysqli_fetch_assoc($person)) {$i++
-    ?>
+                      $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                      $second_last = $total_no_of_pages - 1;
+                  }
+                  $i = 0;
+                  while ($data = mysqli_fetch_assoc($person)) {$i++
+                ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">

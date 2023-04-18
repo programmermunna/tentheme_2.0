@@ -129,7 +129,7 @@ while ($data = mysqli_fetch_assoc($person)) {$i++
                     <?php echo $data['email'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['address'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">৳
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">$
                     <?php echo $data['balance'] ?></td>
                   <td class="p-4 text-sm font-bold text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['reseller'] ?></td>

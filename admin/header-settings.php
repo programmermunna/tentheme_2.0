@@ -109,11 +109,4 @@ $general_setting = _fetch("general_setting", "id=1");
   </div>
 
 </div>
-
-
-</main>
-
-<script src="js/app.js"></script>
-</body>
-
-</html>
+<?php include("common/sub-footer.php")?>

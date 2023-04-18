@@ -106,7 +106,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
             </div>
 
             <h3 class="flex items-start gap-x-0.5">
-              <span>৳</span>
+              <span>$</span>
               <span class="text-4xl font-semibold"><?php echo $product['sell_price']; ?></span>
             </h3>
           </div>
@@ -184,7 +184,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
     <div class="w-full lg:min-w-[450px] lg:w-[450px]">
       <div class="border p-5">
         <h2 class="text-2xl text-center font-semibold text-gray-700 pb-4 border-b">Your Balance: <b
-            style="color:#000;">৳<?php echo $person['balance'] ?></b></h2>
+            style="color:#000;">$<?php echo $person['balance'] ?></b></h2>
         <div class="py-5 space-y-4">
 
           <?php
@@ -200,7 +200,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
     ?>
           <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
             <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
-            <span class="w-fit">৳<?php echo $product['sell_price']; ?></span>
+            <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
           </div>
           <?php }?>
 

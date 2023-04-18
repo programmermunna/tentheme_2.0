@@ -125,7 +125,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $product['title'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    ৳<?php echo $product['sell_price'] ?></td>
+                    $<?php echo $product['sell_price'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person['name'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">

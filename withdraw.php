@@ -100,7 +100,7 @@ while ($data = mysqli_fetch_assoc($deposits)) {
                         <p class="text-gray-900 whitespace-no-wrap"><?php echo date("d-M-y h:ia", $data['time']); ?></p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">৳ <?php echo $data['amount']; ?></p>
+                        <p class="text-gray-900 whitespace-no-wrap">$ <?php echo $data['amount']; ?></p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <?php if ($data['status'] != 'Pending') {?>

@@ -109,7 +109,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
                         On Hold
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        ৳ <?php echo $service['sell_price'] ?>
+                        $ <?php echo $service['sell_price'] ?>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
 

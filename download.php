@@ -92,7 +92,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"><?php $time = $data['time'];
     echo date("d-M-y", $time);?></td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">৳
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">$
                         <?php echo $product['sell_price'] ?></td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"><a
                           href="download-security.php?file_id=<?php echo $product['id'] ?>"

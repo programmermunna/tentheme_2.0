@@ -84,7 +84,7 @@ if ($id < 1) {
           <div class="rounded overflow-hidden">
             <div class="bg-yellow-500 text-white group p-5 flex items-center justify-between">
               <div class="flex flex-col gap-4">
-                <h2 class="text-3xl font-semibold">৳2340</h2>
+                <h2 class="text-3xl font-semibold">$2340</h2>
                 <h2 class="text-base">Total Product Purchase</h2>
               </div>
               <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -114,7 +114,7 @@ if ($id < 1) {
           <div class="rounded overflow-hidden">
             <div class="bg-cyan-500 text-white group p-5 flex items-center justify-between">
               <div class="flex flex-col gap-4">
-                <h2 class="text-3xl font-semibold">৳4340</h2>
+                <h2 class="text-3xl font-semibold">$4340</h2>
                 <h2 class="text-base">Total Deposits</h2>
               </div>
               <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -129,7 +129,7 @@ if ($id < 1) {
           <div class="rounded overflow-hidden">
             <div class="bg-rose-500 text-white group p-5 flex items-center justify-between">
               <div class="flex flex-col gap-4">
-                <h2 class="text-3xl font-semibold">৳1320</h2>
+                <h2 class="text-3xl font-semibold">$1320</h2>
                 <h2 class="text-base">Total Withdraw</h2>
               </div>
               <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -145,7 +145,7 @@ if ($id < 1) {
           <div class="rounded overflow-hidden col-span-full">
             <div class="bg-orange-500 text-white group p-5 flex items-center justify-between">
               <div class="flex flex-col gap-4">
-                <h2 class="text-3xl font-semibold">৳1320</h2>
+                <h2 class="text-3xl font-semibold">$1320</h2>
                 <h2 class="text-base">Total Reseller Profit</h2>
               </div>
               <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -155,7 +155,7 @@ if ($id < 1) {
           <div class="rounded overflow-hidden col-span-full">
             <div class="bg-purple-500 text-white group p-5 flex items-center justify-between">
               <div class="flex flex-col gap-4">
-                <h2 class="text-3xl font-semibold">৳1320</h2>
+                <h2 class="text-3xl font-semibold">$1320</h2>
                 <h2 class="text-base">Investor Profit</h2>
               </div>
               <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i

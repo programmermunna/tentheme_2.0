@@ -134,7 +134,7 @@ while ($data = mysqli_fetch_assoc($deposit)) {$i++;
                     <?php echo $data['pmn_address'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['tr_id'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">৳
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">$
                     <?php echo $data['amount'] ?></td>
                   <?php if ($data['status'] == 'Pending') {?>
                   <td class="p-4 text-sm font-normal text-red-500 whitespace-nowrap lg:p-5">

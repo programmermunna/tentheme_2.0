@@ -31,6 +31,39 @@ if (isset($_POST['submit'])) {
         $err = "Email Or Password is wrong";
     }
 }
+
+
+
+if (isset($_POST['sign_in_submit'])) {
+  $name = $_POST['name'];
+  $phone = $_POST['phone'];
+  $email = $_POST['email'];
+  $pass = md5($_POST['pass']);
+  $cpass = md5($_POST['cpass']);
+
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $check = _fetch("person", "email='$email'");
+      if ($check > 0) {
+          $err = "Alrady Have Account. Please Login";
+      } else {
+          if ($pass == $cpass) {
+              $insert = _insert("person", "name, phone, email, password, time", "'$name','$phone', '$email', '$pass', '$time'");
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                  $user_id = $row['id'];
+                  $_SESSION['user_id'] = $user_id;
+                  setcookie('user_id', $user_id, time() + 2580000);
+                  header('location:dashboard.php?msg=Congratulations for Signup Account');
+              } else {
+                  $msg = "Something is worng!";
+                  header("location:signup.php?msg=$msg");
+              }
+          } else {
+              $err = "Password and Confirm Password are not match!";
+          }
+      }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,10 +141,6 @@ if (isset($_POST['submit'])) {
             </ul>
           </div>
         </li>
-
-        <li>
-          <a class="flex items-center px-3 h-[44px]" href="signup.php">Signup</a>
-        </li>
         <li>
           <a class="flex items-center px-3 h-[44px] text-white space-x-2 rounded focus:ring-1 focus:ring-[#11987d] ring-offset-2 shadow"
             style="
@@ -179,7 +208,7 @@ if (isset($_POST['submit'])) {
               class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4">
           </div>
 
-          <div class="mb-10"><button type="submit" name="submit"
+          <div class="mb-10"><button type="submit" name="sign_in_submit"
               class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base">Register</button>
           </div>
         </form>

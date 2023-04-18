@@ -119,7 +119,7 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       <div class="rounded overflow-hidden">
         <div class="bg-orange-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
-            <h2 class="text-3xl font-semibold">৳221.98</h2>
+            <h2 class="text-3xl font-semibold">$221.98</h2>
             <h2 class="text-base">Success Deposit</h2>
           </div>
           <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all">
@@ -138,7 +138,7 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       <div class="rounded overflow-hidden">
         <div class="bg-pink-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
-            <h2 class="text-3xl font-semibold">৳10</h2>
+            <h2 class="text-3xl font-semibold">$10</h2>
             <h2 class="text-base">Pending Deposit</h2>
           </div>
           <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -154,7 +154,7 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       <div class="rounded overflow-hidden">
         <div class="bg-pink-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
-            <h2 class="text-3xl font-semibold">৳10</h2>
+            <h2 class="text-3xl font-semibold">$10</h2>
             <h2 class="text-base">Total Deposit</h2>
           </div>
           <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -173,7 +173,7 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       <div class="rounded overflow-hidden">
         <div class="bg-yellow-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
-            <h2 class="text-3xl font-semibold">৳0</h2>
+            <h2 class="text-3xl font-semibold">$0</h2>
             <h2 class="text-base">Success Withdraw</h2>
           </div>
           <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i
@@ -188,7 +188,7 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       <div class="rounded overflow-hidden">
         <div class="bg-rose-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
-            <h2 class="text-3xl font-semibold">৳0</h2>
+            <h2 class="text-3xl font-semibold">$0</h2>
             <h2 class="text-base">Pending Withdraw</h2>
           </div>
           <h1 class="text-4xl opacity-30 group-hover:scale-110 transform transition-all"><i

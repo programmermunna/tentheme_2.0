@@ -283,10 +283,7 @@ $(document).ready(function() {
   });
 });
 </script>
+
 <script src="js/app.js"></script>
-
-
-
 </body>
-
 </html>

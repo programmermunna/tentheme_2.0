@@ -248,8 +248,6 @@ if (isset($_POST['copy_right_btn'])) {
 </div>
 
 </div>
-</main>
-
 <script>
 $(document).ready(function() {
 
@@ -369,8 +367,4 @@ $('.summernote').summernote({
   ]
 });
 </script>
-
-<script src="js/app.js"></script>
-</body>
-
-</html>
+<?php include("common/sub-footer.php")?>

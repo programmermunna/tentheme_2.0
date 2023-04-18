@@ -171,13 +171,4 @@ if (isset($_POST['add_favicon'])) {
 </div>
 
 </div>
-
-</main>
-
-
-
-
-<script src="js/app.js"></script>
-</body>
-
-</html>
+<?php include("common/sub-footer.php")?>

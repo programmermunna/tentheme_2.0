@@ -1,5 +1,4 @@
-<?php include("common/header-sidebar.php")?>
-<?php include("common/setting-sidebar.php")?>
+<?php include("common/sub-sidebar.php")?>
 
         <div class="w-full space-y-10 p-6 lg:p-12 bg-white border border-gray-200 rounded">
 

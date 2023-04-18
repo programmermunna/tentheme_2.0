@@ -122,7 +122,6 @@
   </div>
 </div>
 </main>
-
 <script>
 $('.summernote').summernote({
   placeholder: 'Write Something About Service',
@@ -139,8 +138,4 @@ $('.summernote').summernote({
   ]
 });
 </script>
-
-<script src="js/app.js"></script>
-</body>
-
-</html>
+<?php include("common/sub-footer.php")?>

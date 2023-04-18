@@ -135,8 +135,6 @@ $investor_docs = _fetch("investor_docs", "id=1");
 </div>
 
 </div>
-
-</main>
 <script>
 $('.summernote').summernote({
   placeholder: 'Write Something About Service',
@@ -153,7 +151,5 @@ $('.summernote').summernote({
   ]
 });
 </script>
-<script src="js/app.js"></script>
-</body>
 
-</html>
+<?php include("common/sub-footer.php")?>

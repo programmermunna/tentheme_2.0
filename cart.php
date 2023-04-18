@@ -95,7 +95,7 @@ if(isset($_GET['cart'])){
               </div>
 
               <h3 class="flex items-start gap-x-0.5">
-                <span>৳</span>
+                <span>$</span>
                 <span class="text-4xl font-semibold"><?php echo $product['sell_price'];?></span>
               </h3>
             </div>

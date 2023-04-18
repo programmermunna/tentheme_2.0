@@ -28,14 +28,20 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
+  <title>Admin-<?php echo $website['title'] ?></title>
+  
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="upload/<?php echo $website['favicon_name'] ?>" type="image/x-icon" />
+
   <!--=== Google Font  ===-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
 
+    <!--=== Jquery  ===-->
   <script src="https://code.jquery.com/jquery-3.2.1.js" crossorigin="anonymous"></script>
+
   <!--=== Font awesome  ===-->
   <script src="https://kit.fontawesome.com/6788eb3be6.js" crossorigin="anonymous"></script>
 

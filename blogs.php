@@ -39,10 +39,22 @@
                 <?php 
                 if(isset($_GET['category'])){
                     $category = $_GET['category'];
-                    $post = _get("post","status='Publish' AND category='$category' ORDER BY id DESC");
-                }else{
-                    $post = _get("post","status='Publish' ORDER BY id DESC");
-                }
+                    $post = _get("post", "status='Publish' AND category='$category' ORDER BY id DESC");
+                }else{                    
+                $pagination = "ON";
+                if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                $total_records_per_page = 10;
+                $offset = ($page_no - 1) * $total_records_per_page;
+                $previous_page = $page_no - 1;
+                $next_page = $page_no + 1;
+                $adjacents = "2";
+                $post = _get("post", "status='Publish' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                $total_records = mysqli_num_rows(_get("post", "status='Publish'"));
+                $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                $second_last = $total_no_of_pages - 1;
+
+                }                
                 while($data = mysqli_fetch_assoc($post)){
                 $author_id = $data['pid'];
                 $author = _fetch("person","id=$author_id"); 
@@ -53,9 +65,9 @@
                         <h3 class="text-lg font-semibold tracking-wide my-4"><?php echo $data['title']?></h3>
                         <div class="flex items-center gap-2 relative z-50 truncate flex-wrap w-full"
                             style="justify-content: space-between;">
-                            <a href="#"
+                            <a href="?category=<?php echo $data['category']?>"
                                 class="px-2 py-1 bg-[#f75389] text-white rounded-sm shadow-sm focus:ring-1 focus:ring-offset-1"><?php echo $data['category']?></a>
-                            <a href="#"
+                            <a href="#!"
                                 class="px-2 py-1 rounded-sm "><?php echo $author['name']." ". date("d-M-y",$data['time']);?></a>
                         </div>
                     </div>
@@ -66,45 +78,129 @@
                 <br>
                 <br>
 
-                <!-- Paginations -->
-                <div
-                    class="col-span-12 flex flex-col-reverse sm:flex-row gap-6 sm:gap-0 items-center justify-between py-6">
-                    <div class="flex items-center justify-center flex-wrap gap-1 w-fit">
-                        <a href="#"
-                            class="px-4 py-2 text-gray-500 bg-gray-300 hover:bg-[#f75389] hover:text-white rounded-l-sm">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </a>
+        <!-- Paginations -->
+        <?php if (isset($pagination)) {?>
+        <style>
+        .paginations {
+          width: 100%;
+          padding: 20px 0px
+        }
 
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            1
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            2
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            3
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            4
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            5
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            ...
-                        </a>
-                        <a href="#" class="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-[#f75389] hover:text-white">
-                            11
-                        </a>
-                        <a href="#"
-                            class="px-4 py-2 text-gray-500 bg-gray-300 hover:bg-[#f75389] hover:text-white rounded-r-sm">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
+        .paginations>ul {
 
-                    <div>Page 1 of 12</div>
-                </div>
-                <!-- Paginations -->
+          display: flex;
+          align-items: center;
+        }
+
+        .paginations>ul>li {
+          list-style: none;
+          display: inline-block;
+        }
+
+        .paginations>ul>li>a {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 5px;
+          background: rgb(209 213 219);
+          cursor: pointer;
+        }
+
+        .paginations>ul>li>a:hover {
+          background: rgb(247 83 137);
+          color: #fff;
+        }
+
+        .active>a {
+          background: #4ade80 !important;
+          color: #fff !important;
+        }
+
+        .page_of {
+          padding-top: 10px;
+        }
+
+        @media only screen and (max-width: 850px) {
+          .page_of {
+            display: none;
+          }
+        }
+        </style>
+        <div class="paginations">
+          <ul>
+            <?php // if($page_no > 1){ echo "<li><a href='?page_no=1'>First Page</a></li>"; } ?>
+
+            <li <?php if ($page_no <= 1) {echo "class=''";}?>>
+              <a <?php if ($page_no > 1) {echo "href='?page_no=$previous_page'";}?>>
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </li>
+
+            <?php
+if ($total_no_of_pages <= 10) {
+    for ($counter = 1; $counter <= $total_no_of_pages; $counter++) {
+        if ($counter == $page_no) {
+            echo "<li class=''><a>$counter</a></li>";
+        } else {
+            echo "<li><a href='?page_no=$counter'>$counter</a></li>";
+        }
+    }
+} elseif ($total_no_of_pages > 10) {
+
+    if ($page_no <= 4) {
+        for ($counter = 1; $counter < 8; $counter++) {
+            if ($counter == $page_no) {
+                echo "<li class='active'><a>$counter</a></li>";
+            } else {
+                echo "<li><a href='?page_no=$counter'>$counter</a></li>";
+            }
+        }
+        echo "<li><a>...</a></li>";
+        echo "<li><a href='?page_no=$second_last'>$second_last</a></li>";
+        echo "<li><a href='?page_no=$total_no_of_pages'>$total_no_of_pages</a></li>";
+    } elseif ($page_no > 4 && $page_no < $total_no_of_pages - 4) {
+        echo "<li><a href='?page_no=1'>1</a></li>";
+        echo "<li><a href='?page_no=2'>2</a></li>";
+        echo "<li><a>...</a></li>";
+        for ($counter = $page_no - $adjacents; $counter <= $page_no + $adjacents; $counter++) {
+            if ($counter == $page_no) {
+                echo "<li class='active'><a>$counter</a></li>";
+            } else {
+                echo "<li><a href='?page_no=$counter'>$counter</a></li>";
+            }
+        }
+        echo "<li><a>...</a></li>";
+        echo "<li><a href='?page_no=$second_last'>$second_last</a></li>";
+        echo "<li><a href='?page_no=$total_no_of_pages'>$total_no_of_pages</a></li>";
+    } else {
+        echo "<li><a href='?page_no=1'>1</a></li>";
+        echo "<li><a href='?page_no=2'>2</a></li>";
+        echo "<li><a>...</a></li>";
+
+        for ($counter = $total_no_of_pages - 6; $counter <= $total_no_of_pages; $counter++) {
+            if ($counter == $page_no) {
+                echo "<li class='active'><a>$counter</a></li>";
+            } else {
+                echo "<li><a href='?page_no=$counter'>$counter</a></li>";
+            }
+        }
+    }
+}
+    ?>
+
+            <li <?php if ($page_no >= $total_no_of_pages) {echo "class='disabled'";}?>>
+              <a <?php if ($page_no < $total_no_of_pages) {echo "href='?page_no=$next_page'";}?>><i
+                  class="fa-solid fa-arrow-right"></i></a>
+            </li>
+            <?php if ($page_no < $total_no_of_pages) {
+        echo "<li><a href='?page_no=$total_no_of_pages'>Last</a></li>";
+    }?>
+          </ul>
+        </div>
+        <?php }?>
+        <!-- Paginations -->
             </div>
 
 

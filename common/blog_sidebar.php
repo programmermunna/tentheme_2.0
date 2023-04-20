@@ -35,17 +35,17 @@
                             </div>
                             <ul class="pb-3">
                             <?php
-$all_ctg = _get("category", "type='Post' LIMIT 10");
-while ($ctg = mysqli_fetch_assoc($all_ctg)) {
-    $ctg_name = $ctg['category'];
-    ?> <a href="blogs.php?category=<?php echo $ctg_name ?>">
+                                $all_ctg = _get("category", "type='Post' LIMIT 10");
+                                while ($ctg = mysqli_fetch_assoc($all_ctg)) {
+                                    $ctg_name = $ctg['category'];
+                                    ?> <a href="blogs.php?category=<?php echo $ctg_name ?>">
                                     <li
                                         class="w-full flex items-center justify-between text-sm p-2 hover:bg-cyan-800 hover:text-white rounded">
                                         <span><?php echo $ctg['category'] ?></span>
                                         <?php
-$all_posts = _get("post", "category='$ctg_name' AND status='Publish'");
-    $all_post = mysqli_num_rows($all_posts);
-    ?>
+                                $all_posts = _get("post", "category='$ctg_name' AND status='Publish'");
+                                    $all_post = mysqli_num_rows($all_posts);
+                                    ?>
                                         <span><?php echo $all_post; ?></span>
                                     </li>
                                 </a>
@@ -55,16 +55,12 @@ $all_posts = _get("post", "category='$ctg_name' AND status='Publish'");
                     </div>
                 </div>
 
-                <br>
-                <?php if (!isset($data)) {;?>
-                <!-- Sidebar Image -->
-                <div class="w-full h-auto p-4 bg-white shadow-xl">
+                <!-- Sidebar ad show -->
+                <div class="w-full h-auto p-4 my-5 bg-white shadow-xl">
                     <img class="w-full"
-                        src="https://www.tentheme.com/wp-content/uploads/2020/09/online-freelancing-video-banner-1280-by-720.jpg"
+                        src="admin/upload/logo.png"
                         alt="">
                 </div>
-                <?php }?>
-
 
                 <?php if (isset($data)) {$category = $data['category'];?>
                 <div>
@@ -72,9 +68,9 @@ $all_posts = _get("post", "category='$ctg_name' AND status='Publish'");
                     <div class="bg-[#f3f3f3]">
 
                         <?php
-$similar_posts = _get("post", "category='$category'");
-    while ($similar = mysqli_fetch_assoc($similar_posts)) {
-        ?>
+                        $similar_posts = _get("post", "category='$category'");
+                        while ($similar = mysqli_fetch_assoc($similar_posts)) {
+                        ?>
                         <a href="blog.php?id=<?php echo $similar['id'] ?>" class="block px-4 py-6 pb-0 hover:bg-green-100">
                             <div class="flex items-start gap-x-4">
                                 <h2 class="text-base font-semibold text-gray-700 text-left w-7/12"><?php echo $similar['title'] ?></h2>

@@ -62,7 +62,6 @@ if (isset($_POST['submit'])) {
     if(empty($file_name)){
       $file_name = $person['file_name'];
     }  
-    
     if($person['password'] == $pass){
       if($npass == $cpass){              
         $person_update = _update("person"," name='$name',phone='$phone',email='$email',address='$address',password='$npass',file_name='$file_name'","id=$id");
@@ -76,28 +75,6 @@ if (isset($_POST['submit'])) {
       header("location:profile.php?msg=$msg");
     }else{
       echo "error";
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    if (empty($file_name)) {
-        $insert = _update("person", "name='$name',phone='$phone',email='$email',address='$address'", "id=$id");
-    } else {
-        $insert = _update("person", "name='$name',phone='$phone',email='$email',address='$address',file_name='$file_name'", "id=$id");
-    }
-
-    if ($insert) {
-        $msg = "Successfully Updated";
-        header("location:profile.php?msg=$msg");
     }
 }
 
@@ -127,14 +104,14 @@ if (isset($_POST['submit'])) {
           </div>
 
           <div class="col-span-12">
-            <label class="mb-2 block" for="pass">New Password</label>
+            <label class="mb-2 block" for="npass">New Password</label>
             <input name="npass" type="password" placeholder="******"
               class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4" >
           </div>
 
           <div class="col-span-12">
             <label class="mb-2 block" for="cpass">Confirm Password</label>
-            <input name="pass" type="password" placeholder="******"
+            <input name="cpass" type="password" placeholder="******"
               class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4" >
           </div>
 

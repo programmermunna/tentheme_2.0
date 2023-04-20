@@ -28,10 +28,11 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin-<?php echo $website['title'];?></title>
+  <title><?php echo $website['admin_title'];?></title>
   
     <!-- Favicon -->
-    <link rel="shortcut icon" href="upload/<?php echo $website['favicon_name'] ?>" type="image/x-icon" />
+    <link rel="shortcut icon" href="upload/<?php echo $website['admin_favicon'] ?>" type="image/x-icon" />
+
 
   <!--=== Google Font  ===-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,10 +72,8 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
       <div
         class="border-b-[1px] border-gray-200 flex items-center justify-between px-4 gap-x-2 h-20 shadow-sm sticky top-0 left-0 z-50 bg-white">
         <a class="flex items-center justify-between gap-x-2 active" href="./">
-          <p class="text-blue-600"> <i class="fa-solid fa-crown"></i> </p>
-          <p class="flex items-center justify-center"><span
-              class="font-semibold text-lg text-blue-500">TenTheme</span><span
-              class="font-semibold text-lg text-purple-600">Software</span></p>
+          <img style="width:200px;height:60px;" src="upload/<?php echo $website['admin_file_name'];?>" alt="logo">
+          
         </a>
         <button id="hide_sidebar" class="lg:hidden text-gray-800"> <i class="fa-solid fa-xmark"></i> </button>
       </div>

@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
 
     if ($update) {
         $msg = "Update Successfully";
-        header("location:header-settings.php?msg=$msg");
+        header("location:site-and-identity-setting.php?msg=$msg");
     } else {
         echo $err = "Something is wrong";
     }
@@ -82,7 +82,7 @@ if (isset($_POST['add_logo'])) {
         $update = _update("website", "file_name='$file_name'", "id=1");
         if ($update) {
             $msg = "Successfully Updated";
-            header("location:header-settings.php?msg=$msg");
+            header("location:site-and-identity-setting.php?msg=$msg");
         } else {
             $err = "Something is wrong";
         }
@@ -91,7 +91,7 @@ if (isset($_POST['add_logo'])) {
     $update = _update("website", "file_name=''", "id=1");
     if ($update) {
         $msg = "Successfully Removed";
-        header("location:header-settings.php?msg=$msg");
+        header("location:site-and-identity-setting.php?msg=$msg");
     }
 }
 ?>
@@ -123,12 +123,12 @@ if (isset($_POST['add_favicon'])) {
     move_uploaded_file($file_tmp, "upload/$file_name");
     if (empty($file_name)) {
         $msg = "Please Select File";
-        header("location:header-settings.php?msg=$msg");
+        header("location:site-and-identity-setting.php?msg=$msg");
     } else {
         $update = _update("website", "favicon_name='$file_name'", "id=1");
         if ($update) {
             $msg = "Successfully Updated";
-            header("location:header-settings.php?msg=$msg");
+            header("location:site-and-identity-setting.php?msg=$msg");
         } else {
             $err = "Something is wrong";
         }
@@ -137,7 +137,7 @@ if (isset($_POST['add_favicon'])) {
     $update = _update("website", "favicon_name=''", "id=1");
     if ($update) {
         $msg = "Successfully Removed";
-        header("location:header-settings.php?msg=$msg");
+        header("location:site-and-identity-setting.php?msg=$msg");
     }
 }
 ?>

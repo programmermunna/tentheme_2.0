@@ -4,21 +4,9 @@
 <?php
 $data = _fetch("website", "id=1");
 
-if (isset($_POST['submit'])) {
-    $title = $_POST['title'];
-    $logo = $_POST['logo'];
-    $description = $_POST['description'];
-    $keyword = $_POST['keyword'];
-    $url = $_POST['url'];
-    $phone = $_POST['phone'];
-    $mail = $_POST['mail'];
-    $address = $_POST['address'];
-    $footer_text = $_POST['footer_text'];
-    $facebook = $_POST['facebook'];
-    $youtube = $_POST['youtube'];
-    $linkedin = $_POST['linkedin'];
-    $update = _update("website", "title='$title',logo='$logo',description='$description',keyword='$keyword',url='$url',phone='$phone',mail='$mail',address='$address',footer_text='$footer_text',facebook='$facebook',youtube='$youtube',linkedin='$linkedin'", "id=1");
-
+if (isset($_POST['save_logo'])) {
+    $admin_logo_text = $_POST['admin_logo_text'];
+    $update = _update("website", "admin_title='$admin_logo_text'", "id=1");
     if ($update) {
         $msg = "Update Successfully";
         header("location:settings.php?msg=$msg");
@@ -35,14 +23,14 @@ if (isset($_POST['submit'])) {
 
     <?php
 if (isset($_POST['add_logo'])) {
-    $file_name = $_FILES['file']['name'];
+    $admin_file_name = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
-    move_uploaded_file($file_tmp, "upload/$file_name");
-    if (empty($file_name)) {
+    move_uploaded_file($file_tmp, "upload/$admin_file_name");
+    if (empty($admin_file_name)) {
         $msg = "Please Select File";
         header("location:settings.php?msg=$msg");
     } else {
-        $update = _update("website", "file_name='$file_name'", "id=1");
+        $update = _update("website", "admin_file_name='$admin_file_name'", "id=1");
         if ($update) {
             $msg = "Successfully Updated";
             header("location:settings.php?msg=$msg");
@@ -51,7 +39,7 @@ if (isset($_POST['add_logo'])) {
         }
     }
 } elseif (isset($_POST['remove_logo'])) {
-    $update = _update("website", "file_name=''", "id=1");
+    $update = _update("website", "admin_file_name=''", "id=1");
     if ($update) {
         $msg = "Successfully Removed";
         header("location:settings.php?msg=$msg");
@@ -65,15 +53,16 @@ if (isset($_POST['add_logo'])) {
           <label for="admin_panel_title">
             Admin Site Title/Logo
           </label>
-          <input id="admin_panel_title" class="p-2.5 border rounded focus:ring" type="text"
-            placeholder="Admin Title...">
+          <input name="admin_logo_text" id="admin_panel_title" class="p-2.5 border rounded focus:ring" type="text"
+            placeholder="Admin Title..." value="<?php echo $data['admin_title'] ?>">
+            <button type="submit" name="save_logo" class="button">Save</button>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="logo_image">Admin Logo Image</label>
-          <?php if (empty($data['file_name'])) {} else {?>
+          <?php if (empty($data['admin_file_name'])) {} else {?>
           <img style="width:300px;height:100px;margin:10px auto;border-radius:10px;"
-            src="upload/<?php echo $data['file_name'] ?>">
+            src="upload/<?php echo $data['admin_file_name'] ?>">
           <?php }?>
           <input style="padding-top:10px" name="file" class="input" type="file" id="logo_file">
         </div>
@@ -89,14 +78,14 @@ if (isset($_POST['add_logo'])) {
 
     <?php
 if (isset($_POST['add_favicon'])) {
-    $file_name = $_FILES['file']['name'];
+    $admin_favicon = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
-    move_uploaded_file($file_tmp, "upload/$file_name");
-    if (empty($file_name)) {
+    move_uploaded_file($file_tmp, "upload/$admin_favicon");
+    if (empty($admin_favicon)) {
         $msg = "Please Select File";
         header("location:settings.php?msg=$msg");
     } else {
-        $update = _update("website", "favicon_name='$file_name'", "id=1");
+        $update = _update("website", "admin_favicon='$admin_favicon'", "id=1");
         if ($update) {
             $msg = "Successfully Updated";
             header("location:settings.php?msg=$msg");
@@ -105,7 +94,7 @@ if (isset($_POST['add_favicon'])) {
         }
     }
 } elseif (isset($_POST['remove_favicon'])) {
-    $update = _update("website", "favicon_name=''", "id=1");
+    $update = _update("website", "admin_favicon=''", "id=1");
     if ($update) {
         $msg = "Successfully Removed";
         header("location:settings.php?msg=$msg");
@@ -116,9 +105,9 @@ if (isset($_POST['add_favicon'])) {
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="col-span-2 lg:col-span-1 flex flex-col gap-y-1">
           <label for="description">Admin Favicon Icon</label>
-          <?php if (empty($data['favicon_name'])) {} else {?>
+          <?php if (empty($data['admin_favicon'])) {} else {?>
           <img style="width:300px;height:100px;margin:10px auto;border-radius:10px;"
-            src="upload/<?php echo $data['favicon_name'] ?>">
+            src="upload/<?php echo $data['admin_favicon'] ?>">
           <?php }?>
           <input style="padding-top:10px" name="file" class="input" type="file" id="logo_file">
         </div>

@@ -109,13 +109,6 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
       </div>
 
 
-
-
-
-
-
-
-
       <div class="rounded overflow-hidden">
         <div class="bg-orange-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
@@ -233,13 +226,6 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
           </div>
         </a>
       </div>
-
-
-
-
-
-
-
 
     </div>
   </div>
@@ -377,9 +363,6 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
         </a>
       </div>
 
-
-
-
       <div class="rounded overflow-hidden">
         <div class="bg-rose-500 text-white group p-5 flex items-center justify-between">
           <div class="flex flex-col gap-4">
@@ -394,8 +377,6 @@ $success_withdraw = $success_withdraw['SUM(amount)'];
           </div>
         </a>
       </div>
-
-
 
     </div>
   </div>

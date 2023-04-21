@@ -1,19 +1,13 @@
 <!-- Header area -->
 <?php include "common/header.php";?>
 <!-- Header area -->
-<?php
-if (isset($_GET['cart_id'])) {
-    $cart_id = $_GET['cart_id'];
-    $tickets = _fetch("tickets", "service_id=$cart_id");
-    $ticket_id = $tickets['ticket_id'];
-    header("location:chat.php?ticket_id=$ticket_id");
-}
-?>
+
 <!-- Sub Header -->
 <div class="container space-y-6 pt-6 pb-12 lg:py-24">
+
   <!-- Page Name Title -->
   <h3 class="text-4xl font-medium tracking-wide">
-    Order
+    Download
   </h3>
 
   <!-- Page Tree Links -->
@@ -27,13 +21,14 @@ if (isset($_GET['cart_id'])) {
     <small class="text-xs"> <i class="fa-solid fa-chevron-right"></i></small>
 
     <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
-      class="text-white px-4 py-1.5 rounded shadow-sm" href="contact.php"> order
+      class="text-white px-4 py-1.5 rounded shadow-sm" href="download.php"> download
     </a>
 
   </div>
 
 </div>
 </header>
+
 
 <main style="min-height: calc(100vh - 80px)">
   <div class="flex items-start py-16">
@@ -44,32 +39,22 @@ if (isset($_GET['cart_id'])) {
       <!-- Dashboard Sidebar -->
 
       <!-- Body Content -->
-      <div class="w-full overflow-hidden bg-white shadow rounded-sm">
+      <div class="w-full bg-white shadow rounded-sm overflow-hidden">
 
-        <div class="px-5 py-4 text-blue-600 text-2xl font-medium tracking-wide border-b">Orders</div>
+        <div class="px-5 py-4 text-blue-600 text-2xl font-medium tracking-wide border-b">Dashboard</div>
 
         <div class="flex flex-col">
-          <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-              <div class="overflow-hidden">
-                <table class="min-w-full">
+          <div class="overflow-x-auto">
+            <div class="py-2 inline-block min-w-full">
+              <div class="max-w-full overflow-x-auto">
+                <table>
                   <thead class="border-b">
                     <tr>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Service Name
-                      </th>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Date
-                      </th>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Status
-                      </th>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Total
-                      </th>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Actions
-                      </th>
+                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">Image</th>
+                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">Title</th>
+                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">Date</th>
+                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">Price</th>
+                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">Download</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -82,78 +67,76 @@ $offset = ($page_no - 1) * $total_records_per_page;
 $previous_page = $page_no - 1;
 $next_page = $page_no + 1;
 $adjacents = "2";
-$cart = _get("cart", "pid=$id AND type='service' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-$total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='service'"));
+$cart = _get("cart", "pid=$id AND type='product' AND status=1 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+$total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='product' AND status=1"));
 $total_no_of_pages = ceil($total_records / $total_records_per_page);
 $second_last = $total_no_of_pages - 1;
 
 while ($data = mysqli_fetch_assoc($cart)) {
     $cart_id = $data['cart_id'];
-    $service = _fetch("service", "id=$cart_id");
+    $product = _fetch("products", "id=$cart_id");
     ?>
                     <tr class="border-b">
-                      <td
-                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f75389] w-9 truncate overflow-ellipsis">
-                        <div class="w-[200px] truncate">
-                          <?php echo $service['title'] ?>
-                        </div>
+                      <td class="text-sm text-gray-900 font-light px-6 py-4">
+                        <img src="admin/upload/<?php echo $product['file_name1'] ?>">
                       </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        <?php $service_time = $data['time'];
-    echo date("d-M-y", $service_time);?>
-                      </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        On Hold
-                      </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        $ <?php echo $service['sell_price'] ?>
-                      </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td class="text-sm text-gray-900 font-light px-6 py-4">
+                        <div class="break-words w-[320px] overflow-hidden"><a target="_blank"
+                            href="item.php?product_id=<?php echo $product['id'] ?>">
+                            <div class="w-[200px] truncate hover:text-blue-500">
 
-                        <div class="flex itmes-center justify-start gap-x-1">
-                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]" href="#">View</a>
-                          <span>|</span>
-                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]"
-                            href="?cart_id=<?php echo $data['cart_id'] ?>">Open Ticket</a>
-                        </div>
+                              <?php echo $product['title'] ?>
+                            </div>
+
+                          </a></div>
+                      </td>
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"><?php $time = $data['time'];
+    echo date("d-M-y", $time);?></td>
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">$
+                        <?php echo $product['sell_price'] ?></td>
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"><a
+                          target="_blank" href="item.php?product_id=<?php echo $product['id'] ?>"
+                          class="block bg-[#f75389] text-white px-4 py-2 rounded shadow focus:ring-2 ring-[#f75389] ring-offset-1">View</a>
                       </td>
                     </tr>
                     <?php }?>
                 </table>
-                <br>
 
 
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <?php if (isset($pagination)) {?>
+        <style>
+        .active>a {
+          background: #4ade80 !important;
+          color: #fff !important;
+        }
 
-                <!-- Paginations -->
-                <?php if (isset($pagination)) {?>
-                <style>
-                .active>a {
-                  background: #4ade80 !important;
-                  color: #fff !important;
-                }
+        .page_of {
+          padding-top: 10px;
+        }
 
-                .page_of {
-                  padding-top: 10px;
-                }
+        @media only screen and (max-width: 850px) {
+          .page_of {
+            display: none;
+          }
+        }
+        </style>
+        <div class="paginations">
+          <ul>
+            <?php // if($page_no > 1){ echo "<li><a href='?page_no=1'>First Page</a></li>"; } ?>
 
-                @media only screen and (max-width: 850px) {
-                  .page_of {
-                    display: none;
-                  }
-                }
-                </style>
-                <div class="paginations">
-                  <ul>
-                    <?php // if($page_no > 1){ echo "<li><a href='?page_no=1'>First Page</a></li>"; } ?>
+            <li <?php if ($page_no <= 1) {echo "class=''";}?>>
+              <a <?php if ($page_no > 1) {echo "href='?page_no=$previous_page'";}?>>
 
-                    <li <?php if ($page_no <= 1) {echo "class=''";}?>>
-                      <a <?php if ($page_no > 1) {echo "href='?page_no=$previous_page'";}?>>
-                        <i class="fa-solid fa-arrow-left"></i>
-                      </a>
-                    </li>
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </li>
 
-                    <?php
+            <?php
 if ($total_no_of_pages <= 10) {
     for ($counter = 1; $counter <= $total_no_of_pages; $counter++) {
         if ($counter == $page_no) {
@@ -204,23 +187,19 @@ if ($total_no_of_pages <= 10) {
     }
 }
     ?>
-                    <li <?php if ($page_no >= $total_no_of_pages) {echo "class='disabled'";}?>>
-                      <a <?php if ($page_no < $total_no_of_pages) {echo "href='?page_no=$next_page'";}?>>
-                        <i class="fa-solid fa-arrow-right"></i>
-                      </a>
-                    </li>
-                    <?php if ($page_no < $total_no_of_pages) {
+
+            <li <?php if ($page_no >= $total_no_of_pages) {echo "class='disabled'";}?>>
+              <a <?php if ($page_no < $total_no_of_pages) {echo "href='?page_no=$next_page'";}?>>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </li>
+            <?php if ($page_no < $total_no_of_pages) {
         echo "<li><a href='?page_no=$total_no_of_pages'>Last</a></li>";
     }?>
-                  </ul>
-                </div>
-                <?php }?>
-                <!-- Paginations -->
-
-              </div>
-            </div>
-          </div>
+          </ul>
         </div>
+        <?php }?>
+        <!-- Paginations -->
 
       </div>
 
@@ -228,102 +207,6 @@ if ($total_no_of_pages <= 10) {
   </div>
 </main>
 
-
-<!-- Footer -->
-<footer class="bg-white pt-[74px]">
-  <div class="container grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12">
-
-    <div class="space-y-6">
-      <img class="w-36" src="assets/images/logo.png" alt="">
-      <div class="flex space-x-5">
-        <a href="https://www.facebook.com/tentheme"
-          class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
-          <i class="fa-brands fa-facebook"></i>
-          <small>Facebook</small>
-        </a>
-        <a href="https://www.facebook.com/tentheme"
-          class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
-          <i class="fa-brands fa-youtube"></i>
-          <small>Youtube</small>
-        </a>
-      </div>
-    </div>
-
-    <div>
-      <p>tentheme  Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
-        Software.
-        We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
-    </div>
-
-    <div class="2xl:pl-20">
-      <ul class="w-fit 2xl:mx-auto space-y-4">
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="dmca.php">DMCA</a>
-        </li>
-
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="contact.php">Contact US</a>
-        </li>
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="cookies-policy.php">Cookies Policy</a>
-        </li>
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="privacy-policy.php">Privacy Policy</a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="2xl:pl-20">
-      <ul class="w-fit 2xl:mx-auto space-y-4">
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="investor.php">Join Investor</a>
-        </li>
-
-
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="reseller.php">Join Reseller</a>
-        </li>
-
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="mailto:shamimlem@yahoo.com">shamimlem@yahoo.com</a>
-        </li>
-
-        <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-          <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-          <a href="tel:+08801719182586">+08801719182586</a>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-
-
-  <div class="container flex flex-col xl:flex-row w-full justify-between items-center gap-y-4 xl:gap-y-0 py-12">
-    <ul class="flex items-center justify-start w-full xl:w-[400px] gap-x-4 flex-wrap">
-      <li> <a href="index.php" class="hover:text-blue-600 hover:underline">Products</a> </li>
-      <li> <a href="services.php" class="hover:text-blue-600 hover:underline">Services</a> </li>
-      <li> <a href="investor.php" class="hover:text-blue-600 hover:underline">Investor</a> </li>
-      <li> <a href="reseller.php" class="hover:text-blue-600 hover:underline">Reseller</a> </li>
-    </ul>
-
-    <p class="w-full xl:text-right">
-      <span class="text-gray-700 text-base"> All Rights Reserved © tentheme  Software 2022 <span>SHAMIMLEM.</span>
-    </p>
-  </div>
-
-</footer>
-<!-- Footer -->
-
-
-<script src="assets/js/app.js"></script>
-</body>
-
-</html>
+<!-- Header area -->
+<?php include "common/footer.php";?>
+<!-- Header area -->

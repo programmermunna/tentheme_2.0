@@ -46,21 +46,21 @@
 
 
           <?php
-if ($person['reseller'] == '') {?>
-          <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>
-          <?php
-if (isset($_POST['submit'])) {
-    $checkbox = $_POST['checkbox'];
-    if (empty($checkbox)) {
-        header("location:reseller.php?err=Please Fill-up Checkbox");
-    } else {
-        $update = _update("person", "reseller='Submitted'", "id=$id");
-        if ($update) {
-            header("location:reseller.php?msg=Successfully Submitted. Please Wait for Aprove");
-        }
-    }
-}
-    ?>
+            if ($person['reseller'] == '') {?>
+                      <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>
+                      <?php
+            if (isset($_POST['submit'])) {
+                $checkbox = $_POST['checkbox'];
+                if (empty($checkbox)) {
+                    header("location:reseller.php?err=Please Fill-up Checkbox");
+                } else {
+                    $update = _update("person", "reseller='Submitted'", "id=$id");
+                    if ($update) {
+                        header("location:reseller.php?msg=Successfully Submitted. Please Wait for Aprove");
+                    }
+                }
+            }
+            ?>
           <form action="" method="POST" class="h-fit">
             <div class="reseller_note">
               <?php echo $reseller_docs['before_submit'] ?>
@@ -78,16 +78,13 @@ if (isset($_POST['submit'])) {
             </div>
           </form>
           <?php } elseif ($person['reseller'] == 'Submitted') {
-    // echo $reseller_docs['after_submit'] ;
-
-    echo $reseller_docs['after_submit'];
-
-} elseif ($person['reseller'] == 'Accepted') {
-    echo $reseller_docs['accept_submit'];
-} elseif ($person['reseller'] == 'Rejected') {
-    echo $reseller_docs['reject_submit'];
-}
-?>
+          echo $reseller_docs['after_submit'];
+          } elseif ($person['reseller'] == 'Accepted') {
+              echo $reseller_docs['accept_submit'];
+          } elseif ($person['reseller'] == 'Rejected') {
+              echo $reseller_docs['reject_submit'];
+          }
+          ?>
 
 
         </div>

@@ -62,14 +62,8 @@ if (isset($_POST['submit'])) {
     if(empty($file_name)){
       $file_name = $person['file_name'];
     }  
-    if($person['password'] == $pass){
-      if($npass == $cpass){              
-        $person_update = _update("person"," name='$name',phone='$phone',email='$email',address='$address',password='$npass',file_name='$file_name'","id=$id");
-      }
-    }else{
-      $person_update = _update("person"," name='$name',phone='$phone',email='$email',address='$address',file_name='$file_name'","id=$id");
-    }
-
+    
+    $person_update = _update("person"," name='$name',phone='$phone',email='$email',address='$address',file_name='$file_name'","id=$id");
     if($person_update){
       $msg = "Successfully Updated";
       header("location:profile.php?msg=$msg");
@@ -96,24 +90,6 @@ if (isset($_POST['submit'])) {
               required="" type="text" placeholder="Emaill Address"
               class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"
               value="<?php echo $person['address'] ?>"></div>
-
-          <div class="col-span-12">
-            <label class="mb-2 block" for="pass">Password</label>
-            <input name="pass" type="password" placeholder="******"
-              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4" >
-          </div>
-
-          <div class="col-span-12">
-            <label class="mb-2 block" for="npass">New Password</label>
-            <input name="npass" type="password" placeholder="******"
-              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4" >
-          </div>
-
-          <div class="col-span-12">
-            <label class="mb-2 block" for="cpass">Confirm Password</label>
-            <input name="cpass" type="password" placeholder="******"
-              class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4" >
-          </div>
 
           <div class="col-span-12"><label class="mb-2 block" for="photo">Change Photo</label><input name="file"
               class="w-full flex items-center rounded bg-white outline-none ring-2 ring-gray-200 focus:ring-blue-600 text-gray-800 px-4 py-2 disabled:bg-gray-200 disabled:cursor-not-allowed"

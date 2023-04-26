@@ -70,16 +70,13 @@
           <form action="" method="POST" class="grid grid-cols-12 gap-y-6 p-5">
             <div class="col-span-12"><label class="mb-2 block" for="new_password">Current Password</label><input
                 required="" name="password" type="password" placeholder="Password"
-                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"
-                value="34355jl"></div>
+                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
             <div class="col-span-12"><label class="mb-2 block" for="new_password">New Password</label><input required=""
                 name="new_password" type="password" placeholder="New Password"
-                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"
-                value=""></div>
+                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
             <div class="col-span-12"><label class="mb-2 block" for="confirm_password">Confirm Password</label><input
                 required="" name="confirm_password" type="password" placeholder="Confirm Password"
-                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"
-                value=""></div>
+                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
             <div class="col-span-12">
               <div class="w-fit"><button type="submit" name="submit"
                   class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base"><svg

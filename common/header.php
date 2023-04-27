@@ -18,13 +18,13 @@ if ($id > 0) {
     $person_investor = $person['investor'];
     if ($person_reseller == 'Accepted' && $person_investor == 'Accepted') {
         $sell_discount = $investor_docs['discount'];
-        $user_status = "Investor+Reseller";
+        $user_status = "Reseller + Investor(".$person['investor_order'].")";
       } elseif ($person_reseller == 'Accepted') {
         $sell_discount = $reseller_docs['discount'];
         $user_status = "Reseller";
       } elseif ($person_investor == 'Accepted') {
         $sell_discount = $investor_docs['discount'];
-        $user_status = "Investor";
+        $user_status = "Investor(".$person['investor_order'].")";
       } else {
         $sell_discount = 0;
         $user_status = "Normal User";

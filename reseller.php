@@ -46,9 +46,7 @@
 
 
           <?php
-          if ($person['reseller'] == '') {
-            echo $investor_docs['unablable'];
-            }elseif ($person['reseller'] == 'before_submit') {?>
+            if ($person['reseller'] == '' || $person['reseller'] == 'before_submit') {?>
                 <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>
                 <?php
             if (isset($_POST['submit'])) {

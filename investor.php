@@ -45,7 +45,7 @@
 
 
           <?php
-if ($person['investor'] == '') {
+if ($person['investor'] == '' || $person['investor'] == 'unablable') {
     echo $investor_docs['unablable'];
 } elseif ($person['investor'] == 'before_submit') {?>
           <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>

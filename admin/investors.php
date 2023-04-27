@@ -15,13 +15,13 @@ if (isset($_GET['action'])) {
                 header("location:investors.php?msg=$action Successfully");
             }
         }
-    } else {
-        $update = _update("person", "investor='$action'", "id=$id");
-        if ($update) {
-            header("location:investors.php?msg=$action Successfully");
-        }
+    }else{
+      $update = _update("person", "investor_order='', investor='$action'", "id=$id");
+      if ($update) {
+          header("location:investors.php?msg=$action Successfully");
+      }
     }
-}
+  }
 
 $notify_check = mysqli_num_rows(_get("person", "notify='New'"));
 if ($notify_check > 0) {

@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
 }
     ?>
           <form action="" method="POST">
-            <div class="investor_note">
+            <div class="reseller_note">
               <?php echo $investor_docs['before_submit'] ?>
             </div>
 
@@ -75,13 +75,13 @@ if (isset($_POST['submit'])) {
               Now</button>
           </form>
           <?php } elseif ($person['investor'] == 'Submitted') {
-    echo $investor_docs['after_submit'];
-} elseif ($person['investor'] == 'Accepted') {
-    echo $investor_docs['accept_submit'];
-} elseif ($person['investor'] == 'Rejected') {
-    echo $investor_docs['reject_submit'];
-}
-?>
+              echo $investor_docs['after_submit'];
+          } elseif ($person['investor'] == 'Accepted') {
+              echo $investor_docs['accept_submit'];
+          } elseif ($person['investor'] == 'Rejected') {
+              echo $investor_docs['reject_submit'];
+          }
+          ?>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
         src="admin/upload/<?php echo $person['file_name'] ?>" alt="">
       <div class="flex flex-col gap-y-2">
         <p class="text-lg font-medium capitalize border-b pb-2"><?php echo $person['name'] ?></p>
-        <p class="text-sm flex items-center gap-x-1">Status: <b>Investor</b> + <b>Reseller</b> </p>
+        <p class="text-sm flex items-center gap-x-1">Status: <b><?php echo $user_status ?></b> </p>
       </div>
     </div>
 

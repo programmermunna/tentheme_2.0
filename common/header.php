@@ -18,12 +18,16 @@ if ($id > 0) {
     $person_investor = $person['investor'];
     if ($person_reseller == 'Accepted' && $person_investor == 'Accepted') {
         $sell_discount = $investor_docs['discount'];
-    } elseif ($person_reseller == 'Accepted') {
+        $user_status = "Investor+Reseller";
+      } elseif ($person_reseller == 'Accepted') {
         $sell_discount = $reseller_docs['discount'];
-    } elseif ($person_investor == 'Accepted') {
+        $user_status = "Reseller";
+      } elseif ($person_investor == 'Accepted') {
         $sell_discount = $investor_docs['discount'];
-    } else {
+        $user_status = "Investor";
+      } else {
         $sell_discount = 0;
+        $user_status = "Normal User";
     }
 } else {
     $sell_discount = 0;

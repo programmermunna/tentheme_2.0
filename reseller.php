@@ -46,9 +46,11 @@
 
 
           <?php
-            if ($person['reseller'] == '') {?>
-                      <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>
-                      <?php
+          if ($person['reseller'] == '') {
+            echo $investor_docs['unablable'];
+            }elseif ($person['reseller'] == 'before_submit') {?>
+                <h2 class="text-2xl font-medium  text-left w-full tracking-wide">Do you want to Earning with US ? </h2>
+                <?php
             if (isset($_POST['submit'])) {
                 $checkbox = $_POST['checkbox'];
                 if (empty($checkbox)) {
@@ -77,6 +79,7 @@
                 Now</button>
             </div>
           </form>
+          
           <?php } elseif ($person['reseller'] == 'Submitted') {
           echo $reseller_docs['after_submit'];
           } elseif ($person['reseller'] == 'Accepted') {

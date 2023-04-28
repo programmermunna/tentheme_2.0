@@ -9,16 +9,20 @@ if(isset($_GET['src'])){
   $pid = $deposit['pid'];
   $amount = $deposit['amount'];
 
-  // if($amount == 100000){
-  //  _update("person","balance = balance+$amount","id=$pid");
+  if($amount >= 100000){
+    $update_person = _update("person","balance = balance+$amount,investor='before_submit'","id=$pid");
 
-  // }
+    $update = _update("$table","status='Success'","id='$id'");
+  }else{
+    $update_person = _update("person","balance = balance+$amount","id=$pid");
+    $update = _update("$table","status='Success'","id='$id'");
+  }
 
-  $update_person = _update("person","balance = balance+$amount","id=$pid");
-  $update = _update("$table","status='Success'","id='$id'");
   if($update && $update_person){
     $msg = "Successfully Updated";
     header("location:deposits.php?msg=$msg");
   }
 }
+
+
 ?>

@@ -13,6 +13,7 @@ if ($id < 1) {
     header("location:login.php");
 }
 $person = _fetch("person", "id=$id");
+$pagination = _fetch("pagination", "id=1");
 
 $notify_person = mysqli_num_rows(_get("person", "notify='new'"));
 $notify_tickets = mysqli_num_rows(_get("tickets", "status='Pending' AND notify='new'"));

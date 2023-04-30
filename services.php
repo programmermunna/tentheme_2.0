@@ -53,7 +53,7 @@ if (isset($_GET['src'])) {
     $pagination = "ON";
     if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
         $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
+    $total_records_per_page = $paginations['service_page'];
     $offset = ($page_no - 1) * $total_records_per_page;
     $previous_page = $page_no - 1;
     $next_page = $page_no + 1;
@@ -92,7 +92,7 @@ while ($data = mysqli_fetch_assoc($service)) {
                 <div class="w-full flex border-l flex-col items-center justify-between">
                   <div></div>
                   <div class="flex flex-col items-center justify-center">
-                    <h3 class="text-semibold text-xl font-semibold tracking-wide"> TK. <?php echo $data['sell_price'] ?>
+                    <h3 class="text-semibold text-xl font-semibold tracking-wide"> USD <?php echo $data['sell_price'] ?>$
                     </h3>
                     <p><?php echo $data['sell'] ?> Sales</p>
                   </div>

@@ -100,15 +100,6 @@ $general_setting = _fetch("general_setting", "id=1");
           </a>
         </li>
 
-        <li>
-          <a href="./single-post-setting.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>Single Post</span>
-          </a>
-        </li>
-
 
       </ul>
     </div>

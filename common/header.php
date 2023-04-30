@@ -34,6 +34,8 @@ if ($id > 0) {
     $sell_discount = 0;
 }
 
+$paginations = _fetch("pagination", "id=1");
+
 ?>
 
 <!DOCTYPE html>
@@ -118,9 +120,6 @@ if ($id > 0) {
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="ticket.php">Ticket</a>
         </li>
-        <!-- <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="team.php">Team</a>
-        </li> -->
         <li class="relative header_sub_parent">
           <a class="header_sub_ul_toggle flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
             href="#">Pages</a>
@@ -151,7 +150,8 @@ $pg_name = str_replace("-", " ", "$pg_name");
         </li>
 
 
-        <form>
+        
+        <form action="search.php" method="GET">
           <label for="default-search"
             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
           <div class="relative">
@@ -162,7 +162,7 @@ $pg_name = str_replace("-", " ", "$pg_name");
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
-            <input type="search" id="default-search"
+            <input type="search" name="src" id="default-search" value="<?php if (isset($_GET['src'])) {echo $src = $_GET['src'];}?>" 
               class="outline-none block w-full py-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2"
               placeholder="Search Theme, Web App.." required>
 

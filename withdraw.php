@@ -86,7 +86,6 @@ $total_records = mysqli_num_rows(_get("withdraw", "pid=$id"));
 $total_no_of_pages = ceil($total_records / $total_records_per_page);
 $second_last = $total_no_of_pages - 1;
 
-// $deposits = _getAll("deposit");
 while ($data = mysqli_fetch_assoc($deposits)) {
     ?>
                     <tr>

@@ -45,6 +45,10 @@
         $err = "";
         if (isset($_POST['submit'])) {
           $method = $_POST['method'];
+          $method = _fetch("payment","id=$method");
+          $method = $method['pmn_method'];
+
+
           $pmn_address = $_POST['pmn_address'];
           $tr_id = $_POST['tr_id'];
           $amount = $_POST['amount'];

@@ -47,19 +47,20 @@
           <?php
           if(isset($_POST['submit'])){
             $subject = $_POST['subject'];
-            $service_id = $_POST['select'];
+            $type = $_POST['type'];
+            $item_id = $_POST['item'];
             $message = $_POST['textarea'];
             $ticket_id = rand(1000,10000000);
 
-            if(!empty($service_id)){
-              $insert = _insert("tickets","ticket_id,uid,pid,service_id,subject,message,time","'$ticket_id','$id','$id','$service_id','$subject','$message','$time'");
+            if(!empty($item_id)){
+              $insert = _insert("tickets","ticket_id,uid,pid,item_id,subject,type,message,time","'$ticket_id','$id','$id','$item_id','$subject','$type','$message','$time'");
               if($insert){
                 $msg = "Successfully Created a new Ticket";
                 header("location:tickets.php?msg=$msg");
               }
             }else{
               $err = "Please Purchase First";
-              header("location:ticket.php?err=$err");
+              header("location:tickets.php?err=$err");
             }
 
           }
@@ -72,17 +73,20 @@
             </div>
 
 
-            <div class="col-span-12"><label class="mb-2 block" for="subject">Select Order</label>
-              <select name="select"
+            <div class="col-span-12"><label class="mb-2 block" for="subject">Select Item</label>
+              <select name="type" id="select" required
                 class="border-8 border-white bg-white ring-2 ring-gray-200 focus:ring-blue-600 w-full h-11 rounded outline-none">
-                <?php
-                $cart = _get("cart","pid=$id AND type='service'");
-                while($data = mysqli_fetch_assoc($cart)){
-                  $cart_id = $data['cart_id'];
-                  $service = _fetch("service","id=$cart_id");
-                  ?>
-                  <option value="<?php echo $service['id']?>"><?php echo $service['title']?></option>
-              <?php }?>
+                <option selected style="display:none;">Select</option>
+                <option value="product">Product</option>
+                <option value="service">Service</option>
+              </select>
+            </div>
+
+
+            <div class="col-span-12">
+              <select name="item" id="item" required
+                class="border-8 border-white bg-white ring-2 ring-gray-200 focus:ring-blue-600 w-full h-11 rounded outline-none">
+                
               </select>
             </div>
 
@@ -108,6 +112,33 @@
       </div>
     </div>
   </main>
+  <script>
+    $(document).ready(function(){  
+      $("#item").hide();
+
+      $("#select").on("change",function(){
+        var item_name = $(this).val();
+        $.ajax({
+            url:"admin/config/ajax.php",
+            type:"POST",
+            data:
+            {
+              reference:"show product or service in ticket page",
+              item_name:item_name,
+              pid:<?php echo $id?>,
+            },         
+            success:function(data){
+              $("#item").slideDown();
+              $("#item").html(data);
+              }
+            });
+        })
+
+    })
+</script>
+
+
+
 
   <script>
   $('.summernote').summernote({
@@ -126,6 +157,8 @@
       });
 </script>
 
+
   <!-- Header area -->
   <?php include("common/footer.php");?>
 <!-- Header area -->
+

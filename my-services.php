@@ -4,8 +4,9 @@
 <?php
 if (isset($_GET['cart_id'])) {
     $cart_id = $_GET['cart_id'];
-    $tickets = _fetch("tickets", "service_id=$cart_id");
+    $tickets = _fetch("tickets", "item_id=$cart_id");
     $ticket_id = $tickets['ticket_id'];
+    
     header("location:chat.php?ticket_id=$ticket_id");
 }
 ?>
@@ -57,14 +58,14 @@ if (isset($_GET['cart_id'])) {
                 <table class="min-w-full">
                   <thead class="border-b">
                     <tr>
+                      <th scope="" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
+                        Image
+                      </th>
                       <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
                         Service Name
                       </th>
                       <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
                         Date
-                      </th>
-                      <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
-                        Status
                       </th>
                       <th scope="col" class="text-base font-semibold text-gray-900  px-6 py-4 text-left">
                         Total
@@ -94,19 +95,19 @@ while ($data = mysqli_fetch_assoc($cart)) {
     $service = _fetch("service", "id=$cart_id");
     ?>
                     <tr class="border-b">
+                      
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f75389]">                        
+                        <img src="https://cdn.tailgrids.com/1.0/assets/images/services/image-1.jpg" alt="image"
+                          style="width: 80px;height:40px;object-fit:cover"/>
+                      </td>
+
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f75389]">
-
                         <div class="w-[200px] truncate hover:text-blue-500">
-
                           <?php echo $service['title'] ?>
                         </div>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        <?php $service_time = $data['time'];
-    echo date("d-M-y", $service_time);?>
-                      </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        On Hold
+                        <?php $service_time = $data['time'];echo date("d-M-y", $service_time);?>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         $ <?php echo $service['sell_price'] ?>
@@ -114,10 +115,10 @@ while ($data = mysqli_fetch_assoc($cart)) {
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
 
                         <div class="flex itmes-center justify-start gap-x-1">
-                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]" href="#">View</a>
+                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]" target="_blank" href="service.php?service_id=<?php echo $data['cart_id'] ?>">View</a>
                           <span>|</span>
                           <a class="block text-sm font-semibold tracking-wide text-[#f75389]"
-                            href="?cart_id=<?php echo $data['cart_id'] ?>">Open Ticket</a>
+                            href="?cart_id=<?php echo $data['cart_id'] ?>">Chat</a>
                         </div>
                       </td>
                     </tr>

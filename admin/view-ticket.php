@@ -77,9 +77,9 @@ if(isset($_GET['ticket_id'])){
 
 <script>
   $('.summernote').summernote({
-        placeholder: 'Write Something About Product',
+        placeholder: 'Write Something About This Item',
         tabsize: 2,
-        height: 100,
+        height: 30,
         toolbar: [
           ['style', ['style']],
           ['font', ['bold', 'underline', 'clear']],

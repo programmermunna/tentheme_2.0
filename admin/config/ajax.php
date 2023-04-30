@@ -228,6 +228,29 @@ if(isset($_POST['payment_method']) && isset($_POST['pmn_id'])){
  exit; }
 
 
+ 
+//show section for village  in admin/tax-holder page
+if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid'])){
+ 
+  if($_POST['reference'] == 'show product or service in ticket page'){
+      $item_name = $_POST['item_name'];
+      $pid = $_POST['pid'];
+      $items = _get("cart","status=1 AND type='$item_name' AND pid=$pid");
+      while($item = mysqli_fetch_assoc($items)){
+        $type = $item['type'];
+        if($type == 'product'){
+          $type = 'products';
+        }else{
+          $type = 'service';
+        }
+        $cart_id = $item['cart_id'];
+        $data = _fetch($type,"id=$cart_id");
+        ?>
+        <option value="<?php echo $item['id']?>"><?php echo $data['title']?></option>
+  <?php }exit; }
+}
+
+
 
 
 

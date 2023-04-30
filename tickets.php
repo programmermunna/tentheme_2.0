@@ -78,7 +78,7 @@
                       </th>
                       <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Service
+                        Item
                       </th>
                       <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -107,8 +107,6 @@ $total_no_of_pages = ceil($total_records / $total_records_per_page);
 $second_last = $total_no_of_pages - 1;
 
 while ($data = mysqli_fetch_assoc($tickets)) {
-    $service_id = $data['service_id'];
-    $service = _fetch("service", "id=$service_id");
     ?>
                     <tr>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -119,9 +117,7 @@ while ($data = mysqli_fetch_assoc($tickets)) {
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p class="text-gray-900  ">
                           <a href="chat.php?ticket_id=<?php echo $data['ticket_id'] ?>">
-
                             <div class="w-[200px] truncate hover:text-blue-500">
-
                               <?php sort_str($data['subject']);?>
                             </div>
                           </a>
@@ -130,25 +126,23 @@ while ($data = mysqli_fetch_assoc($tickets)) {
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="w-[150px] truncate">
 
-                          <?php sort_str($service['title']);?>
+                          <?php sort_str($data['type']);?>
                         </div>
                         </p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p class="text-gray-900  ">
-                          <?php $time = $data['time'];
-    echo date("d/M/y", $time)?>
+                          <?php $time = $data['time'];echo date("d/M/y", $time)?>
                         </p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                          <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                          <span class="relative"><?php echo $data['status'] ?></span>
+                          <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>                          
+                          <a href="chat.php?ticket_id=<?php echo $data['ticket_id'] ?>"><span class="relative"><?php echo $data['status'] ?></span></a>
                         </span>
                       </td>
                     </tr>
                     <?php }?>
-
                   </tbody>
                 </table>
 

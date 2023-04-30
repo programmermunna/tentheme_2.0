@@ -50,7 +50,11 @@ if(isset($_GET['ticket_id'])){
           </div>
           </div>  
 
-
+          <?php
+          $is_ticket = _fetch("tickets","ticket_id=$ticket_id AND status='solved'");
+          if($is_ticket){ ?>
+            <h2 style="text-align: center;padding:20px;color:red">Ticket has been closed</h2>
+          <?php }else{?>
           <form id="chat_user_form" class="grid grid-cols-12 gap-y-6 p-5" action="" method="POST" enctype="multipart/form-data">
             <div class="col-span-12">
               <textarea name="textarea" required="" type="text" placeholder="Message..."
@@ -67,6 +71,7 @@ if(isset($_GET['ticket_id'])){
               </div>
             </div>
           </form>
+          <?php }?>
 
         </div>
 
@@ -114,45 +119,6 @@ if(isset($_GET['ticket_id'])){
 
   })
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   <script>
   $('.summernote').summernote({

@@ -105,7 +105,7 @@ if (isset($_POST['check'])) {
                 <?php
 if (isset($_GET['src'])) {
     $src = trim($_GET['src']);
-    $tickets = _query("SELECT * FROM tickets INNER JOIN person ON tickets.pid=person.id INNER JOIN service ON tickets.service_id = service.id
+    $tickets = _query("SELECT * FROM tickets INNER JOIN person ON tickets.pid=person.id INNER JOIN service ON tickets.item_id = service.id
                        WHERE tickets.status='Pending' AND subject !='' AND (
                           person.name='$src'
                        OR person.phone='$src'
@@ -138,8 +138,8 @@ while ($data = mysqli_fetch_assoc($tickets)) {$i++;
     $person_id = $data['pid'];
     $person_info = _fetch("person", "id=$person_id");
 
-    $service_id = $data['service_id'];
-    $service = _fetch("service", "id=$service_id");
+    $item_id = $data['item_id'];
+    $service = _fetch("service", "id=$item_id");
     ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
@@ -296,47 +296,6 @@ if ($total_no_of_pages <= 10) {
 </div>
 </main>
 
-<!-- All Popup -->
-<!-- Add New Pack Popup -->
-<div data-target="add_bank"
-  class="popup_wrapper overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 sm:h-full flex"
-  id="delete-product-modal" style="z-index: 111; display: none;">
-  <div data-target="add_bank" class="popup_remove w-full h-screen bg-black bg-opacity-50 z-40 fixed inset-0 m-auto">
-  </div>
-  <div class="relative p-4 w-full max-w-md h-full md:h-auto z-50">
-    <div class="relative bg-white rounded-2xl shadow-lg p-6 pt-4">
-      <div class="flex justify-end">
-        <button type="button" data-target="add_bank"
-          class="popup_remove text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm w-8 h-8 flex items-center justify-center ml-auto"
-          data-modal-toggle="delete-product-modal"> <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <form class="flex flex-col gap-y-6">
-        <h2 class="text-lg font-semibold text-cyan-900">New Bank</h2>
-        <div class="flex flex-col gap-y-1">
-          <label for="Bank Name">Bank Name</label>
-          <input type="text" id="Bank Name" placeholder="Bank Name" class="input" required>
-        </div>
-
-        <div class="flex flex-col gap-y-1">
-          <label for="Currency Symble">Currency Symble</label>
-          <input type="text" id="Currency Symble" placeholder="Currency Symble" class="input" required>
-        </div>
-
-        <div class="flex flex-col gap-y-1">
-          <label for="Bank Info">Bank Info</label>
-          <input type="text" id="Bank Info" placeholder="Bank Info" class="input" required>
-        </div>
-
-        <div class="flex justify-end">
-          <button class="button">Submit</button>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</div>
 
 
 <script>

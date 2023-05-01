@@ -121,3 +121,5 @@ $cr_url = substr($cr_url, strrpos($cr_url, '/') + 1);
 ?>
 
 
+<?php if (isset($_GET['msg'])) {?><div id="popup_msg" data-text="<?php echo $_GET['msg']; ?>"></div><?php }?>
+<?php if (isset($_GET['err'])) {?><div id="error_msg" data-text="<?php echo $_GET['err']; ?>"></div><?php }?>

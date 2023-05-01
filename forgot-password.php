@@ -1,7 +1,70 @@
-<?php include "admin/config/functions.php";?>
-<!DOCTYPE html>
-<html lang="en">
+<?php include "admin/config/functions.php";
+_login("index", "user");
 
+$err = "";
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+    $pass = $_GET['pass'];
+
+    $row = _fetch("person", "email='$email' AND password='$pass'");
+    if ($row > 0) {
+        $id = $row['id'];
+        $_SESSION['user_id'] = $id;
+        setcookie('user_id', $id, time() + 2580000);
+        header('location:dashboard.php?msg=Successfully Logged In');
+    } else {
+        $err = "Email Or Password is wrong";
+    }
+}
+
+//============login========//
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $pass = md5($_POST['pass']);
+    $row = _fetch("person", "email='$email' AND password='$pass'");
+    if ($row > 0) {
+        $id = $row['id'];
+        $_SESSION['user_id'] = $id;
+        setcookie('user_id', $id, time() + 2580000);
+        header('location:dashboard.php?msg=Successfully Logged In');
+    } else {
+        $err = "Email Or Password is wrong";
+    }
+}
+
+
+//============sign in========//
+if (isset($_POST['sign_in_submit'])) {
+  $name = $_POST['name'];
+  $phone = $_POST['phone'];
+  $email = $_POST['email'];
+  $pass = md5($_POST['pass']);
+  $cpass = md5($_POST['cpass']);
+
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $check = _fetch("person", "email='$email'");
+      if ($check > 0) {
+          $err = "Alrady Have Account. Please Login";
+      } else {
+          if ($pass == $cpass) {
+              $insert = _insert("person", "name, phone, email, password, time", "'$name','$phone', '$email', '$pass', '$time'");
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                  $user_id = $row['id'];
+                  $_SESSION['user_id'] = $user_id;
+                  setcookie('user_id', $user_id, time() + 2580000);
+                  header('location:dashboard.php?msg=Congratulations for Signup Account');
+              } else {
+                  $msg = "Something is worng!";
+                  header("location:signup.php?msg=$msg");
+              }
+          } else {
+              $err = "Password and Confirm Password are not match!";
+          }
+      }
+  }
+}
+?>
 <head>
   <!--
       theme name: tentheme  Software
@@ -13,38 +76,64 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+  <meta name="author" content="<?php echo $website['title'] ?>">
+  <meta name="keywords" content="<?php echo $website['keyword'] ?>">
+  <meta name="description" content="<?php echo $website['description'] ?>">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="admin/upload/<?php echo $website['favicon_name'] ?>" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
+    href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js" crossorigin="anonymous"></script>
+
+  <!-- SUMMERNOTE TEXTAREA -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js" crossorigin="anonymous">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
 
   <!-- FONT-AWESOME -->
   <script src="https://kit.fontawesome.com/6788eb3be6.js" crossorigin="anonymous"></script>
 
   <!-- CSS Styles -->
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/custom.css" />
+  <link rel="stylesheet" href="assets/css/thumbnail-slider.css" />
 
-  <title>Title</title>
+  <!-- FancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <title><?php echo $website['title'] ?></title>
 </head>
 
 <body>
+
   <!-- Header -->
-  <header class="bg-white shadow">
-    <div class="container flex justify-between items-center h-20">
-      <a href="index.php">
-        <img class="h-10" src="assets/images/logo.png" alt="" />
+  <header class="relative"
+    style="background-image: linear-gradient(to right, #CEF3F3, #cef3f3c2), url('https://www.tentheme.com/wp-content/uploads/2019/06/header-bg-copyright.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <div class="container flex justify-between items-center h-28 mb-auto relative z-50">
+      <a href="index.php" class="w-fit">
+        <?php if (!empty($website['file_name'])) {?>
+        <img class="h-10" src="admin/upload/<?php echo $website['file_name'] ?>" />
+        <?php } else {?>
+        <h2 style="font-size: 25px;font-weight:bold;font-family:'Courier New', Courier, monospace">
+          <?php echo $website['title'] ?></h2>
+        <?php }?>
       </a>
 
       <!-- Header UL -->
       <button id="toggle_menu" class="text-lg lg:hidden relative z-50"><i class="fa-solid fa-bars"></i></button>
       <div class="hidden fixed inset-0 m-auto w-full h-full bg-black z-40 bg-opacity-40" id="mobile_header_overlay">
       </div>
-      <ul id="menu_ul"
+      <ul id="login_head"
         class="flex lg:items-center fixed lg:static top-20 inset-x-0 mx-auto lg:mx-0 gap-3 flex-col lg:flex-row lg:bg-transparent bg-white w-[90%] lg:w-auto p-6 lg:p-0 rounded shadow-lg lg:border-transparent lg:shadow-none items-start transform scale-y-0 lg:scale-y-100 origin-top z-50 border transition-transform">
+        <li>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="index.php">Home</a>
+        </li>
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
             href="services.php">Services</a>
@@ -53,13 +142,8 @@
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="blogs.php">Blogs</a>
         </li>
         <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="team.php">Team</a>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="ticket.php">Ticket</a>
         </li>
-        <li>
-          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
-            href="investor.php">Investor</a>
-        </li>
-
         <li class="relative header_sub_parent">
           <a class="header_sub_ul_toggle flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white"
             href="#">Pages</a>
@@ -67,43 +151,80 @@
             class="transition-all transform origin-top scale-y-0 py-2 absolute z-50 top-[100%] inset-x-0 mx-auto w-56 space-y-1">
             <ul class="bg-white p-3 rounded shadow-xl border">
               <li><a href="about.php"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">About
-                  US</a></li>
+                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">About Us </a></li>
               <li><a href="contact.php"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Contact
-                  US</a></li>
-              <li><a href="refund-policy.php"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Refund
-                  Policy</a></li>
-              <li><a href="privacy-policy.php"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Privacy
-                  Policy</a></li>
-              <li><a href="terms-and-conditions.php"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Terms
-                  and Conditions</a></li>
+                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Contact Us </a></li>
+              <li><a href="team.php"
+                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Team </a></li>
+              <?php
+                  $pages = _get("pages", "status='Published'");
+                  while ($page = mysqli_fetch_assoc($pages)) {
+                      $pg_name = $page['pg_name'];
+                      ?>
+                                <li><a href="page.php?page=<?php echo $pg_name; ?>"
+                                    class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">
+                                    <?php
+                  $pg_name = str_replace("-", " ", "$pg_name");
+                      echo ucwords($pg_name);
+                      ?>
+                </a></li>
+              <?php }?>
             </ul>
           </div>
         </li>
 
+
+        
+        <form action="search.php" method="GET">
+          <label for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+              <svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input type="search" name="src" id="default-search" value="<?php if (isset($_GET['src'])) {echo $src = $_GET['src'];}?>" 
+              class="outline-none block w-full py-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2"
+              placeholder="Search Theme, Web App.." required>
+
+          </div>
+        </form>
+
+
+        <?php if ($header_social_link == 'checked') {?>
+        <div class="flex space-x-2">
+          <a target="_blank" href="<?php echo $website['facebook'] ?>"
+            class="bg-[#3d9ae7] hover:bg-black transition-all w-11 h-11 rounded flex items-center justify-center text-white">
+            <i class="fa-brands fa-facebook"></i>
+            <small></small>
+          </a>
+          <a target="_blank" href="<?php echo $website['youtube'] ?>"
+            class="bg-[#cd201f] hover:bg-black transition-all w-11 h-11 rounded flex items-center justify-center text-white">
+            <i class="fa-brands fa-youtube"></i>
+            <small></small>
+          </a>
+        </div>
+        <?php }?>
+
         <li>
-          <a class="flex items-center px-3 h-[44px]" href="signup.php">Signup</a>
-        </li>
         <li>
           <a class="flex items-center px-3 h-[44px] text-white space-x-2 rounded focus:ring-1 focus:ring-[#11987d] ring-offset-2 shadow"
-            style="
-                            background-image: conic-gradient(from 1turn, #0e9479, #16a085);
-                          " href="login.php">
+            style=" background-image: conic-gradient(from 1turn, #0e9479, #16a085);" href="login.php">
             <span class="text-sm">
               <i class="fa-solid fa-lock"></i>
             </span>
-            <span>Login</span>
+            <span>Login/Sign-in</span>
           </a>
         </li>
+
       </ul>
-
-
     </div>
-  </header>
+
+  <div>
+
 
   <div style="min-height: calc(100vh - 80px);" class="w-full py-12 flex items-center justify-center">
     <div
@@ -183,101 +304,4 @@
     </div>
   </div>
 
-
-  <!-- Footer -->
-  <footer class="bg-white pt-[74px]">
-    <div class="container grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12">
-
-      <div class="space-y-6">
-        <img class="w-36" src="assets/images/logo.png" alt="">
-        <div class="flex space-x-5">
-          <a href="https://www.facebook.com/tentheme"
-            class="bg-blue-600 text-white px-4 py-1 rounded shadow-sm">
-            <i class="fa-brands fa-facebook"></i>
-            <small>Facebook</small>
-          </a>
-          <a href="https://www.facebook.com/tentheme"
-            class="bg-red-600 text-white px-4 py-1 rounded shadow-sm">
-            <i class="fa-brands fa-youtube"></i>
-            <small>Youtube</small>
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <p>tentheme  Software is the biggest Software Company In Bangladesh. We provide any Desktop & Android
-          Software.
-          We Provide 100 Percent Customer Satisfaction Copyright © by SHAMIMLEM.</p>
-      </div>
-
-      <div class="2xl:pl-20">
-        <ul class="w-fit 2xl:mx-auto space-y-4">
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="dmca.php">DMCA</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="contact.php">Contact US</a>
-          </li>
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="cookies-policy.php">Cookies Policy</a>
-          </li>
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="privacy-policy.php">Privacy Policy</a>
-          </li>
-
-        </ul>
-      </div>
-
-      <div class="2xl:pl-20">
-        <ul class="w-fit 2xl:mx-auto space-y-4">
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="investor.php">Join Investor</a>
-          </li>
-
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="reseller.php">Join Reseller</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="mailto:shamimlem@yahoo.com">shamimlem@yahoo.com</a>
-          </li>
-
-          <li class="space-x-2 text-sm font-medium hover:text-gray-600">
-            <small class="text-xs"><i class="fa-solid fa-chevron-right"></i></small>
-            <a href="tel:+08801719182586">+08801719182586</a>
-          </li>
-
-        </ul>
-      </div>
-    </div>
-
-
-    <div class="container flex flex-col xl:flex-row w-full justify-between items-center gap-y-4 xl:gap-y-0 py-12">
-      <ul class="flex items-center justify-start w-full xl:w-[400px] gap-x-4 flex-wrap">
-        <li> <a href="index.php" class="hover:text-blue-600 hover:underline">Products</a> </li>
-        <li> <a href="services.php" class="hover:text-blue-600 hover:underline">Services</a> </li>
-        <li> <a href="investor.php" class="hover:text-blue-600 hover:underline">Investor</a> </li>
-        <li> <a href="reseller.php" class="hover:text-blue-600 hover:underline">Reseller</a> </li>
-      </ul>
-
-      <p class="w-full xl:text-right">
-        <span class="text-gray-700 text-base"> All Rights Reserved © tentheme  Software 2022 <span>SHAMIMLEM.</span>
-      </p>
-    </div>
-
-  </footer>
-  <!-- Footer -->
-
-  <script src="assets/js/app.js"></script>
-</body>
-
-</html>
+   <?php include("common/footer.php");?>

@@ -4,7 +4,11 @@
 $err = "";
 if (isset($_POST['submit'])) {
     $title = $_POST['title'];
-    $link = $_POST['link'];
+
+    $theme_preview_link = $_POST['theme_preview_link'];
+    $video_preview_link = $_POST['video_preview_link'];
+    $doc_preview_link = $_POST['doc_preview_link'];
+
     $regular_price = $_POST['regular_price'];
     $sell_price = $_POST['sell_price'];
     $category = $_POST['category'];
@@ -14,30 +18,25 @@ if (isset($_POST['submit'])) {
     $status = $_POST['status'];
 
     $pid = $person['id'];
+    $rand = rand(1000,99999999);
     $time = time();
+ 
 
     $file_name = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
     move_uploaded_file($file_tmp, "upload/$file_name");
 
-    $file_name1 = $_FILES['file1']['name'];
-    $file_tmp1 = $_FILES['file1']['tmp_name'];
-    move_uploaded_file($file_tmp1, "upload/$file_name1");
 
-    $file_name2 = $_FILES['file2']['name'];
-    $file_tmp2 = $_FILES['file2']['tmp_name'];
+    $img_count = count($_FILES['files']['name']);
+    for($i=0;$i<$img_count;$i++){
+    $file_name2 = $_FILES['files']['name'][$i];
+    $file_tmp2 = $_FILES['files']['tmp_name'][$i];
+    $file_name2 = date("d-m-Y").$file_name2;
     move_uploaded_file($file_tmp2, "upload/$file_name2");
+    _insert("screenshots","item_id,title,type,time","'$rand','$file_name2','product','$time'");
+    }
 
-    $file_name3 = $_FILES['file3']['name'];
-    $file_tmp3 = $_FILES['file3']['tmp_name'];
-    move_uploaded_file($file_tmp3, "upload/$file_name3");
-
-    $file_name4 = $_FILES['file4']['name'];
-    $file_tmp4 = $_FILES['file4']['tmp_name'];
-    move_uploaded_file($file_tmp4, "upload/$file_name4");
-
-    $insert = _insert("products", "pid, title, link, regular_price, sell_price, category, mini_content, content, description,status, file_name, file_name1, file_name2, file_name3, file_name4, time", "'$pid', '$title', '$link', '$regular_price', '$sell_price', '$category', '$mini_content', '$content', '$description','$status','$file_name','$file_name1','$file_name2','$file_name3','$file_name4', '$time'");
-
+    $insert = _insert("products", "pid, item_id, title, regular_price, sell_price, category, mini_content, content, description,status, file_name,theme_preview_link,video_preview_link,doc_preview_link, time", "'$pid', '$rand', '$title','$regular_price', '$sell_price', '$category', '$mini_content', '$content', '$description','$status','$file_name','$theme_preview_link','$video_preview_link','$doc_preview_link', '$time'");
     if ($insert) {
         $msg = "Successfully Inserted";
         header("Location:add-product.php?msg=$msg");
@@ -62,26 +61,26 @@ if (isset($_POST['submit'])) {
 
         <div class="flex flex-col gap-y-1">
           <label for="title">Title</label>
-          <input name="title" class="input" type="text" id="Title" placeholder="Title" required>
+          <input name="title" class="input" type="text" id="Title" placeholder="Title" >
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="mini_content">Mini Content</label>
           <textarea name="mini_content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Mini Content" required></textarea>
+            placeholder="Mini Content" ></textarea>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="content">Content</label>
           <textarea name="content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Content" required></textarea>
+            placeholder="Content" ></textarea>
         </div>
 
         <div>
           <label for="description">Description</label>
           <textarea name="description" class="input summernote" type="text" id="summernote" placeholder="Description"
-            required></textarea>
+            ></textarea>
         </div>
       </div>
 
@@ -91,29 +90,29 @@ if (isset($_POST['submit'])) {
         <div class="flex flex-col gap-y-1">
           <label for="regular_price Coin">Regular Price</label>
           <input name="regular_price" class="input" type="number" id="Regular Price" placeholder="Regular Price"
-            required>
+            >
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="sell_price">Sell Price</label>
-          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price" required>
+          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price" >
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="theme_preview_link">Live Preview Link</label>
-          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link" required>
+          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link" >
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="view_p_link">Video Preview Link</label>
-          <input name="view_p_link" class="input" type="url" id="Link" placeholder="Video Preview Link" required>
+          <input name="video_preview_link" class="input" type="url" id="Link" placeholder="Video Preview Link" >
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="Documentation Link">Documentation Link</label>
-          <input name="Documentation Link" class="input" type="url" id="Link" placeholder="Documentation Link" required>
+          <input name="doc_preview_link" class="input" type="url" id="Link" placeholder="Documentation Link" >
         </div>
 
 
@@ -122,7 +121,7 @@ if (isset($_POST['submit'])) {
           <label for="category">Category</label>
           <select name="category" class="input">
             <?php $category_all = _getAll("category");
-while ($ctg = mysqli_fetch_assoc($category_all)) {?>
+            while ($ctg = mysqli_fetch_assoc($category_all)) {?>
             <option value="PHP"><?php echo $ctg['category'] ?></option>
             <?php }?>
           </select>
@@ -130,9 +129,7 @@ while ($ctg = mysqli_fetch_assoc($category_all)) {?>
 
         <label for="product Description">Upload Some Screenshot</label>
         <div class="flex items-center gap-4">
-          <input name="file1" class="input flex h-fit py-2 items-center w-full" type="file" id="product Link">
-          <input name="file2" class="input flex h-fit py-2 items-center w-full" type="file" id="product Link">
-          <input name="file3" class="input flex h-fit py-2 items-center w-full" type="file" id="product Link">
+          <input type="file" name="files[]" multiple class="input flex h-fit py-2 items-center w-full">
         </div>
 
         <div class="flex flex-col gap-y-1">

@@ -97,7 +97,7 @@ while ($data = mysqli_fetch_assoc($products)) {
           <div class="item">
             <a href="item.php?product_id=<?php echo $data['id'] ?>" class="item_link"></a>
             <div>
-              <img class="w-full h-auto rounded" src="admin/upload/<?php echo $data['file_name1'] ?>" />
+              <img class="w-full h-auto rounded" src="admin/upload/<?php echo $data['file_name'] ?>" />
             </div>
 
             <div>
@@ -141,7 +141,7 @@ while ($data = mysqli_fetch_assoc($products)) {
               <div>
                 <a id="show_added_popup" href="?cart=<?php echo $data['id'] ?>"><i
                     class="fa-solid fa-cart-shopping cart_btn"></i></a>
-                <a target="_blank" href="<?php echo $data['link'] ?>"><span>Live</span><span>Preview</span>
+                <a target="_blank" href="<?php echo $data['theme_preview_link'] ?>"><span>Live</span><span>Preview</span>
                 </a>
               </div>
             </div>

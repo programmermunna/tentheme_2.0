@@ -131,48 +131,46 @@ if (isset($_GET['cart'])) {
             <div class="slider">
 
               <div class="slide">
-                <a data-fancybox="gallery" data-caption="Photo1" href="admin/upload/<?php echo $data['file_name1'] ?>">
-                  <img src="admin/upload/<?php echo $data['file_name1'] ?>" alt="Photo1" />
+                <a data-fancybox="gallery" data-caption="Photo1" href="admin/upload/<?php echo $data['file_name'] ?>">
+                  <img src="admin/upload/<?php echo $data['file_name'] ?>" alt="Photo1" />
                 </a>
               </div>
+              
 
+              <?php 
+              $item_id = $data['item_id'];
+              $images = _get("screenshots","item_id=$item_id");
+              while($image = mysqli_fetch_assoc($images)){ ?>
               <div class="slide">
-                <a data-fancybox="gallery" data-caption="Photo2" href="admin/upload/<?php echo $data['file_name1'] ?>">
-                  <img src="admin/upload/<?php echo $data['file_name1'] ?>" alt="Photo1" />
+                <a data-fancybox="gallery" data-caption="Photo" href="admin/upload/<?php echo $data['file_name'] ?>">
+                  <img src="admin/upload/<?php echo $image['title'];?>" alt="Photo" />
                 </a>
               </div>
-
-              <div class="slide">
-                <a data-fancybox="gallery" data-caption="Photo3" href="admin/upload/<?php echo $data['file_name1'] ?>">
-                  <img src="admin/upload/<?php echo $data['file_name1'] ?>" alt="Photo1" />
-                </a>
-              </div>
-
-              <div class="slide">
-                <a data-fancybox="gallery" data-caption="Photo4" href="admin/upload/<?php echo $data['file_name1'] ?>">
-                  <img src="admin/upload/<?php echo $data['file_name1'] ?>" alt="Photo1" />
-                </a>
-              </div>
+              <?php }?>
 
               <button class="btn-slide prev"><i class="fas fa-3x fa-chevron-circle-left"></i></button>
               <button class="btn-slide next"><i class="fas fa-3x fa-chevron-circle-right"></i></button>
             </div>
             <div class="dots-container">
               <span class="dot active" data-slide="0"></span>
-              <span class="dot" data-slide="1"></span>
-              <span class="dot" data-slide="2"></span>
-              <span class="dot" data-slide="3"></span>
+            <?php 
+              $item_id = $data['item_id'];
+              $images_count = mysqli_num_rows(_get("screenshots","item_id=$item_id"));
+              for($i = 1;$i<=$images_count;$i++){ ?>
+              <span class="dot" data-slide="<?php echo $i;?>"></span>
+              <?php }?>
+
             </div>
             <!-- Thumbnail Slider -->
 
             <div class="pt-4 pb-6 gap-3 flex-wrap flex justify-center">
-              <a target="_blank" href="<?php echo $data['link'] ?>"
+              <a target="_blank" href="<?php echo $data['theme_preview_link'] ?>"
                 class="px-3 py-2 rounded bg-blue-500 hover:bg-blue-600 focus:ring-2 ring-blue-500 focus:ring-offset-2 w-fit text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-regular fa-eye"></i>
                 <span>Live Preview</span>
               </a>
 
-              <a target="_blank" href="<?php echo $data['link'] ?>"
+              <a target="_blank" href="<?php echo $data['theme_preview_link'] ?>"
                 class="px-3 py-2 rounded bg-purple-500 hover:bg-purple-600 focus:ring-2 ring-blue-500 focus:ring-offset-2 w-fit  text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-regular fa-circle-play"></i>
                 <span>Video Preview</span>
@@ -193,29 +191,6 @@ if (isset($_GET['cart'])) {
             </div>
           </div>
 
-
-          <!-- Share Buttons -->
-          <div id="share_buttons" class="inset-0 top-[150px] left-[50px] z-[200] w-fit">
-            <div class="flex flex-row lg:flex-col gap-2 justify-center">
-              <a href="#"
-                class="bg-[#5dcaca] hover:bg-black w-11 h-11 text-sm flex items-center justify-center rounded-full transition-all text-white">
-                <i class="fa-brands fa-twitter"></i>
-              </a>
-
-              <a href="#"
-                class="bg-blue-500 hover:bg-black w-11 h-11 text-sm flex items-center justify-center rounded-full transition-all text-white">
-                <i class="fa-brands fa-facebook-f"></i>
-              </a>
-
-              <a href="#"
-                class="bg-[#3d9ae7] hover:bg-black w-11 h-11 text-sm flex items-center justify-center rounded-full transition-all text-white">
-                <i class="fa-brands fa-linkedin-in"></i>
-              </a>
-            </div>
-
-
-          </div>
-          <!-- Share Buttons -->
 
 
           <!-- Others Theme Content -->
@@ -533,7 +508,7 @@ $category = $data['category'];
                 <div class="flex items-start gap-x-4">
                   <h2 class="text-base font-semibold text-gray-700 text-left w-7/12"><?php echo $similar['title'] ?>
                   </h2>
-                  <img class="w-5/12" src="admin/upload/<?php echo $similar['file_name1'] ?>">
+                  <img class="w-5/12" src="admin/upload/<?php echo $similar['file_name'] ?>">
                 </div>
               </a>
               <?php }?>

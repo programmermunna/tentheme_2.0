@@ -86,7 +86,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
               <i class="fa-solid fa-times"></i>
             </a>
             <a target="_blank" href="item.php?product_id=<?php echo $product['id']; ?>"><img
-                style="width:150px;border-radius:5px" src="admin/upload/<?php echo $product['file_name1']; ?>"
+                style="width:150px;border-radius:5px" src="admin/upload/<?php echo $product['file_name']; ?>"
                 alt=""></a>
             <div class="space-y-2">
               <a target="_blank" href="item.php?product_id=<?php echo $product['id']; ?>"

@@ -225,3 +225,30 @@ button.button {
   background: #2563eb;
   color: #fff;
 }
+.edit_image{
+  width: 100%;
+  height: 150px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:20px;
+  overflow: auto;
+  padding:10px;
+  box-shadow:inset 0 0 2px 2px gray;
+
+}
+.edit_image> img{
+  width:60px;
+  height:60px;
+  object-fit: contain;
+  box-shadow: 0 0 0px 1px gray;
+  position: relative;
+}
+.edit_image> span{
+  position: absolute;
+  top:0;
+  right: 0;
+  font-size: 25px;
+  z-index: 99;
+}
+

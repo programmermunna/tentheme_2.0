@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
 
         <label for="product Description">Upload Some Screenshot</label>
         <div class="flex items-center gap-4">
-          <input type="file" name="files[]" multiple class="input flex h-fit py-2 items-center w-full">
+          <input style="padding:20px 10px;" type="file" name="files[]" multiple class="input flex h-fit py-2 items-center w-full">
         </div>
 
         <div class="flex flex-col gap-y-1">

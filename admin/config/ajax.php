@@ -230,8 +230,7 @@ if(isset($_POST['payment_method']) && isset($_POST['pmn_id'])){
 
  
 //show section for village  in admin/tax-holder page
-if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid'])){
- 
+if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid'])){ 
   if($_POST['reference'] == 'show product or service in ticket page'){
       $item_name = $_POST['item_name'];
       $pid = $_POST['pid'];
@@ -249,6 +248,24 @@ if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid
         <option value="<?php echo $item['id']?>"><?php echo $data['title']?></option>
   <?php }exit; }
 }
+
+//load screenshot in admin/edit page
+if(isset($_POST['reference']) && isset($_POST['item_id'])){ 
+  if($_POST['reference'] == 'load screenshot in admin/edit page'){
+      $item_id = $_POST['item_id'];
+      $images = _get("screenshots","item_id=$item_id");
+      while($iamge = mysqli_fetch_assoc($images)){ ?>
+      <img class="s_img" src="upload/<?php echo $iamge['title']?>" alt="images" >      
+  <?php }}exit; }
+  
+//remove image for product/service in admin/edit page
+if(isset($_POST['reference']) && isset($_POST['src'])){ 
+  if($_POST['reference'] == 'remove image for product/service in admin/edit page'){
+    $src = $_POST['src'];
+    $delete = _delete("screenshots","title='$src'");
+      ?>
+  <?php }exit; }
+
 
 
 

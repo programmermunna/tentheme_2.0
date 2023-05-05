@@ -29,30 +29,41 @@ if (isset($_POST['submit'])) {
     $status = $_POST['status'];
 
     $pid = $person['id'];
-    $rand = rand(1000,99999999);
-    $time = time();
+    $rand = $data['item_id']; 
  
 
     $file_name = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
     move_uploaded_file($file_tmp, "upload/$file_name");
-
-
-    $img_count = count($_FILES['files']['name']);
-    for($i=0;$i<$img_count;$i++){
-    $file_name2 = $_FILES['files']['name'][$i];
-    $file_tmp2 = $_FILES['files']['tmp_name'][$i];
-    $file_name2 = date("d-m-Y").$file_name2;
-    move_uploaded_file($file_tmp2, "upload/$file_name2");
-    _insert("screenshots","item_id,title,type,time","'$rand','$file_name2','product','$time'");
+    if(empty($file_name)){
+      $file_name = $data['file_name'];
     }
 
-    $insert = _insert("products", "pid, item_id, title, regular_price, sell_price, category, mini_content, content, description,status, file_name,theme_preview_link,video_preview_link,doc_preview_link, time", "'$pid', '$rand', '$title','$regular_price', '$sell_price', '$category', '$mini_content', '$content', '$description','$status','$file_name','$theme_preview_link','$video_preview_link','$doc_preview_link', '$time'");
-    if ($insert) {
+
+    $is_image = $_FILES['files']['name'];
+    if(empty($is_image[0])){
+    }else{
+      if($is_image>0){
+        $img_count = count($_FILES['files']['name']);
+        for($i=0;$i<$img_count;$i++){
+          $file_name2 = $_FILES['files']['name'][$i];
+          $file_tmp2 = $_FILES['files']['tmp_name'][$i];
+          $file_name2 = date("d-m-Y").$file_name2;
+          move_uploaded_file($file_tmp2, "upload/$file_name2");
+          _insert("screenshots","item_id,title,type,time","'$rand','$file_name2','product','$time'");
+        }
+      }
+    }
+
+    
+
+    $update = _update("products","pid= '$pid',title= '$title',regular_price= '$regular_price',sell_price= '$sell_price',category= '$category',mini_content= '$mini_content',content= '$content',description= '$description',status= '$status',file_name= '$file_name',theme_preview_link= '$theme_preview_link',video_preview_link= '$video_preview_link',doc_preview_link= '$doc_preview_link'","id=$id");
+    if ($update) {
         $msg = "Successfully Inserted";
-        header("Location:add-product.php?msg=$msg");
+        header("Location:edit-product.php?src=products&&table=products&&id=51&&msg=good");
     } else {
         $err = "Something is error.";
+        header("Location:edit-product.php?src=products&&table=products&&id=51&&msg=bad");
     }
 
 }
@@ -154,15 +165,23 @@ if (isset($_POST['submit'])) {
         <div class="flex flex-col gap-y-1">
           <label for="product">Upload Product</label>
           <input name="file" style="padding-top:10px;" class="input" type="file">
-          <img style="object-fit:contain" src="upload/05-05-202317772566435.png" alt="">
+          <img style="height:200px;object-fit:cover" src="upload/05-05-202317772566435.png" alt="">
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="status">Status</label>
-          <select name="status" class="input">
-            <option value="Pending">Pending</option>
-            <option value="Publish">Publish</option>
-          </select>
+              <select name="status" class="input">
+              <?php if($data['status']== 'Publish'){ ?>
+                <option value="Pending">Pending</option>
+                <option selected value="Publish">Publish</option>
+               <?php }else{ ?>
+                <option selected value="Publish">Publish</option>
+                <option value="Pending">Pending</option>
+                <?php } ?>
+            </select>
+
+
+
         </div>
         <br>
         <div class="col-span-2 flex justify-start">

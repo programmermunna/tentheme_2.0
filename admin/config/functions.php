@@ -87,6 +87,7 @@
     }
 
     $time = time();
+    $rand = rand();
     //$website = _fetch("website","id=1");
     
     function sort_str($string, $word_count = 10) {

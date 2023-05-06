@@ -4,7 +4,17 @@
 <?php
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
+    $total = _get("reviews","AVG(star) AS star","product_id=$product_id");
+    while($star = mysqli_fetch_assoc($total)){
+      echo $star['star'];
+    }
+    // print_r($total);
+    
+    exit;
+    echo $ratting = $total['star']; 
+    exit;
     $data = _fetch("products", "id=$product_id");
+
 }
 if (isset($_GET['cart'])) {
     if ($id < 1) {
@@ -237,85 +247,71 @@ if (isset($_GET['cart'])) {
 
           <div class="pt-6 space-y-4">
             <!-- review -->
+            <?php 
+              $reviews = _get("reviews","product_id=$product_id ORDER BY id DESC LIMIT 10");
+              while($review = mysqli_fetch_assoc($reviews)){
+                $pid = $review['pid'];               
+                $reting_person = _fetch("person","id=$pid");
+                ?>
             <div class="rounded border overflow-hidden">
-              <div class="flex items-center justify-between bg-gray-100 p-4">
-                <p class="relative text-sm h-fit w-fit flex items-center justify-center text-gray-200">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span style="width:100%"
-                    class="absolute text-sm left-0 inset-y-0 my-auto flex overflow-hidden text-yellow-500">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </span>
-                </p>
+              <div class="flex items-center justify-between bg-gray-100">
+                
+                <div class="flex items-left justify-between p-4">
+                  <img class="round_img_small" src="admin/upload/<?php echo $reting_person['file_name'];?>" alt="image">
 
-                <p> by <a href="#" class="hover:underline text-blue-800">stacksagar</a> 1 month ago </p>
+                  <div class="pl-2">
+                    <h2><?php echo $person['name'];?></h2>                    
+                      <div class="flex text-xl gap-x-1 items-center text-gray-200">
+                        <?php 
+                          $star = $review['star'];
+                          echo "<h2 style='color:orange'>(".$star.")</h2>";
+                          for($i=0;$i<5;$i++){ ?>
+                          <?php
+                          if($i == $star){
+                              break;
+                          }
+                          ?>
+                          <button class="review_color"> <i class="fa-regular fa-star"></i> </button>
+                        <?php  }?>
+                      </div>
+                  </div>
+                </div>
+
+                <p style="padding:5px;"><?php $times = $review['time']; echo time_elapsed_string($times)?></p>
               </div>
-              <p class="p-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae fugiat consequuntur
-                natus? Molestiae</p>
+              <p class="p-5"><?php echo $review['text'];?></p>
             </div>
+            <?php  }?>
 
-            <!-- review -->
-            <div class="rounded border overflow-hidden">
-              <div class="flex items-center justify-between bg-gray-100 p-4">
-                <p class="relative text-sm h-fit w-fit flex items-center justify-center text-gray-200">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span style="width:80%"
-                    class="absolute text-sm left-0 inset-y-0 my-auto flex overflow-hidden text-yellow-500">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </span>
-                </p>
-
-                <p> by <a href="#" class="hover:underline text-blue-800">munna</a> 10 days ago </p>
-              </div>
-              <p class="p-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae fugiat consequuntur
-                natus? Molestiae
-                quos assumenda totam non magnam alias odio illo perspiciatis, soluta maxime hic accusantium, optio
-                vitae. Quasi, voluptates!</p>
-            </div>
 
             <!-- Write Review Box -->
             <div class="p-5 space-y-3 border bg-white shadow rounded">
               <div class="flex items-center">
-                <img class="w-12 h-12 rounded-full overflow-hidden" src="https://randomuser.me/api/portraits/men/78.jpg"
+                <img class="w-12 h-12 rounded-full overflow-hidden" src="admin/upload/<?php echo $person['file_name'];?>"
                   alt="">
-                <div class="flex flex-col justify-start items-center ml-4 gap-1">
-                  <p class="leading-3 tracking-tight text-left"><b>Name Here</b></p>
-                  <p class="leading-3 tracking-tight text-left"><small>Postin publicly!</small></p>
+                <div class="flex flex-col justify-start ml-4 gap-1">
+                  <p class="leading-3 tracking-tight text-left"><b><?php echo $person['name'];?></b></p>
+                  <p class="leading-3 tracking-tight text-left"><small><?php echo $person['role'];?></small></p>
                 </div>
               </div>
 
               <div class="flex gap-x-2 items-center pt-4">
                 <b>ADD YOUR RATING:</b>
                 <div class="flex text-xl gap-x-1 items-center text-gray-200">
-                  <button class="review-start" data-value="1"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="2"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="3"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="4"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="5"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_1" class="review-start" data-value="1"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_2" class="review-start" data-value="2"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_3" class="review-start" data-value="3"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_4" class="review-start" data-value="4"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_5" class="review-start" data-value="5"> <i class="fa-regular fa-star"></i> </button>
                 </div>
               </div>
-              <textarea class="p-3 w-full min-h-[130px] rounded border outline-none focus:ring-2 focus:ring-yellow-500"
+              <textarea id="text_area" class="p-3 w-full min-h-[130px] rounded border outline-none focus:ring-2 focus:ring-yellow-500"
                 placeholder="Share details of your own experience at this place..."></textarea>
 
               <div class="flex justify-end gap-x-2">
                 <button
                   class="px-4 py-2 rounded text-blue-600 hover:bg-red-500 hover:text-white transition-all bg-gray-100 focus:ring font-medium">Cancel</button>
-                <button class="px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
+                <button id="post_btn" class="px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
               </div>
 
             </div>
@@ -498,8 +494,8 @@ if (isset($_POST['send_message'])) {
 
           <br>
 
-          <!-- Necessary Information -->
-          <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+        <!-- Necessary Information -->
+        <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
           rgba(0, 0, 0, 0.06) 0px 0px 0px 1px !important;" class="border bg-white p-4 space-y-4">
 
             <?php echo $data['content'] ?>
@@ -535,22 +531,53 @@ $category = $data['category'];
   </div>
 </main>
 
-
 <script>
 
-//slider and video show/hide
-  // $(".vid_slider").show();
-  // $(".slides").hide();
 
-  // $("#vid_button").on("click",function(){
-  //   $(".slides").hide();
-  //   $(".vid_slider").show();
-  // });
+$("#text_area").on("change",function(){
+    var  text = $("#text_area").val();
 
-  // $("#slid_button").on("click",function(){
-  //   $(".vid_slider").hide();
-  //   $(".slides").show();
-  // });
+    var star = 1;
+    $("#star_1").on("click",function(){
+      star = 1;
+    })
+    $("#star_2").on("click",function(){
+      star = 2;
+    })
+    $("#star_3").on("click",function(){
+      star = 3;
+    })
+    $("#star_4").on("click",function(){
+      star = 4;
+    })
+    $("#star_5").on("click",function(){
+      star = 5;
+    })  
+
+    function send_review(){
+      $("#post_btn").on("click",function(){
+      $.ajax({
+        url:"admin/config/ajax.php",
+        method:"POST",
+        data:{
+          reference:"send review in itme page",
+          pid: <?php echo $id;?>,
+          star: star,
+          text: text,
+          product_id:<?php echo $product_id;?>
+        },
+        success:function(data){
+          console.log(data);
+          location.reload(true);
+        }
+      });
+
+    })
+    }
+    send_review();
+    
+  })
+  
 </script>
 
 

@@ -266,6 +266,20 @@ if(isset($_POST['reference']) && isset($_POST['src'])){
       ?>
   <?php }exit; }
 
+    
+//send review in itme page
+if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  && isset($_POST['text'])  && isset($_POST['product_id']) ){ 
+  if($_POST['reference'] == 'send review in itme page'){
+    $pid = $_POST['pid'];
+    $star = $_POST['star'];
+    $text = $_POST['text'];
+    $product_id = $_POST['product_id'];
+    $update = _update("products","review=review+1","id=$product_id");
+    $insert = _insert("reviews","pid,product_id,star,text,time","'$pid','$product_id','$star','$text','$time'");    
+    ?>
+  <?php }exit; }
+
+
 
 
 

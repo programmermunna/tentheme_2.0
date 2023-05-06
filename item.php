@@ -128,14 +128,20 @@ if (isset($_GET['cart'])) {
             rgba(0, 0, 0, 0.06) 0px 0px 0px 1px !important;" class="border rounded overflow-hidden">
 
             <!-- Thumbnail Slider -->
-            <div class="slider">
+            <div class="slides">
+             <div class="slider">
+              
+             <?php if($data['video_preview_link'] != ""){ ?>
+              <div class="slide">
+                <iframe width="100%" height="100%" src="<?php echo $data['video_preview_link'] ?>"></iframe>
+              </div>
+              <?php }?>
 
               <div class="slide">
                 <a data-fancybox="gallery" data-caption="Photo1" href="admin/upload/<?php echo $data['file_name'] ?>">
-                  <img src="admin/upload/<?php echo $data['file_name'] ?>" alt="Photo1" />
+                  <img src="admin/upload/<?php echo $data['file_name'] ?>" alt="Image" />
                 </a>
-              </div>
-              
+              </div>   
 
               <?php 
               $item_id = $data['item_id'];
@@ -151,17 +157,25 @@ if (isset($_GET['cart'])) {
               <button class="btn-slide prev"><i class="fas fa-3x fa-chevron-circle-left"></i></button>
               <button class="btn-slide next"><i class="fas fa-3x fa-chevron-circle-right"></i></button>
             </div>
+            
             <div class="dots-container">
               <span class="dot active" data-slide="0"></span>
-            <?php 
+              <span class="dot" data-slide="1"></span>
+              <?php 
               $item_id = $data['item_id'];
               $images_count = mysqli_num_rows(_get("screenshots","item_id=$item_id"));
-              for($i = 1;$i<=$images_count;$i++){ ?>
+              for($i = 2;$i<=$images_count;$i++){ ?>
               <span class="dot" data-slide="<?php echo $i;?>"></span>
               <?php }?>
+              <?php if($data['video_preview_link'] != ""){ ?>
+              <span class="dot" data-slide="<?php echo $images_count+1;?>"></span>
+              <?php } ?>
 
+            </div>            
             </div>
-            <!-- Thumbnail Slider -->
+            <!---Thumbnail Slider -->
+
+            
 
             <div class="pt-4 pb-6 gap-3 flex-wrap flex justify-center">
               <a target="_blank" href="<?php echo $data['theme_preview_link'] ?>"
@@ -170,17 +184,17 @@ if (isset($_GET['cart'])) {
                 <span>Live Preview</span>
               </a>
 
-              <a target="_blank" href="<?php echo $data['theme_preview_link'] ?>"
+              <!-- <a target="_blank"
                 class="px-3 py-2 rounded bg-purple-500 hover:bg-purple-600 focus:ring-2 ring-blue-500 focus:ring-offset-2 w-fit  text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-regular fa-circle-play"></i>
-                <span>Video Preview</span>
+                <span class="popup-btn">Video Preview</span>
               </a>
 
-              <a target="_blank" href="#"
+              <button id="slid_button"
                 class="px-3 py-2 rounded bg-pink-500 hover:bg-pink-600 focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 w-fit text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-solid fa-image"></i>
                 <span>Screenshots</span>
-              </a>
+              </button> -->
 
               <a target="_blank" href="#"
                 class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 w-fit text-white tracking-wide space-x-1 flex items-center gap-x-1 "><i
@@ -415,10 +429,10 @@ if (isset($_POST['send_message'])) {
                   <span class="text-sm">$.</span>
                   <h4 class="text-xl font-semibold tracking-wide items_price">
                     <?php
-$sell_price = $data['sell_price'];
-$data['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
-echo $data['sell_price'];
-?>
+                      $sell_price = $data['sell_price'];
+                      $data['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
+                      echo $data['sell_price'];
+                      ?>
                   </h4>
                 </div>
               </div>
@@ -520,6 +534,24 @@ $category = $data['category'];
     </div>
   </div>
 </main>
+
+
+<script>
+
+//slider and video show/hide
+  // $(".vid_slider").show();
+  // $(".slides").hide();
+
+  // $("#vid_button").on("click",function(){
+  //   $(".slides").hide();
+  //   $(".vid_slider").show();
+  // });
+
+  // $("#slid_button").on("click",function(){
+  //   $(".vid_slider").hide();
+  //   $(".slides").show();
+  // });
+</script>
 
 
 <!-- Header area -->

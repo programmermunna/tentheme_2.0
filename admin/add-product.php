@@ -15,10 +15,7 @@ if (isset($_POST['submit'])) {
     $content = $_POST['content'];
     $description = $_POST['description'];
     $status = $_POST['status'];
-
-    $pid = $person['id'];
     $rand = rand(1000,99999999);
-    $time = time();
  
 
     $file_name = $_FILES['file']['name'];
@@ -40,7 +37,8 @@ if (isset($_POST['submit'])) {
         $msg = "Successfully Inserted";
         header("Location:add-product.php?msg=$msg");
     } else {
-        $err = "Something is error.";
+      $err = "Something is wrong!";
+      header("Location:add-product.php?err=$err");
     }
 
 }
@@ -60,26 +58,26 @@ if (isset($_POST['submit'])) {
 
         <div class="flex flex-col gap-y-1">
           <label for="title">Title</label>
-          <input name="title" class="input" type="text" id="Title" placeholder="Title" >
+          <input name="title" class="input" type="text" id="Title" placeholder="Title" required>
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="mini_content">Mini Content</label>
           <textarea name="mini_content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Mini Content" ></textarea>
+            placeholder="Mini Content"  required></textarea>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="content">Content</label>
           <textarea name="content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Content" ></textarea>
+            placeholder="Content"  required></textarea>
         </div>
 
         <div>
           <label for="description">Description</label>
           <textarea name="description" class="input summernote" type="text" id="summernote" placeholder="Description"
-            ></textarea>
+          required></textarea>
         </div>
       </div>
 
@@ -89,18 +87,18 @@ if (isset($_POST['submit'])) {
         <div class="flex flex-col gap-y-1">
           <label for="regular_price Coin">Regular Price</label>
           <input name="regular_price" class="input" type="number" id="Regular Price" placeholder="Regular Price"
-            >
+          required >
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="sell_price">Sell Price</label>
-          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price" >
+          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price"  required>
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="theme_preview_link">Live Preview Link</label>
-          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link" >
+          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link"  required>
         </div>
 
         <div class="flex flex-col gap-y-1">
@@ -118,7 +116,7 @@ if (isset($_POST['submit'])) {
 
         <div class="flex flex-col gap-y-1">
           <label for="category">Category</label>
-          <select name="category" class="input">
+          <select name="category" class="input"  required>
             <?php $category_all = _getAll("category");
             while ($ctg = mysqli_fetch_assoc($category_all)) {?>
             <option value="PHP"><?php echo $ctg['category'] ?></option>
@@ -132,16 +130,19 @@ if (isset($_POST['submit'])) {
         </div>
 
         <div class="flex flex-col gap-y-1">
-          <label for="product">Upload Product</label>
-          <input name="file" style="padding-top:10px;" class="input" type="file">
+          <label for="product">Upload Featured Image</label>
+          <input name="file" style="padding-top:10px;" class="input" type="file"  required>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="status">Status</label>
-          <select name="status" class="input">
+          <select name="status" class="input"  required>
             <option value="Pending">Pending</option>
             <option value="Publish">Publish</option>
           </select>
+
+
+
         </div>
         <br>
         <div class="col-span-2 flex justify-start">

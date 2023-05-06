@@ -106,7 +106,7 @@ if(isset($_GET['cart'])){
       <div class="min-w-[350px] w-[350px]">
         <div class="bg-white p-7 rounded border space-y-5">
           <h4 class="text-xl text-center font-normal">Your Cart Total</h4>
-          <h2 class="text-3xl font-bold text-center text-gray-800">BDT <?php echo $total_price;?></h2>
+          <h2 class="text-3xl font-bold text-center text-gray-800">USD <?php echo $total_price;?></h2>
           <a href="checkout.php" id="checkout_btn"
             class="bg-green-600 hover:bg-green-700 text-white py-3 w-full px-2 rounded shadow text-base focus:ring block text-center">Secure
             Checkout</a>

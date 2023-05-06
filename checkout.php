@@ -208,7 +208,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
 
         <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
           <span>Total:</span>
-          <span>BDT <?php echo $total_price; ?></span>
+          <span>USD <?php echo $total_price; ?></span>
         </div>
       </div>
 

@@ -73,7 +73,7 @@ while ($data = mysqli_fetch_assoc($service)) {
           <div class="col-span-5">
             <div>
               <a href="service.php?service_id=<?php echo $data['id'] ?>">
-                <img style="height:150px;" class="rounded" src="admin/upload/<?php echo $data['file_name1'] ?>">
+                <img style="height:150px;" class="rounded" src="admin/upload/<?php echo $data['file_name'] ?>">
               </a>
             </div>
           </div>

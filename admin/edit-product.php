@@ -27,8 +27,6 @@ if (isset($_POST['submit'])) {
     $content = $_POST['content'];
     $description = $_POST['description'];
     $status = $_POST['status'];
-
-    $pid = $person['id'];
     $rand = $data['item_id']; 
  
 
@@ -53,17 +51,15 @@ if (isset($_POST['submit'])) {
           _insert("screenshots","item_id,title,type,time","'$rand','$file_name2','product','$time'");
         }
       }
-    }
-
-    
+    }    
 
     $update = _update("products","pid= '$pid',title= '$title',regular_price= '$regular_price',sell_price= '$sell_price',category= '$category',mini_content= '$mini_content',content= '$content',description= '$description',status= '$status',file_name= '$file_name',theme_preview_link= '$theme_preview_link',video_preview_link= '$video_preview_link',doc_preview_link= '$doc_preview_link'","id=$id");
     if ($update) {
-        $msg = "Successfully Inserted";
-        header("Location:edit-product.php?src=products&&table=products&&id=51&&msg=good");
+        $msg = "Successfully Updated";
+        header("Location:products.php?msg=$msg");
     } else {
         $err = "Something is error.";
-        header("Location:edit-product.php?src=products&&table=products&&id=51&&msg=bad");
+        header("Location:products.php?err=$err");
     }
 
 }
@@ -86,26 +82,26 @@ if (isset($_POST['submit'])) {
 
         <div class="flex flex-col gap-y-1">
           <label for="title">Title</label>
-          <input name="title" class="input" type="text" id="Title" placeholder="Title" value="<?php echo $data['title']?>">
+          <input name="title" class="input" type="text" id="Title" placeholder="Title" value="<?php echo $data['title']?>" required>
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="mini_content">Mini Content</label>
           <textarea name="mini_content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Mini Content" ><?php echo $data['mini_content']?></textarea>
+            placeholder="Mini Content"  required><?php echo $data['mini_content']?></textarea>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="content">Content</label>
           <textarea name="content" class="input p-3 min-h-[100px] summernote" type="text" id="summernote"
-            placeholder="Content" ><?php echo $data['content']?></textarea>
+            placeholder="Content"  required><?php echo $data['content']?></textarea>
         </div>
 
         <div>
           <label for="description">Description</label>
           <textarea name="description" class="input summernote" type="text" id="summernote" placeholder="Description"
-            ><?php echo $data['description']?></textarea>
+          required ><?php echo $data['description']?></textarea>
         </div>
       </div>
 
@@ -115,18 +111,18 @@ if (isset($_POST['submit'])) {
         <div class="flex flex-col gap-y-1">
           <label for="regular_price Coin">Regular Price</label>
           <input name="regular_price" class="input" type="number" id="Regular Price" placeholder="Regular Price"
-          value="<?php echo $data['regular_price']?>">
+          value="<?php echo $data['regular_price']?>" required>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="sell_price">Sell Price</label>
-          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price"  value="<?php echo $data['sell_price']?>">
+          <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price"  value="<?php echo $data['sell_price']?>" required>
         </div>
 
 
         <div class="flex flex-col gap-y-1">
           <label for="theme_preview_link">Live Preview Link</label>
-          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link"  value="<?php echo $data['theme_preview_link']?>">
+          <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link"  value="<?php echo $data['theme_preview_link']?>" required>
         </div>
 
         <div class="flex flex-col gap-y-1">
@@ -144,7 +140,7 @@ if (isset($_POST['submit'])) {
 
         <div class="flex flex-col gap-y-1">
           <label for="category">Category</label>
-          <select name="category" class="input">
+          <select name="category" class="input" required>
             <?php $category_all = _getAll("category");
             while ($ctg = mysqli_fetch_assoc($category_all)) {?>
             <option value="PHP"><?php echo $ctg['category'] ?></option>
@@ -152,7 +148,7 @@ if (isset($_POST['submit'])) {
           </select>
         </div>
 
-        <label for="product Description" id="pu">Upload Some Screenshot</label>
+        <label for="product Description" id="pu">Upload Featured Image</label>
         <div class="flex items-center gap-4">
           <input style="padding:20px 10px;" type="file" name="files[]" multiple class="input flex h-fit py-2 items-center w-full">
         </div>
@@ -165,12 +161,12 @@ if (isset($_POST['submit'])) {
         <div class="flex flex-col gap-y-1">
           <label for="product">Upload Product</label>
           <input name="file" style="padding-top:10px;" class="input" type="file">
-          <img style="height:200px;object-fit:cover" src="upload/05-05-202317772566435.png" alt="">
+          <img style="height:200px;object-fit:cover" src="upload/<?php echo $data['file_name']?>" alt="" required>
         </div>
 
         <div class="flex flex-col gap-y-1">
           <label for="status">Status</label>
-              <select name="status" class="input">
+              <select name="status" class="input" required>
               <?php if($data['status']== 'Publish'){ ?>
                 <option value="Pending">Pending</option>
                 <option selected value="Publish">Publish</option>
@@ -179,8 +175,6 @@ if (isset($_POST['submit'])) {
                 <option value="Pending">Pending</option>
                 <?php } ?>
             </select>
-
-
 
         </div>
         <br>

@@ -121,7 +121,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
                   <td><img style="margin:0 auto;width:100;height:50px;object-fit:cover"
-                      src="upload/<?php echo $product['file_name1'] ?>"></td>
+                      src="upload/<?php echo $product['file_name'] ?>"></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $product['title'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">

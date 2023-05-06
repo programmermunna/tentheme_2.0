@@ -96,7 +96,7 @@ $data = _fetch("service", "id=$service_id");
           <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
             rgba(0, 0, 0, 0.06) 0px 0px 0px 1px !important;" class="bg-white border p-4">
             <a href="#" class="block w-full">
-              <img class="w-full" src="admin/upload/<?php echo $data['file_name1'] ?>">
+              <img class="w-full" src="admin/upload/<?php echo $data['file_name'] ?>">
             </a>
           </div>
 

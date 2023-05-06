@@ -112,8 +112,9 @@ while ($data = mysqli_fetch_assoc($products)) {
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
-                  <td><img style="margin:0 auto;width:100;height:50px;object-fit:cover"
-                      src="upload/<?php echo $data['file_name'] ?>"></td>
+                  <td>
+                    <img style="margin:0 auto;width:100;height:50px;object-fit:cover"src="upload/<?php echo $data['file_name'] ?>">
+                  </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"> 
                     <a target="_blank" href="../item.php?product_id=<?php echo $data['id'] ?>"><?php echo $data['title'] ?></a>
                   </td>

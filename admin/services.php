@@ -112,10 +112,14 @@ while ($data = mysqli_fetch_assoc($service)) {
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"> 
-                    <a target="_blank" href="../service.php?service_id=<?php echo $data['id'] ?>"><?php echo $data['title'] ?></a>
+                    <a target="_blank" href="../service.php?service_id=<?php echo $data['id'] ?>">
+                      <img style="margin:0 auto;width:100;height:50px;object-fit:cover"src="upload/<?php echo $data['file_name'] ?>">
+                    </a>                    
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $data['title'] ?></td>
+                    <a target="_blank" href="../service.php?service_id=<?php echo $data['id'] ?>">
+                      <?php echo $data['title'] ?></td>
+                    </a> 
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['regular_price'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
@@ -134,7 +138,7 @@ if ($data['status'] == 'Publish') {?>
                   <td class="p-4 text-sm font-normal text-red-500 whitespace-nowrap lg:p-5">Draft</td>
                   <?php }?>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
-                    <a href="edit.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
+                    <a href="edit-service.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
                     <a href="delete.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white">Delete</a>

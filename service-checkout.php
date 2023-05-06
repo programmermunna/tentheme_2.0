@@ -49,7 +49,7 @@
 
 
             <div class="flex items-center justify-between gap-x-8 px-5 py-10 border-t relative">              
-              <a target="_blank" href="item.php?service_id=<?php echo $service['id'];?>"><img style="width:150px;border-radius:5px" src="admin/upload/<?php echo $service['file_name1'];?>" alt=""></a>
+              <a target="_blank" href="item.php?service_id=<?php echo $service['id'];?>"><img style="width:150px;border-radius:5px" src="admin/upload/<?php echo $service['file_name'];?>" alt=""></a>
               <div class="space-y-2">
                 <a target="_blank" href="item.php?service_id=<?php echo $service['id'];?>" class="text-xl tracking-wide font-semibold text-blue-500">
                   <?php echo $service['title'];?>
@@ -88,7 +88,7 @@
           </div>
           <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
             <span>Total:</span>
-            <span>BDT <?php echo $service['sell_price'];?></span>
+            <span>USD <?php echo $service['sell_price'];?></span>
           </div>
 
         </div>

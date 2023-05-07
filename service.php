@@ -4,8 +4,21 @@
 <?php
 if (isset($_GET['service_id'])) {
     $service_id = $_GET['service_id'];
+    $data = _fetch("service", "id=$service_id");
+    
+    //star avarage value
+    $star_count = mysqli_num_rows(_get("reviews", "product_id='$service_id' AND type='service'"));
+    if($star_count>0){
+      $total_star = mysqli_fetch_assoc(_query("SELECT SUM(star) FROM reviews WHERE product_id='$service_id' AND type='service'"));
+      $star = $total_star['SUM(star)'];
+      $star_avg = $star/$star_count;
+      $star_avg = bcdiv($star_avg, 1, 1); 
+    }else{
+      $star_avg = "N/A";
+    }
+}else{
+  header("location:services.php");
 }
-$data = _fetch("service", "id=$service_id");
 
 ?>
 <!-- Sub Header -->
@@ -66,7 +79,7 @@ $data = _fetch("service", "id=$service_id");
           <i class="fa-solid fa-star"></i>
         </span>
       </p>
-      <span>4.3</span>
+      <span><?php echo $star_avg;?></span>
       <span class="px-2 text-xs py-1 rounded bg-cyan-700 text-white shadow block"><?php echo $data['review'] ?></span>
     </a>
     <?php }?>
@@ -125,7 +138,7 @@ $data = _fetch("service", "id=$service_id");
           </div>
           <!-- Share Buttons -->
 
-          <div class="bg-white p-4 rounded">
+          <!-- <div class="bg-white p-4 rounded">
             <h2 class="mb-4 text-xl font-medium text-gray-700">Demo Preview Details:</h2>
 
             <div class="flex items-center gap-x-2">
@@ -157,9 +170,8 @@ $data = _fetch("service", "id=$service_id");
               <b>password:</b>
               <span>admin@gmail.com</span>
             </div>
+          </div> -->
 
-
-          </div>
           <div class="bg-white p-5"><?php echo $data['description'] ?></div>
         </div>
 
@@ -193,106 +205,81 @@ $data = _fetch("service", "id=$service_id");
           <div class="pt-6 space-y-4">
 
             <!-- review -->
+            <?php 
+              $reviews = _get("reviews","product_id=$service_id AND type='service' ORDER BY id DESC LIMIT 10");
+              while($review = mysqli_fetch_assoc($reviews)){
+                $pid = $review['pid'];               
+                $reting_person = _fetch("person","id=$pid");
+                ?>
             <div class="rounded border overflow-hidden">
-              <div class="flex items-center justify-between bg-gray-100 p-4">
-                <p class="relative text-sm h-fit w-fit flex items-center justify-center text-gray-200">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span style="width:100%"
-                    class="absolute text-sm left-0 inset-y-0 my-auto flex overflow-hidden text-yellow-500">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </span>
-                </p>
+              <div class="flex items-center justify-between bg-gray-100">
+                
+                <div class="flex items-left justify-between p-4">
+                  <img class="round_img_small" src="admin/upload/<?php echo $reting_person['file_name'];?>" alt="image">
 
-                <p> by <a href="#" class="hover:underline text-blue-800">stacksagar</a> 1 month ago </p>
+                  <div class="pl-2">
+                    <h2><?php echo $person['name'];?></h2>                    
+                      <div class="flex text-xl gap-x-1 items-center text-gray-200">
+                        <?php 
+                          $star = $review['star'];
+                          echo "<h2 style='color:orange'>(".$star.")</h2>";
+                          for($i=0;$i<5;$i++){ ?>
+                          <?php
+                          if($i == $star){
+                              break;
+                          }
+                          ?>
+                          <button class="review_color"> <i class="fa-regular fa-star"></i> </button>
+                        <?php  }?>
+                      </div>
+                  </div>
+                </div>
+
+                <p style="padding:5px;"><?php $times = $review['time']; echo time_elapsed_string($times)?></p>
               </div>
-              <p class="p-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae fugiat consequuntur
-                natus? Molestiae
-                quos assumenda totam non magnam alias odio illo perspiciatis, soluta maxime hic accusantium, optio
-                vitae. Quasi, voluptates!</p>
+              <p class="p-5"><?php echo $review['text'];?></p>
             </div>
-
-            <!-- review -->
-            <div class="rounded border overflow-hidden">
-              <div class="flex items-center justify-between bg-gray-100 p-4">
-                <p class="relative text-sm h-fit w-fit flex items-center justify-center text-gray-200">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span style="width:80%"
-                    class="absolute text-sm left-0 inset-y-0 my-auto flex overflow-hidden text-yellow-500">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </span>
-                </p>
-
-                <p> by <a href="#" class="hover:underline text-blue-800">munna</a> 10 days ago </p>
-              </div>
-              <p class="p-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae fugiat consequuntur
-                natus? Molestiae
-                quos assumenda totam non magnam alias odio illo perspiciatis, soluta maxime hic accusantium, optio
-                vitae. Quasi, voluptates!</p>
-            </div>
+            <?php  }?>          
 
 
 
             <!-- Write Review Box -->
             <div class="p-5 space-y-3 border bg-white shadow rounded">
               <div class="flex items-center">
-                <img class="w-12 h-12 rounded-full overflow-hidden" src="https://randomuser.me/api/portraits/men/78.jpg"
+                <img class="w-12 h-12 rounded-full overflow-hidden" src="admin/upload/<?php echo $person['file_name'];?>"
                   alt="">
-                <div class="flex flex-col justify-start items-center ml-4 gap-1">
-                  <p class="leading-3 tracking-tight text-left"><b>Name Here</b></p>
-                  <p class="leading-3 tracking-tight text-left"><small>Postin publicly!</small></p>
+                <div class="flex flex-col justify-start ml-4 gap-1">
+                  <p class="leading-3 tracking-tight text-left"><b><?php echo $person['name'];?></b></p>
+                  <p class="leading-3 tracking-tight text-left"><small><?php echo $person['role'];?></small></p>
                 </div>
               </div>
 
               <div class="flex gap-x-2 items-center pt-4">
                 <b>ADD YOUR RATING:</b>
                 <div class="flex text-xl gap-x-1 items-center text-gray-200">
-                  <button class="review-start" data-value="1"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="2"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="3"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="4"> <i class="fa-regular fa-star"></i> </button>
-                  <button class="review-start" data-value="5"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_1" class="review-start" data-value="1"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_2" class="review-start" data-value="2"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_3" class="review-start" data-value="3"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_4" class="review-start" data-value="4"> <i class="fa-regular fa-star"></i> </button>
+                  <button id="star_5" class="review-start" data-value="5"> <i class="fa-regular fa-star"></i> </button>
                 </div>
               </div>
-              <textarea class="p-3 w-full min-h-[130px] rounded border outline-none focus:ring-2 focus:ring-yellow-500"
+              <textarea id="text_area" class="p-3 w-full min-h-[130px] rounded border outline-none focus:ring-2 focus:ring-yellow-500"
                 placeholder="Share details of your own experience at this place..."></textarea>
 
               <div class="flex justify-end gap-x-2">
                 <button
                   class="px-4 py-2 rounded text-blue-600 hover:bg-red-500 hover:text-white transition-all bg-gray-100 focus:ring font-medium">Cancel</button>
-                <button class="px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
+                <button class="post_btn px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
               </div>
 
             </div>
 
-
           </div>
         </div>
+        <?php }?>
         <!-- review -->
 
-
-
-
-
-
-
-
-        <?php }?>
 
 
 
@@ -433,16 +420,16 @@ if (isset($_POST['send_message'])) {
             <div class="bg-white p-3 rounded">
 
               <?php
-$category = $data['category'];
-    $similars = _get("service", "category='$category' LIMIT 3");
-    while ($similar = mysqli_fetch_assoc($similars)) {
-        ?>
+                $category = $data['category'];
+                $similars = _get("service", "category='$category' LIMIT 3");
+                while ($similar = mysqli_fetch_assoc($similars)) {
+               ?>
               <a href="service.php?service_id=<?php echo $similar['id'] ?>"
-                class="block px-4 py-6 pb-0 hover:bg-green-100">
-                <div class="flex items-start gap-x-4">
+                class="block px-4 py-2 pb-0 hover:bg-green-100">
+                <div class="flex items-between ">
                   <h2 class="text-base font-semibold text-gray-700 text-left w-7/12"><?php echo $similar['title'] ?>
                   </h2>
-                  <img class="w-5/12" src="admin/upload/<?php echo $similar['file_name1'] ?>">
+                  <img style="width: 50px;" class="w-5/12" src="admin/upload/<?php echo $similar['file_name'] ?>">
                 </div>
               </a>
               <?php }?>
@@ -459,6 +446,56 @@ $category = $data['category'];
 
   </div>
 </main>
+
+<script>
+
+ var star = 1;
+    $("#star_1").on("click",function(){
+      star = 1;
+    })
+    $("#star_2").on("click",function(){
+      star = 2;
+    })
+    $("#star_3").on("click",function(){
+      star = 3;
+    })
+    $("#star_4").on("click",function(){
+      star = 4;
+    })
+    $("#star_5").on("click",function(){
+      star = 5;
+    })  
+
+
+$("#text_area").on("change",function(){
+    var  text = $("#text_area").val();   
+
+    function send_review(){
+      $(".post_btn").on("click",function(){
+      $.ajax({
+        url:"admin/config/ajax.php",
+        method:"POST",
+        data:{
+          reference:"send review in itme page",
+          pid: <?php echo $id;?>,
+          star: star,
+          text: text,
+          type: "service",
+          product_id:<?php echo $service_id;?>
+        },
+        success:function(data){
+          console.log(data);
+          location.reload(true);
+        }
+      });
+
+    })
+    }
+    send_review();
+    
+  })
+  
+</script>
 
 <!-- Header area -->
 <?php include "common/footer.php";?>

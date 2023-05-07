@@ -4,18 +4,24 @@
 <?php
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
-    $total = _get("reviews","AVG(star) AS star","product_id=$product_id");
-    while($star = mysqli_fetch_assoc($total)){
-      echo $star['star'];
-    }
-    // print_r($total);
+    $data = _fetch("products", "id=$product_id");    
     
-    exit;
-    echo $ratting = $total['star']; 
-    exit;
-    $data = _fetch("products", "id=$product_id");
-
+    //star avarage value
+    $star_count = mysqli_num_rows(_get("reviews", "product_id='$product_id' AND type='product'"));
+    if($star_count>0){
+      $total_star = mysqli_fetch_assoc(_query("SELECT SUM(star) FROM reviews WHERE product_id='$product_id' AND type='product'"));
+      $star = $total_star['SUM(star)'];
+      $star_avg = $star/$star_count;
+      $star_avg = bcdiv($star_avg, 1, 1); 
+    }else{
+      $star_avg = "N/A";
+    }
+}else{
+  header("location:services.php");
 }
+
+
+
 if (isset($_GET['cart'])) {
     if ($id < 1) {
         $err = "Please Login or SignIn First";
@@ -109,7 +115,7 @@ if (isset($_GET['cart'])) {
           <i class="fa-solid fa-star"></i>
         </span>
       </p>
-      <span>4.3</span>
+      <span><?php echo $star_avg;?></span>
       <span class="px-2 text-xs py-1 rounded bg-cyan-700 text-white shadow block"><?php echo $data['review'] ?></span>
     </a>
     <?php }?>
@@ -248,7 +254,7 @@ if (isset($_GET['cart'])) {
           <div class="pt-6 space-y-4">
             <!-- review -->
             <?php 
-              $reviews = _get("reviews","product_id=$product_id ORDER BY id DESC LIMIT 10");
+              $reviews = _get("reviews","product_id=$product_id AND type='product' ORDER BY id DESC LIMIT 10");
               while($review = mysqli_fetch_assoc($reviews)){
                 $pid = $review['pid'];               
                 $reting_person = _fetch("person","id=$pid");
@@ -311,7 +317,7 @@ if (isset($_GET['cart'])) {
               <div class="flex justify-end gap-x-2">
                 <button
                   class="px-4 py-2 rounded text-blue-600 hover:bg-red-500 hover:text-white transition-all bg-gray-100 focus:ring font-medium">Cancel</button>
-                <button id="post_btn" class="px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
+                <button class="post_btn px-4 py-2 rounded bg-blue-600 text-white focus:ring font-medium">Post</button>
               </div>
 
             </div>
@@ -341,8 +347,9 @@ while ($comment = mysqli_fetch_assoc($comments)) {?>
                     <img class="w-10 h-10 object-contain rounded-full" src="admin/upload/<?php echo $comment['img'] ?>">
                     <span><?php echo $comment['name'] ?></span>
                   </a>
-                  <small><?php $time = $comment['time'];
-    echo time_elapsed_string($time, true);?></small>
+                  <small><?php $times = $comment['time'];echo time_elapsed_string($times);?></small>
+                  <!-- <small><?php $times = $review['time']; echo time_elapsed_string($times)?></small> -->
+
                 </div>
                 <p class="mt-3"><?php echo $comment['content'] ?></p>
               </div>
@@ -533,11 +540,7 @@ $category = $data['category'];
 
 <script>
 
-
-$("#text_area").on("change",function(){
-    var  text = $("#text_area").val();
-
-    var star = 1;
+ var star = 1;
     $("#star_1").on("click",function(){
       star = 1;
     })
@@ -552,10 +555,13 @@ $("#text_area").on("change",function(){
     })
     $("#star_5").on("click",function(){
       star = 5;
-    })  
+    }) 
+
+$("#text_area").on("change",function(){
+    var  text = $("#text_area").val();    
 
     function send_review(){
-      $("#post_btn").on("click",function(){
+      $(".post_btn").on("click",function(){
       $.ajax({
         url:"admin/config/ajax.php",
         method:"POST",
@@ -564,6 +570,7 @@ $("#text_area").on("change",function(){
           pid: <?php echo $id;?>,
           star: star,
           text: text,
+          type: "product",
           product_id:<?php echo $product_id;?>
         },
         success:function(data){

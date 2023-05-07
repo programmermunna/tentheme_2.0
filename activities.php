@@ -21,7 +21,7 @@
     <small class="text-xs"> <i class="fa-solid fa-chevron-right"></i></small>
 
     <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
-      class="text-white px-4 py-1.5 rounded shadow-sm" href="activities.php"> activities
+      class="text-white px-4 py-1.5 rounded shadow-sm" href="activities.php"> Activities
     </a>
 
   </div>
@@ -39,9 +39,19 @@
 
       <!-- Body Content -->
       <div class="w-full bg-white shadow rounded-sm">
-        <div class="p-5">
-          Dashboard Content Here...
+      <div class="px-5 py-4 text-blue-600 border-b flex justify-between items-center">
+          <span class="text-2xl font-medium tracking-wide">Activities Log</span>
         </div>
+
+        <?php 
+        $activities = _get("activities","pid=$id ORDER BY id DESC LIMIT 20");
+        while($activitie = mysqli_fetch_assoc($activities)){ ?>
+        <div class="p-5 activities">
+          <div><i> --- <?php echo $activitie['icon'];?> <?php echo $activitie['title'];?></i></div>
+          <div><?php $times = $activitie['time'];echo time_elapsed_string($times, true);?></div>          
+        </div>
+       <?php }?>
+
       </div>
 
     </div>

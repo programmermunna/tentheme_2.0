@@ -50,6 +50,11 @@
               $min_withdraw = $limit_setting['withdraw'];
               if($balance>=$amount){
                 if($amount>=$min_withdraw){
+
+                $icon = '<i class="fa-solid fa-money-bill-transfer"></i>';
+                $title = 'withdraw requested for $'.$amount;
+                $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+
                 $insert = _insert("withdraw","pid,method,pmn_address,amount,time","$id,'$method','$pmn_address','$amount','$time'");
                 if($insert){
                   $msg = "Withdraw Request Successfully";

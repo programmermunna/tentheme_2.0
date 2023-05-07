@@ -7,7 +7,7 @@
 
       <!-- Page Name Title -->
       <h3 class="text-4xl font-medium tracking-wide">
-        Security
+        Close Account
       </h3>
 
       <!-- Page Tree Links -->
@@ -21,7 +21,7 @@
         <small class="text-xs"> <i class="fa-solid fa-chevron-right"></i></small>
 
         <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
-          class="text-white px-4 py-1.5 rounded shadow-sm" href="security.php"> security
+          class="text-white px-4 py-1.5 rounded shadow-sm" href="security.php"> Close Account
         </a>
 
       </div>
@@ -41,33 +41,32 @@
         <div class="w-full bg-white shadow rounded-sm">
 
           <div class="px-5 py-4 text-blue-600 border-b flex justify-between items-center">
-            <span class="text-2xl font-medium tracking-wide">Change Password</span>
+            <span class="text-2xl font-medium tracking-wide">Close Account</span>
           </div>
           <?php
-          $err = "";
             if(isset($_POST['submit'])){
               $password = md5($_POST['password']);
-              $new_password = md5($_POST['new_password']);
               $confirm_password = md5($_POST['confirm_password']);
               $person_id = $person['id'];
 
-              if($new_password == $confirm_password){
+              if($password == $confirm_password){
                   if($person['password'] == $password){
-                        
-                  $icon = '<i class="fa-solid fa-shield"></i>';
-                  $title = 'Password Changes Successfully';
-                  $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
-
-                  $update = _update("person","password='$new_password'","id=$person_id");
-                  if($update){
-                    $msg = "Password Change Successfully";
-                    header("location:security.php?msg=$msg");
+                    $delete_person = _delete("person","id=$person_id");
+                    $delete_ticket = _delete("tickets","pid=$person_id");
+                    $delete_reviews = _delete("reviews","pid=$person_id");
+                    $delete_deposit = _delete("deposit","pid=$person_id");
+                    $delete_withdraw = _delete("withdraw","pid=$person_id");
+                    $delete_cart = _delete("cart","pid=$person_id");
+                  if( $delete_person && $delete_ticket && $delete_reviews && $delete_deposit && $delete_withdraw && $delete_cart){
+                    header("location:logout.php");
                   }
                 }else{
                   $err = "Your Old Password are not Currect";
+                  header("location:close-account.php?err=$err");
                 }
               }else{
                 $err = "Password and Confirm Password are not Match";
+                header("location:close-account.php?err=$err");
               }
             }
 
@@ -76,21 +75,16 @@
             <div class="col-span-12"><label class="mb-2 block" for="new_password">Current Password</label><input
                 required="" name="password" type="password" placeholder="Password"
                 class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
-            <div class="col-span-12"><label class="mb-2 block" for="new_password">New Password</label><input required=""
-                name="new_password" type="password" placeholder="New Password"
-                class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
             <div class="col-span-12"><label class="mb-2 block" for="confirm_password">Confirm Password</label><input
                 required="" name="confirm_password" type="password" placeholder="Confirm Password"
                 class="w-full h-11 flex items-center rounded bg-white outline-none ring-2 ring-gray-200 disabled:bg-gray-200 disabled:cursor-not-allowed focus:ring-blue-600 text-gray-800 px-4"></div>
             <div class="col-span-12">
-              <div class="w-fit"><button type="submit" name="submit"
-                  class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base"><svg
-                    aria-hidden="true" focusable="false" data-prefix="fas" data-icon="lock"
-                    class="svg-inline--fa fa-lock " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                    <path fill="currentColor"
-                      d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z">
-                    </path>
-                  </svg><span>Update Password</span></button></div>
+              <div class="w-fit">
+                <button type="submit" name="submit"
+                  class="flex items-center justify-center px-4 gap-x-4 bg-blue-600 text-white focus:ring rounded w-full h-11 tracking-wider font-medium text-base">
+                  <span>Delete Account</span>
+                </button>
+                </div>
             </div>
           </form>
         </div>

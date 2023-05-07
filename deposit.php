@@ -54,9 +54,14 @@
           $amount = $_POST['amount'];
           $min_deposit = $limit_setting['deposit'];
           if ($amount >= $min_deposit) {
+
+            $icon = '<i class="fa-solid fa-money-bill-transfer"></i>';
+            $title = 'Deposit requested for $'.$amount;
+            $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+            
             $insert = _insert("deposit", "pid,method,pmn_address,tr_id,amount,time", "$id,'$method','$pmn_address','$tr_id','$amount','$time'");
             if ($insert) {
-              $msg = "Deposit Successfully";
+              $msg = "Deposit request Successfully";
               header("location:deposits.php?msg=$msg");
             }
           } else {

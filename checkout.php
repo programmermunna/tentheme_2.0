@@ -217,6 +217,11 @@ if (isset($_POST['submit'])) {
     $total_amount = $_POST['total_amount'];
     $old_balance = $person['balance'];
     if ($old_balance > $total_amount) {
+
+        $icon = '<i class="fa-solid fa-box"></i>';
+        $title = 'Successfully Purchase a new products';
+        $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+
         $balance = _update("person", "balance=balance-$total_amount", "id=$id");
         $carts = _get("cart", "status=0", "pid=$id");
         while ($cart = mysqli_fetch_assoc($carts)) {

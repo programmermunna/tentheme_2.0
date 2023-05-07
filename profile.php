@@ -63,6 +63,10 @@ if (isset($_POST['submit'])) {
       $file_name = $person['file_name'];
     }  
     
+    $icon = '<i class="fa-solid fa-user"></i>';
+    $title = 'Profile Updated Successfully';
+    $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+
     $person_update = _update("person"," name='$name',phone='$phone',email='$email',address='$address',file_name='$file_name'","id=$id");
     if($person_update){
       $msg = "Successfully Updated";

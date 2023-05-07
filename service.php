@@ -302,8 +302,7 @@ while ($comment = mysqli_fetch_assoc($comments)) {?>
                       alt="">
                     <span><?php echo $comment['name'] ?></span>
                   </a>
-                  <small><?php $time = $comment['time'];
-    echo time_elapsed_string($time, true);?></small>
+                  <small><?php $times = $comment['time'];echo time_elapsed_string($times);?></small>
                 </div>
                 <?php echo $comment['content'] ?>
               </div>

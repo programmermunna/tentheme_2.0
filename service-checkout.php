@@ -102,6 +102,11 @@
           if($person['balance']>$total_amount){
             $check = _fetch("cart","pid=$id AND cart_id=$service_id AND type='service'");
             if(!$check){
+
+              $icon = '<i class="fa-solid fa-server"></i>';
+              $title = 'Successfully Purchase a new Service';
+              $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+      
               $balance = _update("person","balance=balance-$total_amount","id=$id");
               $update_service = _update("service","sell=sell+1","id=$service_id");
               $insert = _insert("cart","pid,cart_id,type,status,time","$id,$service_id,'service',1,$time");
@@ -109,7 +114,7 @@
               $ticket_id = rand(1000,99999999);
               $subject = $service['title'];
               $message = "New Chat started";
-              $ticket = _insert("tickets","ticket_id,uid,pid,service_id,subject,message,time","'$ticket_id','$id','$id','$service_id','$subject','$message','$time'");
+              $ticket = _insert("tickets","ticket_id,uid,pid,item_id,subject,message,time","'$ticket_id','$id','$id','$service_id','$subject','$message','$time'");
 
               if($balance && $insert && $ticket){
                 $msg = "Congratulations for Purchase.";

@@ -26,6 +26,10 @@ if (isset($_POST['submit'])) {
         $id = $row['id'];
         $_SESSION['user_id'] = $id;
         setcookie('user_id', $id, time() + 2580000);
+
+        $icon = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
+        $title = 'You are Logged in Successfull';
+        $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
         header('location:dashboard.php?msg=Successfully Logged In');
     } else {
         $err = "Email Or Password is wrong";
@@ -53,6 +57,10 @@ if (isset($_POST['sign_in_submit'])) {
                   $user_id = $row['id'];
                   $_SESSION['user_id'] = $user_id;
                   setcookie('user_id', $user_id, time() + 2580000);
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! You are Created new Account';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
                   header('location:dashboard.php?msg=Congratulations for Signup Account');
               } else {
                   $msg = "Something is worng!";

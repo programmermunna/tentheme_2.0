@@ -293,3 +293,13 @@ button .fas {
 .review_color{
   color:orange;
 }
+.activities{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #80808048;
+  transition: .3s;
+}
+
+.activities:hover{
+  background: #80808021;
+}

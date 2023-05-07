@@ -78,7 +78,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
     ?>
                     <tr class="border-b">
                       <td class="text-sm text-gray-900 font-light px-6 py-4">
-                        <img src="admin/upload/<?php echo $product['file_name1'] ?>">
+                        <img src="admin/upload/<?php echo $product['file_name'] ?>">
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4">
                         <div class="break-words w-[320px] overflow-hidden"><a target="_blank"

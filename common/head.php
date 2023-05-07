@@ -196,7 +196,7 @@ $pg_name = str_replace("-", " ", "$pg_name");
               </a>
 
               <a href="logout.php" class="flex items-center gap-x-1 w-full px-3 py-3 hover:bg-gray-100">
-                <span class="block min-w-[20px] max-w-[20px]"><i class="fa-solid fa-sign-out"></i></span>
+                <span class="block min-w-[20px] max-w-[20px]"><i class="fa-solid fa-person-walking-luggage"></i></span>
                 <span>Logout</span>
               </a>
             </div>

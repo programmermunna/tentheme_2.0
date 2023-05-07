@@ -53,6 +53,11 @@
             $ticket_id = rand(1000,10000000);
 
             if(!empty($item_id)){
+
+              $icon = '<i class="fa-solid fa-ticket"></i>';
+              $title = 'Created a new Ticket';
+              $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+
               $insert = _insert("tickets","ticket_id,uid,pid,item_id,subject,type,message,time","'$ticket_id','$id','$id','$item_id','$subject','$type','$message','$time'");
               if($insert){
                 $msg = "Successfully Created a new Ticket";

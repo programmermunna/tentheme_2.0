@@ -59,7 +59,7 @@
         <li>
           <a href="my-product.php"
             class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-person-military-pointing"></i>
+            <span class="text-xs"><i class="fa-solid fa-box"></i>
             </span>
             <span>My Products</span>
           </a>
@@ -68,7 +68,7 @@
         <li>
           <a href="my-services.php"
             class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-person-military-pointing"></i>
+            <span class="text-xs"><i class="fa-solid fa-server"></i>
             </span>
             <span>My Service</span>
           </a>
@@ -87,7 +87,7 @@
         <li>
           <a href="deposits.php"
             class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-ticket"></i>
+            <span class="text-xs"><i class="fa-solid fa-money-bill-transfer"></i>
             </span>
             <span>Deposits</span>
           </a>
@@ -208,13 +208,13 @@
           </a>
         </li>
         <li>
-          <button
+        <a href="close-account.php"
             class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
             <span class="text-xs">
               <i class="fa-solid fa-delete-left"></i>
             </span>
-            <span>Delete Account</span>
-          </button>
+            <span>Close Account</span>
+          </a>
         </li>
       </ul>
     </div>

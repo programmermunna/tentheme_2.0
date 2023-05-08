@@ -63,8 +63,7 @@ $general_setting = _fetch("general_setting", "id=1");
           <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
             <a href="footer-edit.php?f_id=38" class="popup_show btn bg-red-500 w-fit text-white"
               style="background:#4ade80;">Edit</a>
-            <a href="delete.php?src=footer-settings&amp;&amp;table=footer_3_4_5&amp;&amp;id=38"
-              class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+              <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('deposit',<?php echo $data['id'];?>)">Delete</button>
           </td>
         </tr>
         <tr class="hover:bg-gray-100 f4_load">

@@ -349,3 +349,33 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
         </div>
       </header>
 
+
+<script>
+  function delete_alert(table,del_val){
+      swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+        url:"config/ajax.php",
+        method:"POST",
+        data:
+        {
+          reference:'delete single data by id',
+          table:table,
+          del_val:del_val,
+        },
+        success:function(data){
+          swal("Success","Poof! Your imaginary file has been deleted!","success"),
+          location.reload(true)
+        }
+      });
+    }    
+    });    
+   }
+</script>

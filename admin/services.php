@@ -140,8 +140,7 @@ if ($data['status'] == 'Publish') {?>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a href="edit-service.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-                    <a href="delete.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('footer_3_4_5',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>

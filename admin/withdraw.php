@@ -141,8 +141,7 @@ while ($data = mysqli_fetch_assoc($withdraw)) {$i++;
                     <a id="add_bank"
                       href="approve-withdraw.php?src=pending-withdraw&&table=withdraw&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Approve</a>
-                    <a href="delete.php?src=pending-withdraw&&table=withdraw&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('withdraw',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>

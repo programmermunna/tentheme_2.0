@@ -146,13 +146,12 @@ while ($data = mysqli_fetch_assoc($deposit)) {$i++;
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a id="add_bank"
                       href="approve-deposit.php?src=deposits&&table=deposit&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Approve</a>
-                    <a href="delete.php?src=deposits&&table=deposit&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+                      class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Approve</a>  
+
+                    <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('deposit',<?php echo $data['id'];?>)">Delete</button>                    
                   </td>
                 </tr>
                 <?php }?>
-
               </tbody>
             </table>
           </form>
@@ -335,7 +334,11 @@ $(document).ready(function() {
     }
   });
 });
+
+
 </script>
+  
+
 
 <script src="js/app.js"></script>
 

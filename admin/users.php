@@ -132,7 +132,7 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a id="add_bank" href="edit-person.php?src=users&&table=person&&id=<?php echo $data['id'] ?>"
                       class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>                   
-                    <button type="button" class="del_btn btn bg-red-500 w-fit text-white" value="<?php echo $data['id'] ?>">Delete</button>                    
+                    <button type="button" class="btn bg-red-500 w-fit text-white" value="<?php echo $data['id'] ?>">Delete</button>                    
                     <a target="_blank"
                       href="../login.php?email=<?php echo $data['email'] ?>&&pass=<?php echo $data['password'] ?>"
                       class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Login</a>
@@ -271,42 +271,6 @@ $(document).ready(function() {
       $('#select_all').prop('checked', false);
     }
   });
-
-
-  $(document).on("click",".del_btn",function(e){
-      e.preventDefault();
-      var del_val = $(this).val();
-
-      swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover data!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        $.ajax({
-        url:"config/ajax.php",
-        method:"POST",
-        data:
-        {
-          reference:'delete single data by id',
-          table:'person',
-          del_val:del_val,
-        },
-        success:function(data){
-          swal("Success","Poof! Your imaginary file has been deleted!","success"),
-          location.reload(true)
-        }
-      });
-    }
-    
-    
-    });
-    
-  }); 
-  
 
 
 });

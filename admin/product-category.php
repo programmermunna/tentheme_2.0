@@ -105,8 +105,7 @@ while ($data = mysqli_fetch_assoc($category)) {$i++
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['category'] ?></td>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
-                    <a href="delete.php?src=product-category&&table=category&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+                  <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('category',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>

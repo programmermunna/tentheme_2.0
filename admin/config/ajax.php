@@ -111,7 +111,7 @@ if(isset($_POST['f3_load'])){
           <?php }?>
           <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
             <a href="footer-edit.php?f_id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-            <a href="delete.php?src=footer-settings&&table=footer_3_4_5&&id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+            <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('footer_3_4_5',<?php echo $data['id'];?>)">Delete</button>
           </td>
         </tr>
         <?php }?> 
@@ -152,7 +152,7 @@ if(isset($_POST['f4_load'])){
           <?php }?>
           <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
             <a href="footer-edit.php?f_id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-            <a href="delete.php?src=footer-settings&&table=footer_3_4_5&&id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+            <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('footer_3_4_5',<?php echo $data['id'];?>)">Delete</button>
           </td>
         </tr>
         <?php }?> 
@@ -192,8 +192,7 @@ if(isset($_POST['f5_load'])){
           <td class="p-4 text-sm font-bold text-red-500 whitespace-nowrap lg:p-5"><?php echo $data['status']?></td>
           <?php }?>
           <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
-            <a href="footer-edit.php?f_id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-            <a href="delete.php?src=footer-settings&&table=footer_3_4_5&&id=<?php echo $data['id']?>" class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+          <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('footer_3_4_5',<?php echo $data['id'];?>)">Delete</button>
           </td>
         </tr>
         <?php }?> 
@@ -214,9 +213,7 @@ if(isset($_POST['f5_ajax']) && isset($_POST['f5_title']) && isset($_POST['f5_url
       echo $msg = "Not insert. Something is wrong";
     }
   }  
-exit;    
-}
-
+exit; }
 
 
 //Payment Method Show
@@ -275,7 +272,6 @@ if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  
     $text = $_POST['text'];
     $type = $_POST['type']; 
     $product_id = $_POST['product_id'];
-
     
     if($type == 'product'){
       $update = _update("products","review=review+1","id=$product_id");
@@ -287,8 +283,6 @@ if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  
   <?php }exit; }
 
 
-
-
 //delete single data by id
 if(isset($_POST['reference']) && isset($_POST['del_val']) && isset($_POST['table'])){ 
   if($_POST['reference'] == 'delete single data by id'){
@@ -297,6 +291,8 @@ if(isset($_POST['reference']) && isset($_POST['del_val']) && isset($_POST['table
     $delete = _delete("$table","id=$del_val");
     ?>
   <?php }exit; }
+
+  
 
 
 

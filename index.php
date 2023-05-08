@@ -337,12 +337,6 @@ if ($total_no_of_pages <= 10) {
 </div>
 <!-- Cart Popup --->
 
-<script>
-// $("#show_added_popup").on("click",function(){
-//   $(".cart_added_popup").show();
-// });
-</script>
-
 <!-- Header area -->
 <?php include "common/footer.php";?>
 <!-- Header area -->

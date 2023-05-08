@@ -41,7 +41,7 @@ if (isset($_POST['check'])) {
                       <a href="all-team.php">All (<?php echo $all_item ?>)</a> |
                       <a href="all-team.php?status=Published">Published (<?php echo $published_item ?>)</a> |
                       <a href="all-team.php?status=Unpublished">Unpublished (<?php echo $pending_item ?>)</a> |
-                      <input type="submit" name="check" value="Delete">
+                      <input type="submit" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
                     </div>
                     <!-- Table -->
                   <table class="min-w-full divide-y divide-gray-200 table-fixed">

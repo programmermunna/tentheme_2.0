@@ -282,11 +282,23 @@ if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  
     }else{
       $update = _update("service","review=review+1","id=$product_id");
     }
-
-    // $update = _update($type,"review=review+1","id=$product_id");
     $insert = _insert("reviews","pid,product_id,type,star,text,time","'$pid','$product_id','$type','$star','$text','$time'");    
     ?>
   <?php }exit; }
+
+
+
+
+//delete single data by id
+if(isset($_POST['reference']) && isset($_POST['del_val']) && isset($_POST['table'])){ 
+  if($_POST['reference'] == 'delete single data by id'){
+    $table = $_POST['table'];
+    $del_val = $_POST['del_val'];
+    $delete = _delete("$table","id=$del_val");
+    ?>
+  <?php }exit; }
+
+
 
 
 

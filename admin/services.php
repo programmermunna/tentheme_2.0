@@ -49,7 +49,7 @@ if (isset($_POST['check'])) {
               <a href="services.php">All (<?php echo $all_item ?>)</a>
               <a href="services.php?status=Publish">Published (<?php echo $published_item ?>)</a>
               <a href="services.php?status=Draft">Draft (<?php echo $pending_item ?>)</a>
-              <input type="submit" name="check" value="Delete">
+              <input type="submit" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
             </div>
             <table class="min-w-full divide-y divide-gray-200 table-fixed">
               <thead class="bg-white">

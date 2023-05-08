@@ -1,6 +1,3 @@
-<?php if (isset($_GET['msg'])) {?><div id="popup_msg" data-text="<?php echo $_GET['msg']; ?>"></div><?php }?>
-<?php if (isset($_GET['err'])) {?><div id="error_msg" data-text="<?php echo $_GET['err']; ?>"></div><?php }?>
-
 <?php include "config/functions.php";
 if (isset($_SESSION['person_id'])) {
     $id = $_SESSION['person_id'];
@@ -44,6 +41,7 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
 
     <!--=== Jquery  ===-->
   <script src="https://code.jquery.com/jquery-3.2.1.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <!--=== Font awesome  ===-->
   <script src="https://kit.fontawesome.com/6788eb3be6.js" crossorigin="anonymous"></script>
@@ -350,3 +348,4 @@ $notify_order = mysqli_num_rows(_get("cart", "status=1 AND notify='new'"));
           </div>
         </div>
       </header>
+

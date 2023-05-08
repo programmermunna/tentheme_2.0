@@ -79,7 +79,7 @@ if (isset($_POST['check'])) {
               <a href="tickets.php?status=Pending">Pending (<?php echo $pending_item ?>)</a>
               <a href="tickets.php?status=Open">Open (<?php echo $open_item ?>)</a>
               <a href="tickets.php?status=Solved">Solved (<?php echo $solved_item ?>)</a>
-              <input type="submit" name="check" value="Delete">
+              <input type="submit" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
             </div>
             <table class="min-w-full divide-y divide-gray-200 table-fixed">
               <thead class="bg-white">

@@ -61,7 +61,7 @@ if (isset($_POST['check'])) {
             <!-- Table -->
             <div class="top_link">
               <a href="service-category.php">All (<?php echo $all_item ?>)</a>
-              <input type="submit" name="check" value="Delete">
+              <input type="submit" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
             </div>
             <table class="min-w-full divide-y divide-gray-200 table-fixed">
               <thead class="bg-white">

@@ -574,7 +574,6 @@ $("#text_area").on("change",function(){
           product_id:<?php echo $product_id;?>
         },
         success:function(data){
-          console.log(data);
           location.reload(true);
         }
       });

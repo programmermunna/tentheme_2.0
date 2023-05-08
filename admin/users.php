@@ -57,7 +57,7 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
               <a href="users.php?role=Admin">Admin (<?php echo $admin_list ?>)</a>
               <a href="users.php?role=Moderator">Moderators (<?php echo $moderators_list ?>)</a>
               <a href="users.php?role=User">Users (<?php echo $users_list ?>)</a>
-              <input type="submit" name="check" value="Delete">
+              <input type="submit" onclick="return confirm('Are you sure! Want to delte?')" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
             </div>
             <!-- Table -->
             <table class="min-w-full divide-y divide-gray-200 table-fixed">
@@ -131,12 +131,11 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
                   <?php }?>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a id="add_bank" href="edit-person.php?src=users&&table=person&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-                    <a href="delete.php?src=users&&table=person&&id=<?php echo $data['id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+                      class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>                   
+                    <button type="button" class="del_btn btn bg-red-500 w-fit text-white" value="<?php echo $data['id'] ?>">Delete</button>                    
                     <a target="_blank"
                       href="../login.php?email=<?php echo $data['email'] ?>&&pass=<?php echo $data['password'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Login</a>
+                      class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Login</a>
                   </td>
                 </tr>
                 <?php }?>
@@ -250,48 +249,6 @@ if ($total_no_of_pages <= 10) {
 </div>
 </main>
 
-<!-- All Popup -->
-<!-- Add New Pack Popup -->
-<div data-target="add_bank"
-  class="popup_wrapper overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 sm:h-full flex"
-  id="delete-product-modal" style="z-index: 111; display: none;">
-  <div data-target="add_bank" class="popup_remove w-full h-screen bg-black bg-opacity-50 z-40 fixed inset-0 m-auto">
-  </div>
-  <div class="relative p-4 w-full max-w-md h-full md:h-auto z-50">
-    <div class="relative bg-white rounded-2xl shadow-lg p-6 pt-4">
-      <div class="flex justify-end">
-        <button type="button" data-target="add_bank"
-          class="popup_remove text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm w-8 h-8 flex items-center justify-center ml-auto"
-          data-modal-toggle="delete-product-modal"> <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <form class="flex flex-col gap-y-6">
-        <h2 class="text-lg font-semibold text-cyan-900">New Bank</h2>
-        <div class="flex flex-col gap-y-1">
-          <label for="Bank Name">Bank Name</label>
-          <input type="text" id="Bank Name" placeholder="Bank Name" class="input" required>
-        </div>
-
-        <div class="flex flex-col gap-y-1">
-          <label for="Currency Symble">Currency Symble</label>
-          <input type="text" id="Currency Symble" placeholder="Currency Symble" class="input" required>
-        </div>
-
-        <div class="flex flex-col gap-y-1">
-          <label for="Bank Info">Bank Info</label>
-          <input type="text" id="Bank Info" placeholder="Bank Info" class="input" required>
-        </div>
-
-        <div class="flex justify-end">
-          <button class="button">Submit</button>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</div>
-
 
 <script>
 $(document).ready(function() {
@@ -314,7 +271,50 @@ $(document).ready(function() {
       $('#select_all').prop('checked', false);
     }
   });
+
+
+  $(document).on("click",".del_btn",function(e){
+      e.preventDefault();
+      var del_val = $(this).val();
+
+      swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+        url:"config/ajax.php",
+        method:"POST",
+        data:
+        {
+          reference:'delete single data by id',
+          table:'person',
+          del_val:del_val,
+        },
+        success:function(data){
+          swal("Success","Poof! Your imaginary file has been deleted!","success"),
+          location.reload(true)
+        }
+      });
+    }
+    
+    
+    });
+    
+  }); 
+  
+
+
 });
+
+
+
+
+
 </script>
 <script src="js/app.js"></script>
 

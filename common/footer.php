@@ -64,7 +64,6 @@ while ($f5 = mysqli_fetch_assoc($footer_5)) {?>
       <span class="text-gray-700 text-base"><?php echo $website['footer_text'] ?></span>
     </p>
   </div>
-
 </footer>
 <!-- Footer -->
 
@@ -87,10 +86,6 @@ $('[data-fancybox="gallery"]').fancybox({
   protect: true,
 });
 </script>
-
-<?php if (isset($_GET['msg'])) {?><div id="popup_msg" data-text="<?php echo $_GET['msg']; ?>"></div><?php }?>
-<?php if (isset($_GET['err'])) {?><div id="error_msg" data-text="<?php echo $_GET['err']; ?>"></div><?php }?>
-
 
 </body>
 

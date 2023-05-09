@@ -22,7 +22,7 @@ $pending_item = mysqli_num_rows(_get("products", "status='Pending'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;" value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -33,17 +33,17 @@ $pending_item = mysqli_num_rows(_get("products", "status='Pending'"));
 
 
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("products", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:products.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("products", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:products.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <!-- Table -->
             <div class="top_link">
@@ -77,37 +77,37 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $products = _get("products", "status='Pending' AND (title='$src' OR regular_price='$src' OR sell_price='$src' OR category='$src')");
-} elseif (isset($_GET['status'])) {
-    if ($_GET['status'] == 'Publish') {
-        $products = _get("products", "status='Publish'  ORDER BY sell_price DESC");
-    } else {
-        $products = _get("products", "status='Pending' ORDER BY sell_price DESC");
-    }
-} else {
+                if (isset($_GET['src'])) {
+                    $src = trim($_GET['src']);
+                    $products = _get("products", "id!='' AND (title LIKE '%$src%' OR regular_price='$src' OR sell_price='$src' OR category='$src')");
+                } elseif (isset($_GET['status'])) {
+                    if ($_GET['status'] == 'Publish') {
+                        $products = _get("products", "status='Publish'  ORDER BY sell_price DESC");
+                    } else {
+                        $products = _get("products", "status='Pending' ORDER BY sell_price DESC");
+                    }
+                } else {
 
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                    $pagination = "ON";
+                    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                    $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $total_records_per_page = 10;
+                    $offset = ($page_no - 1) * $total_records_per_page;
+                    $previous_page = $page_no - 1;
+                    $next_page = $page_no + 1;
+                    $adjacents = "2";
 
-    $products = _get("products", "id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("products"));
+                    $products = _get("products", "id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_getAll("products"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
+                    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                    $second_last = $total_no_of_pages - 1;
+                }
 
-while ($data = mysqli_fetch_assoc($products)) {
-    $person_id = $data['pid'];
-    $person_info = _fetch("person", "id=$person_id");
-    ?>
+                while ($data = mysqli_fetch_assoc($products)) {
+                    $person_id = $data['pid'];
+                    $person_info = _fetch("person", "id=$person_id");
+                    ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
@@ -128,8 +128,7 @@ while ($data = mysqli_fetch_assoc($products)) {
                     <?php echo date("d-M-y", $data['time']); ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person_info['name'] ?></td>
-                  <?php
-if ($data['status'] == 'Publish') {?>
+                  <?php if ($data['status'] == 'Publish') {?>
                   <td class="p-4 text-sm font-normal text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>
                   <?php } else {?>

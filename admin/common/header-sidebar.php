@@ -11,7 +11,8 @@ if ($id < 1) {
 }
 $person = _fetch("person", "id=$id");
 $pid = $person['id'];
-$pagination = _fetch("pagination", "id=1");
+$paginations = _fetch("pagination", "id=1");
+$pagination = NULL;
 
 $notify_person = mysqli_num_rows(_get("person", "notify='new'"));
 $notify_tickets = mysqli_num_rows(_get("tickets", "status='Pending' AND notify='new'"));

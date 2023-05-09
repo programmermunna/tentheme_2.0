@@ -20,8 +20,8 @@ $pending_item = mysqli_num_rows(_get("pages", "status='unpublished'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
-                  <button type="submit" name="search"
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;" value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
+                  <button type="submit"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
               </form>
@@ -29,17 +29,17 @@ $pending_item = mysqli_num_rows(_get("pages", "status='unpublished'"));
           </div>
 
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("pages", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:pages.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("pages", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:pages.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <div class="top_link">
               <a href="pages.php">All (<?php echo $all_item ?>)</a>
@@ -65,43 +65,43 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $pages = _get("pages", "pg_name='$src'");
-} elseif (isset($_GET['status'])) {
-    $status = $_GET['status'];
-    $pages = _get("pages", " status='$status' ORDER BY id ASC");
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                if (isset($_GET['src'])) {
+                    $src = trim($_GET['src']);
+                    $pages = _get("pages", "pg_name LIKE '%$src%'");
+                } elseif (isset($_GET['status'])) {
+                    $status = $_GET['status'];
+                    $pages = _get("pages", " status='$status' ORDER BY id DESC");
+                } else {
+                    $pagination = "ON";
+                    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                    $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $total_records_per_page = 10;
+                    $offset = ($page_no - 1) * $total_records_per_page;
+                    $previous_page = $page_no - 1;
+                    $next_page = $page_no + 1;
+                    $adjacents = "2";
 
-    $pages = _get("pages", "id !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("pages"));
+                    $pages = _get("pages", "id !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_getAll("pages"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-while ($data = mysqli_fetch_assoc($pages)) {
-    ?>
+                    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                    $second_last = $total_no_of_pages - 1;
+                }
+                while ($data = mysqli_fetch_assoc($pages)) {
+                    ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php
-$pg_name = $data['pg_name'];
-    $pg_name = str_replace("-", " ", "$pg_name");
-    echo ucwords($pg_name);
-    ?>
-                  </td>
-                  <?php
-if ($data['status'] == 'Published') {?>
+                    $pg_name = $data['pg_name'];
+                        $pg_name = str_replace("-", " ", "$pg_name");
+                        echo ucwords($pg_name);
+                        ?>
+                                      </td>
+                                      <?php
+                    if ($data['status'] == 'Published') {?>
                   <td class="p-4 text-sm font-bold text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>
                   <?php } else {?>

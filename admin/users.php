@@ -28,7 +28,7 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -132,7 +132,7 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a id="add_bank" href="edit-person.php?src=users&&table=person&&id=<?php echo $data['id'] ?>"
                       class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>                   
-                    <button type="button" class="btn bg-red-500 w-fit text-white" value="<?php echo $data['id'] ?>">Delete</button>                    
+                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('person',<?php echo $data['id'];?>)">Delete</button>                   
                     <a target="_blank"
                       href="../login.php?email=<?php echo $data['email'] ?>&&pass=<?php echo $data['password'] ?>"
                       class="btn bg-red-500 w-fit text-white" style="background:#4ade80;">Login</a>
@@ -144,7 +144,7 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
             </table>
           </form>
 
-          <?php if (isset($pagination)) {?>
+          <?php if (isset($pagination)) {if($pagination=='ON'){?>
           <div style="padding:20px 10px;">
             <!-- /* ----------paginations----------- */ -->
             <style>
@@ -237,7 +237,7 @@ if ($total_no_of_pages <= 10) {
               </div>
             </div>
             <!-- /* ----------paginations----------- */ -->
-            <?php }?>
+            <?php }}?>
 
           </div>
 

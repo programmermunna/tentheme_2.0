@@ -18,7 +18,7 @@
       
         <div class="flex flex-col gap-y-1">
           <label>Show Posts</label>
-          <input name="blog_search" type="text" class="input" value="<?php echo $pagination['blog_search']?>">
+          <input name="blog_search" type="text" class="input" value="<?php echo $paginations['blog_search']?>">
           <br>
           <button name="submit" type="Submit" class="button">Update</button>
         </div>

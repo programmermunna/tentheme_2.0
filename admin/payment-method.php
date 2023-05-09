@@ -20,7 +20,7 @@ $pending_item = mysqli_num_rows(_get("payment", "status='Disabled'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>

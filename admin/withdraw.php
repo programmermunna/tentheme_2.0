@@ -26,14 +26,8 @@ $pending_item = mysqli_num_rows(_get("withdraw", "status='Pending'"));
             <div>
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
-                  <?php
-if (isset($_GET['src'])) {?>
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;" value="<?php echo $_GET['src']; ?>">
-                  <?php } else {?>
-                  <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
-                  <?php }?>
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>

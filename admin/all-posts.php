@@ -1,8 +1,8 @@
 <?php include "common/header-sidebar.php";?>
 <?php
 $all_item = mysqli_num_rows(_getAll("post"));
-$published_item = mysqli_num_rows(_get("post", "status='Pending'"));
-$pending_item = mysqli_num_rows(_get("post", "status='Publish'"));
+$published_item = mysqli_num_rows(_get("post", "status='Publish'"));
+$pending_item = mysqli_num_rows(_get("post", "status ='Draft'"));
 ?>
 <div class="x_container space-y-10 py-10">
   <div class="flex flex-col rounded-lg shadow-md border border-[] shadow-gray-200 bg-white">
@@ -23,7 +23,7 @@ $pending_item = mysqli_num_rows(_get("post", "status='Publish'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;" value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -70,37 +70,34 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $post = _get("post", "status='Pending' AND (title='$src' OR category='$src')");
-} elseif (isset($_GET['status'])) {
-    if ($_GET['status'] == 'Publish') {
-        $post = _get("post", "status='Publish'");
-    } else {
-        $post = _get("post", "status!='Publish'");
-    }
-} else {
+              if (isset($_GET['src'])) {
+                  $src = trim($_GET['src']);
+                  $post = _get("post", "id !='' AND (title LIKE '%$src%' OR category='$src')");
+              } elseif (isset($_GET['status'])) {
+                $status = $_GET['status'];
+                $post = _get("post", "status='$status' ORDER BY id DESC");
+              } else{
 
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                  $pagination = "ON";
+                  if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                  $total_records_per_page = 10;
+                  $offset = ($page_no - 1) * $total_records_per_page;
+                  $previous_page = $page_no - 1;
+                  $next_page = $page_no + 1;
+                  $adjacents = "2";
 
-    $post = _get("post", "id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("post"));
+                  $post = _get("post", "id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                  $total_records = mysqli_num_rows(_getAll("post"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
+                  $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                  $second_last = $total_no_of_pages - 1;
+              }
 
-while ($data = mysqli_fetch_assoc($post)) {
-    $person_id = $data['pid'];
-    $person_info = _fetch("person", "id=$person_id");
-    ?>
+              while ($data = mysqli_fetch_assoc($post)) {
+                  $person_id = $data['pid'];
+                  $person_info = _fetch("person", "id=$person_id");
+                  ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">

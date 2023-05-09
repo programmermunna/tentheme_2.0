@@ -30,7 +30,7 @@ if ($notify_check > 0) {
 }
 ?>
 <?php
-$all_resseler = mysqli_num_rows(_get("person", "investor != ''"));
+$all_resseler = mysqli_num_rows(_get("person", "investor != 'before_submit' AND investor !='' "));
 $submitted_resseler = mysqli_num_rows(_get("person", "investor = 'Submitted'"));
 $accepted_resseler = mysqli_num_rows(_get("person", "investor = 'Accepted'"));
 $rejected_resseler = mysqli_num_rows(_get("person", "investor = 'Rejected'"));
@@ -51,7 +51,7 @@ $rejected_resseler = mysqli_num_rows(_get("person", "investor = 'Rejected'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -62,17 +62,17 @@ $rejected_resseler = mysqli_num_rows(_get("person", "investor = 'Rejected'"));
 
           <!-- Table -->
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $update = _update("person", "investor='Rejected'", "id=$check_list[$i]");
-        }
-        $msg = "Rejected Successfully";
-        header("location:investors.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $update = _update("person", "investor='Rejected'", "id=$check_list[$i]");
+                    }
+                    $msg = "Rejected Successfully";
+                    header("location:investors.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <div class="top_link">
               <a href="investors.php">All (<?php echo $all_resseler ?>)</a>
@@ -103,31 +103,31 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $person = _get("person", "investor !='' AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
-} elseif (isset($_GET['investor'])) {
-    $investor = trim($_GET['investor']);
-    $person = _get("person", "investor='$investor'");
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                if (isset($_GET['src'])) {
+                    $src = trim($_GET['src']);
+                    $person = _get("person", "investor !='before_submit' AND investor !=''  AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
+                } elseif (isset($_GET['investor'])) {
+                    $investor = trim($_GET['investor']);
+                    $person = _get("person", "investor='$investor'");
+                } else {
+                    $pagination = "ON";
+                    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                    $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $total_records_per_page = 10;
+                    $offset = ($page_no - 1) * $total_records_per_page;
+                    $previous_page = $page_no - 1;
+                    $next_page = $page_no + 1;
+                    $adjacents = "2";
 
-    $person = _query("SELECT * FROM person WHERE investor !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_get("person", "investor !='' "));
+                    $person = _query("SELECT * FROM person WHERE investor !='before_submit' AND investor !=''  ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_get("person", "investor !='before_submit' AND investor !=''  "));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-$i = 0;
-while ($data = mysqli_fetch_assoc($person)) {$i++
-    ?>
+                    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                    $second_last = $total_no_of_pages - 1;
+                }
+                $i = 0;
+                while ($data = mysqli_fetch_assoc($person)) {$i++
+                    ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">

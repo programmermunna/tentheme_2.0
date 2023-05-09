@@ -47,7 +47,13 @@
               $pmn_address = $_POST['pmn_address'];
               $amount = $_POST['amount'];
               $balance = $person['balance'];
-              $min_withdraw = $limit_setting['withdraw'];
+              $min_withdraw = $limit_setting['min_withdraw'];
+              $max_withdraw = $limit_setting['max_withdraw'];
+
+              if($balance >= $max_withdraw){
+                $err = "Maximum Withdraw $$max_withdraw";
+                header("location:withdraw.php?err=$err");
+              }else{
               if($balance>=$amount){
                 if($amount>=$min_withdraw){
 
@@ -61,13 +67,14 @@
                   header("location:withdraw.php?msg=$msg");
                 }
               }else{                
-                $err = "Minimum Withdraw $min_withdraw";
+                $err = "Minimum Withdraw $$min_withdraw";
                 header("location:withdraw.php?err=$err");
               }
             }else{                
               $err = "Please Insert Valid Amount";
               header("location:withdraw.php?err=$err");
-            }              
+            }
+            }
             }
           ?>
           <form action="" method="POST" class="grid grid-cols-12 gap-y-6 p-5">

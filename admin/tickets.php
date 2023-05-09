@@ -29,10 +29,10 @@ if (isset($_GET['action'])) {
 ?>
 
 <?php
-$all_item = mysqli_num_rows(_getAll("tickets"));
-$pending_item = mysqli_num_rows(_get("tickets", "status='Pending'"));
-$open_item = mysqli_num_rows(_get("tickets", "status='Open'"));
-$solved_item = mysqli_num_rows(_get("tickets", "status='Solved'"));
+$all_item = mysqli_num_rows(_get("tickets","subject !=''"));
+$pending_item = mysqli_num_rows(_get("tickets", "status='Pending' AND subject !=''"));
+$open_item = mysqli_num_rows(_get("tickets", "status='Open' AND subject !=''"));
+$solved_item = mysqli_num_rows(_get("tickets", "status='Solved' AND subject !=''"));
 ?>
 <div class="x_container space-y-10 py-10">
   <div class="flex flex-col rounded-lg shadow-md border border-[
@@ -50,7 +50,7 @@ $solved_item = mysqli_num_rows(_get("tickets", "status='Solved'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -61,17 +61,17 @@ $solved_item = mysqli_num_rows(_get("tickets", "status='Solved'"));
 
           <!-- Table -->
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("tickets", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:tickets.php?msg=$msg");
-    }
-}
-?>
+              if (isset($_POST['check'])) {
+                  if (isset($_POST['check_list'])) {
+                      $check_list = $_POST['check_list'];
+                      for ($i = 0; $i < count($check_list); $i++) {
+                          $delete = _delete("tickets", "id=$check_list[$i]");
+                      }
+                      $msg = "Delete Successfully";
+                      header("location:tickets.php?msg=$msg");
+                  }
+              }
+              ?>
           <form action="" method="POST">
             <!-- Table -->
             <div class="top_link">
@@ -92,7 +92,7 @@ if (isset($_POST['check'])) {
                   </th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Image</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Name</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Phone</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Type</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Subject</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Date</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Status</th>
@@ -103,44 +103,36 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $tickets = _query("SELECT * FROM tickets INNER JOIN person ON tickets.pid=person.id INNER JOIN service ON tickets.item_id = service.id
-                       WHERE tickets.status='Pending' AND subject !='' AND (
-                          person.name='$src'
-                       OR person.phone='$src'
-                       OR tickets.ticket_id='$src'
-                       OR tickets.subject='$src'
-                       OR service.title='$src'
-                       )
-                       ");
-} elseif (isset($_GET['status'])) {
-    $status = $_GET['status'];
-    $tickets = _get("tickets", "status='$status'");
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                  if (isset($_GET['src'])) {
+                      $src = trim($_GET['src']);
+                      $tickets = _get("tickets", "subject !=''  AND (subject = '%$src%' OR ticket_id='$src' OR type='$src')");
+                  } elseif (isset($_GET['status'])) {
+                      $status = $_GET['status'];
+                      $tickets = _get("tickets", "status='$status' AND subject !=''");
+                  } else {
+                      $pagination = "ON";
+                      if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $total_records_per_page = 10;
+                      $offset = ($page_no - 1) * $total_records_per_page;
+                      $previous_page = $page_no - 1;
+                      $next_page = $page_no + 1;
+                      $adjacents = "2";
 
-    $tickets = _query("SELECT * FROM tickets WHERE subject !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_get("tickets", "subject !=''"));
+                      $tickets = _query("SELECT * FROM tickets WHERE subject !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_get("tickets", "subject !=''"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-$i = 0;
-while ($data = mysqli_fetch_assoc($tickets)) {$i++;
-    $person_id = $data['pid'];
-    $person_info = _fetch("person", "id=$person_id");
+                      $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                      $second_last = $total_no_of_pages - 1;
+                  }
+                  $i = 0;
+                  while ($data = mysqli_fetch_assoc($tickets)) {$i++;
+                      $person_id = $data['pid'];
+                      $person_info = _fetch("person", "id=$person_id");
 
-    $item_id = $data['item_id'];
-    $service = _fetch("service", "id=$item_id");
-    ?>
+                      $item_id = $data['item_id'];
+                      $service = _fetch("service", "id=$item_id");
+                      ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
@@ -152,11 +144,10 @@ while ($data = mysqli_fetch_assoc($tickets)) {$i++;
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person_info['name'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $person_info['phone'] ?></td>
+                    <?php echo ucwords($data['type']) ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php sort_str($data['subject'])?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"><?php $time = $data['time'];
-    echo date("d/M/y", $time)?></td>
+                    <?php echo ucwords($data['subject'])?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"><?php $time = $data['time']; echo date("d/M/y", $time)?></td>
                   <?php if ($data['status'] == 'Pending') {?>
                   <td class="p-4 text-sm font-normal text-red-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>

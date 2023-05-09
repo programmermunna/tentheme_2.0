@@ -17,7 +17,7 @@ if ($notify_check > 0) {
 }
 ?>
 <?php
-$all_resseler = mysqli_num_rows(_get("person", "reseller != ''"));
+$all_resseler = mysqli_num_rows(_get("person", "reseller != 'unableable' AND reseller !='' "));
 $submitted_resseler = mysqli_num_rows(_get("person", "reseller = 'Submitted'"));
 $accepted_resseler = mysqli_num_rows(_get("person", "reseller = 'Accepted'"));
 $rejected_resseler = mysqli_num_rows(_get("person", "reseller = 'Rejected'"));
@@ -38,7 +38,7 @@ $rejected_resseler = mysqli_num_rows(_get("person", "reseller = 'Rejected'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit" name="search"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -49,17 +49,17 @@ $rejected_resseler = mysqli_num_rows(_get("person", "reseller = 'Rejected'"));
 
           <!-- Table -->
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $update = _update("person", "reseller='Rejected'", "id=$check_list[$i]");
-        }
-        $msg = "Rejected Successfully";
-        header("location:reseller.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $update = _update("person", "reseller='Rejected'", "id=$check_list[$i]");
+                    }
+                    $msg = "Rejected Successfully";
+                    header("location:reseller.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <div class="top_link">
               <a href="reseller.php">All (<?php echo $all_resseler ?>)</a>
@@ -90,31 +90,31 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $person = _get("person", "reseller !='' AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
-} elseif (isset($_GET['reseller'])) {
-    $reseller = trim($_GET['reseller']);
-    $person = _get("person", "reseller='$reseller'");
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                  if (isset($_GET['src'])) {
+                      $src = trim($_GET['src']);
+                      $person = _get("person", "reseller !='unableable' AND reseller !=''  AND (name='$src' OR phone='$src' OR email='$src' OR role='$src' OR address LIKE '%$src%')");
+                  } elseif (isset($_GET['reseller'])) {
+                      $reseller = trim($_GET['reseller']);
+                      $person = _get("person", "reseller='$reseller'");
+                  } else {
+                      $pagination = "ON";
+                      if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                          $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $total_records_per_page = 10;
+                      $offset = ($page_no - 1) * $total_records_per_page;
+                      $previous_page = $page_no - 1;
+                      $next_page = $page_no + 1;
+                      $adjacents = "2";
 
-    $person = _query("SELECT * FROM person WHERE reseller!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_get("person", "reseller !=''"));
+                      $person = _query("SELECT * FROM person WHERE reseller!='unableable' AND reseller !=''  ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_get("person", "reseller !='unableable' AND reseller !='' "));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-$i = 0;
-while ($data = mysqli_fetch_assoc($person)) {$i++
-    ?>
+                      $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                      $second_last = $total_no_of_pages - 1;
+                  }
+                  $i = 0;
+                  while ($data = mysqli_fetch_assoc($person)) {$i++
+                      ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">

@@ -42,19 +42,21 @@
           <span class="text-2xl font-medium tracking-wide">Deposit Balance</span>
         </div>
         <?php
-        $err = "";
         if (isset($_POST['submit'])) {
           $method = $_POST['method'];
           $method = _fetch("payment","id=$method");
           $method = $method['pmn_method'];
-
-
+          
           $pmn_address = $_POST['pmn_address'];
           $tr_id = $_POST['tr_id'];
           $amount = $_POST['amount'];
-          $min_deposit = $limit_setting['deposit'];
+          $min_deposit = $limit_setting['min_deposit'];
+          $max_deposit = $limit_setting['max_deposit'];
+          if($amount >= $max_deposit){
+            $err = "Set Maximum Deposit $Maximum";
+            header("location:deposits.php?err=$err");
+          }else{
           if ($amount >= $min_deposit) {
-
             $icon = '<i class="fa-solid fa-money-bill-transfer"></i>';
             $title = 'Deposit requested for $'.$amount;
             $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
@@ -68,6 +70,9 @@
             $err = "Set Minimum Deposit $min_deposit";
             header("location:deposits.php?err=$err");
           }
+        }
+
+
         }
         ?>
         <form action="" method="POST" class="grid grid-cols-12 gap-y-6 p-5">
@@ -109,22 +114,6 @@
             })
 
           })
-
-
-
-
-
-
-
-
-          // $("#mtd_number").hide();
-          // $("#copy").hide();
-          // $("#method").on("change", function() {
-          //   $("#mtd_number").show();
-          //   $("#copy").show();
-          //   var value = $("#method").val();
-          //   $("#mtd_number").text(value);
-          // });
           </script>
 
           <div class="col-span-12"><label class="mb-2 block" for="new_password">Payment Address</label><input

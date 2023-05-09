@@ -26,7 +26,7 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
               <form action="" method="GET">
                 <div style="text-align: right;margin: 5px;padding-top: 10px;">
                   <input name="src" type="search" id="srcvalue" placeholder="Search Here..."
-                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;">
+                    style="padding: 8px;border: 2px solid #ddd;border-radius:5px;"  value="<?php if(isset($_GET['src'])){echo $_GET['src'];}?>">
                   <button type="submit"
                     style="padding: 9px 15px;margin-right: 12px;background: #0e33f7;color:#fff;box-sizing: border-box;border-radius: 2px;">Search</button>
                 </div>
@@ -77,45 +77,44 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    // $cart = _get("cart","id !='' AND (name='$src' OR qualification='$src')");
-    $cart = _query("SELECT cart.*,person.*,products.* FROM cart JOIN person ON cart.pid=person.id JOIN products ON cart.cart_id = products.id
-                       WHERE (
-                          person.name='$src'
-                       OR person.email='$src'
-                       OR products.title='$src'
-                       OR products.sell_price='$src'
-                       )
-                       ");
-} elseif (isset($_GET['status'])) {
-    if ($_GET['status'] == 'product') {
-        $cart = _get("cart", "type='product'");
-    } else {
-        $cart = _get("cart", "type='service'");
-    }
-} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                  if (isset($_GET['src'])) {
+                      $src = trim($_GET['src']);
+                      $cart = _query("SELECT cart.*,person.*,products.* FROM cart JOIN person ON cart.pid=person.id JOIN products ON cart.cart_id = products.id
+                                        WHERE (
+                                            person.name='$src'
+                                        OR person.email='$src'
+                                        OR products.title='$src'
+                                        OR products.sell_price='$src'
+                                        )
+                                        ");
+                  } elseif (isset($_GET['status'])) {
+                      if ($_GET['status'] == 'product') {
+                          $cart = _get("cart", "type='product'");
+                      } else {
+                          $cart = _get("cart", "type='service'");
+                      }
+                  } else {
+                      $pagination = "ON";
+                      if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                          $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $total_records_per_page = 10;
+                      $offset = ($page_no - 1) * $total_records_per_page;
+                      $previous_page = $page_no - 1;
+                      $next_page = $page_no + 1;
+                      $adjacents = "2";
 
-    $cart = _get("cart", "status=1 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("cart", "status=1"));
+                      $cart = _get("cart", "status=1 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_getAll("cart", "status=1"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-while ($data = mysqli_fetch_assoc($cart)) {
-    $product_id = $data['cart_id'];
-    $person_id = $data['pid'];
-    $product = _fetch("products", "id=$product_id");
-    $person = _fetch("person", "id=$person_id");
-    ?>
+                      $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                      $second_last = $total_no_of_pages - 1;
+                  }
+                  while ($data = mysqli_fetch_assoc($cart)) {
+                      $product_id = $data['cart_id'];
+                      $person_id = $data['pid'];
+                      $product = _fetch("products", "id=$product_id");
+                      $person = _fetch("person", "id=$person_id");
+                      ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
@@ -134,7 +133,6 @@ while ($data = mysqli_fetch_assoc($cart)) {
                     <?php echo date("d-M-y", $data['time']); ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo ucfirst($data['type']) ?></td>
-                  <!-- <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"><?php if (isset($_GET['status'])) {echo $_GET['status'];}?> </td> -->
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('cart',<?php echo $data['id'];?>)">Delete</button>
                   </td>

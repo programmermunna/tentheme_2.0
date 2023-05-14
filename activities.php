@@ -48,7 +48,7 @@
         while($activitie = mysqli_fetch_assoc($activities)){ ?>
         <div class="p-5 activities">
           <div><i> --- <?php echo $activitie['icon'];?> <?php echo $activitie['title'];?></i></div>
-          <div><?php $times = $activitie['time'];echo time_elapsed_string($times, true);?></div>          
+          <div><?php $times = $activitie['time'];echo date("d-M-Y | h:ma",$times);?></div>          
         </div>
        <?php }?>
 

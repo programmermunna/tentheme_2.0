@@ -95,7 +95,7 @@ while ($data = mysqli_fetch_assoc($products)) {
     $author = _fetch("person", "id=$author_id");
     ?>
           <div class="item">
-            <a href="item.php?product_id=<?php echo $data['id'] ?>" class="item_link"></a>
+            <a href="item.php?product_id=<?php echo $data['id'] ?>&&title=<?php $url = $data['title']; echo str_space_remove($url); ?>" class="item_link"></a>
             <div>
               <img class="w-full h-auto rounded" src="admin/upload/<?php echo $data['file_name'] ?>" />
             </div>

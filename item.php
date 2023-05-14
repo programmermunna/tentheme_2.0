@@ -2,6 +2,7 @@
 <?php include "common/header.php";?>
 <!-- Header area -->
 <?php
+
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
     $data = _fetch("products", "id=$product_id");    
@@ -16,8 +17,6 @@ if (isset($_GET['product_id'])) {
     }else{
       $star_avg = "N/A";
     }
-}else{
-  header("location:services.php");
 }
 
 
@@ -42,16 +41,6 @@ if (isset($_GET['cart'])) {
     }
 }
 ?>
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- Sub Header -->
@@ -147,11 +136,12 @@ if (isset($_GET['cart'])) {
             <div class="slides">
              <div class="slider">
               
-             <?php if($data['video_preview_link'] != ""){ ?>
+             <!-- ----slider youtube video------ -->
+             <!-- <?php //if($data['video_preview_link'] != ""){ ?>
               <div class="slide">
-                <iframe width="100%" height="100%" src="<?php echo $data['video_preview_link'] ?>"></iframe>
+                <iframe width="100%" height="100%" src="<?php //echo $data['video_preview_link'] ?>"></iframe>
               </div>
-              <?php }?>
+              <?php //}?> -->
 
               <div class="slide">
                 <a data-fancybox="gallery" data-caption="Photo1" href="admin/upload/<?php echo $data['file_name'] ?>">
@@ -183,9 +173,11 @@ if (isset($_GET['cart'])) {
               for($i = 2;$i<=$images_count;$i++){ ?>
               <span class="dot" data-slide="<?php echo $i;?>"></span>
               <?php }?>
-              <?php if($data['video_preview_link'] != ""){ ?>
-              <span class="dot" data-slide="<?php echo $images_count+1;?>"></span>
-              <?php } ?>
+              
+              <!-- -----------this for video in slider---------- -->
+              <?php //if($data['video_preview_link'] != ""){ ?>
+              <!-- <span class="dot" data-slide="<?php //echo $images_count+1;?>"></span> -->
+              <?php //} ?>
 
             </div>            
             </div>
@@ -200,7 +192,7 @@ if (isset($_GET['cart'])) {
                 <span>Live Preview</span>
               </a>
 
-              <!-- <a target="_blank"
+              <a target="_blank" href="<?php echo $data['video_preview_link'] ?>"
                 class="px-3 py-2 rounded bg-purple-500 hover:bg-purple-600 focus:ring-2 ring-blue-500 focus:ring-offset-2 w-fit  text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-regular fa-circle-play"></i>
                 <span class="popup-btn">Video Preview</span>
@@ -210,7 +202,7 @@ if (isset($_GET['cart'])) {
                 class="px-3 py-2 rounded bg-pink-500 hover:bg-pink-600 focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 w-fit text-white tracking-wide space-x-1 flex items-center gap-x-1 ">
                 <i class="fa-solid fa-image"></i>
                 <span>Screenshots</span>
-              </button> -->
+              </button>
 
               <a target="_blank" href="#"
                 class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 w-fit text-white tracking-wide space-x-1 flex items-center gap-x-1 "><i

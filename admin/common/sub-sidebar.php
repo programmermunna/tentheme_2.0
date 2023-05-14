@@ -29,8 +29,63 @@ $general_setting = _fetch("general_setting", "id=1");
 
 
 <div class="flex flex-col lg:flex-row p-12">
-
   <div class="bg-white px-5 rounded-sm shadow w-full lg:w-[350px] py-6">
+
+    <div class="sidebar_item overflow-hidden">
+      <button class="ds_title ds_title2 text-base font-normal w-full flex justify-between pb-1.5"
+        data-ref="theme setting">
+        <span class="block text-base font-2">theme setting</span>
+        <span class="text-xs opacity-50 transition-all">
+          <i class="fa-solid fa-chevron-down"></i>
+        </span>
+      </button>
+      <ul class="ds_div ds_div2  transition-all" data-ref="theme setting">
+
+        <li>
+          <a href="./site-and-identity-setting.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-folder"></i>
+            </span>
+            <span>Logo & Site Identity</span>
+          </a>
+        </li>
+        <li>
+          <a href="./general-setting.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-folder"></i>
+            </span>
+            <span>Other Settings</span>
+          </a>
+        </li>
+        <li>
+          <a href="./header-settings.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-folder"></i>
+            </span>
+            <span>Header</span>
+          </a>
+        </li>
+        <li>
+          <a href="./footer-settings.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-folder"></i>
+            </span>
+            <span>Footer</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="./seo-setting.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-folder"></i>
+            </span>
+            <span>SEO</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <hr class="my-2" >
     <div class="sidebar_item overflow-hidden">
       <button class="ds_title ds_title2  text-base font-normal w-full flex justify-between pb-1.5"
         data-ref="management">
@@ -56,7 +111,6 @@ $general_setting = _fetch("general_setting", "id=1");
             <span>Withdraw</span>
           </a>
         </li>
-
       </ul>
     </div>
     <hr class="my-2" />
@@ -136,62 +190,6 @@ $general_setting = _fetch("general_setting", "id=1");
     </div>
 
     <hr class="my-2" />
-    <div class="sidebar_item overflow-hidden">
-      <button class="ds_title ds_title2 text-base font-normal w-full flex justify-between pb-1.5"
-        data-ref="theme setting">
-        <span class="block text-base font-2">theme setting</span>
-        <span class="text-xs opacity-50 transition-all">
-          <i class="fa-solid fa-chevron-down"></i>
-        </span>
-      </button>
-      <ul class="ds_div ds_div2  transition-all" data-ref="theme setting">
-
-        <li>
-          <a href="./site-and-identity-setting.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>Logo & Site Identity</span>
-          </a>
-        </li>
-        <li>
-          <a href="./general-setting.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>Other Settings</span>
-          </a>
-        </li>
-        <li>
-          <a href="./header-settings.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>Header</span>
-          </a>
-        </li>
-        <li>
-          <a href="./footer-settings.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>Footer</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./seo-setting.php"
-            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
-            <span class="text-xs"><i class="fa-solid fa-folder"></i>
-            </span>
-            <span>SEO</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <hr class="my-2" />
-
     <div class="sidebar_item overflow-hidden">
       <button class="ds_title ds_title2  text-base font-normal w-full flex justify-between pb-1.5" data-ref="marketing">
         <span class="block text-base font-2">marketing</span>

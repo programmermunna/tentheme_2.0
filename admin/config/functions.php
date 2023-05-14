@@ -98,6 +98,10 @@
   }
     require('plugins.php');
 
+    function str_space_remove($url){
+     return $urls = str_replace(" ","-","$url");
+    }
+
 
     
 

@@ -7,11 +7,11 @@ if ($person['reseller'] = 'Accepted') {
     $reseller_discount = $reseller_docs['discount'];
 }
 
-if ($id < 1) {
-    $err = "Please Login First";
-    header("location:index.php?err=$err");
-    exit;
-}
+// if ($id < 1) {
+//     $err = "Please Login First";
+//     header("location:index.php?err=$err");
+//     exit;
+// }
 ?>
 <!-- Sub Header -->
 <div class="container space-y-6 py-24">
@@ -188,16 +188,16 @@ while ($data = mysqli_fetch_assoc($cart)) {
         <div class="py-5 space-y-4">
 
           <?php
-$cart = _get("cart", "pid=$id AND type='product' AND status=0");
-$total_price = 0;
-while ($data = mysqli_fetch_assoc($cart)) {
-    $cart_id = $data['cart_id'];
-    $product = _fetch("products", "id=$cart_id");
+          $cart = _get("cart", "pid=$id AND type='product' AND status=0");
+          $total_price = 0;
+          while ($data = mysqli_fetch_assoc($cart)) {
+          $cart_id = $data['cart_id'];
+          $product = _fetch("products", "id=$cart_id");
 
-    $sell_price = $product['sell_price'];
-    $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
-    $total_price += $product['sell_price'];
-    ?>
+          $sell_price = $product['sell_price'];
+          $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
+          $total_price += $product['sell_price'];
+          ?>
           <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
             <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
             <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
@@ -213,10 +213,10 @@ while ($data = mysqli_fetch_assoc($cart)) {
       </div>
 
       <?php
-if (isset($_POST['submit'])) {
-    $total_amount = $_POST['total_amount'];
-    $old_balance = $person['balance'];
-    if ($old_balance > $total_amount) {
+        if (isset($_POST['submit'])) {
+        $total_amount = $_POST['total_amount'];
+        $old_balance = $person['balance'];
+        if ($old_balance > $total_amount) {
 
         $icon = '<i class="fa-solid fa-box"></i>';
         $title = 'Successfully Purchase a new products';
@@ -237,13 +237,12 @@ if (isset($_POST['submit'])) {
         if ($update_cart && $balance) {
             $msg = "Congratulations for Purchase.";
             header("location:dashboard.php?msg=$msg");
+        }} else {
+            $err = "Please Deposit First";
+            header("location:checkout.php?err=$err");
         }
-    } else {
-        $err = "Please Deposit First";
-        header("location:checkout.php?err=$err");
     }
-}
-?>
+    ?>
       <form action="" method="POST">
         <input type="hidden" name="total_amount" value="<?php echo $total_price; ?>">
         <button type="submit" name="submit"

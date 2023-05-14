@@ -3,11 +3,11 @@
 <!-- Header area -->
 <?php 
 
-if($id<1){
-  $err = "Please Login First";
-  header("location:index.php?err=$err");
-  exit;
-}
+// if($id<1){
+//   $err = "Please Login First";
+//   header("location:index.php?err=$err");
+//   exit;
+// }
 
 if(isset($_GET['cart'])){
   $cart_id = $_GET['cart'];  

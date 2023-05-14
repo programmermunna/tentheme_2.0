@@ -38,11 +38,9 @@ if(isset($_GET['ticket_id'])){
 
         <!-- Body Content -->
         <div class="w-full bg-white shadow rounded-sm">
-
           <div class="px-5 py-4 text-blue-600 border-b flex justify-between items-center">
             <span class="text-2xl font-medium tracking-wide"><?php echo $ticket['subject']?></span>
           </div>
-
          
           <div class="chat_area col-12 p-5">
           <div class="chatting">

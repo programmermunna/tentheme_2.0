@@ -6,23 +6,34 @@
 <!-- Slider -->
 </header>
 <?php
+if(isset($_SESSION['ses_cart'])){
+  $ses_cart = $_SESSION['ses_cart'];
+  // unset($_SESSION['ses_cart']);
+}else{
+  $ses_cart = $_SESSION['ses_cart'] = 0;
+}
+
+echo $ses_cart;
+
+
 if (isset($_GET['cart'])) {
     if ($id < 1) {
         $err = "Please Login First";
-        header("location:index.php?err=$err");
+        // header("location:index.php?err=$err");
+        $_SESSION['ses_cart'] = $_SESSION['ses_cart'].",".$_GET['cart'];
     } else {
-        $cart_id = $_GET['cart'];
-        $check = _fetch("cart", "pid=$id AND type='product' AND cart_id=$cart_id AND status=0");
-        if ($check) {
-            $err = "Already Added. Please Add New.";
-            header("location:index.php?err=$err");
-        } else {
-            $insert = _insert("cart", "pid,cart_id,type,time", "$id,$cart_id,'product',$time");
-            if ($insert) {
-                $msg = "Successfully Added in Cart. Please Checkout";
-                header("location:index.php?msg=$msg");
-            }
+      $cart_id = $_GET['cart'];
+      $check = _fetch("cart", "pid=$id AND type='product' AND cart_id=$cart_id AND status=0");
+      if ($check) {
+          $err = "Already Added. Please Add New.";
+          header("location:index.php?err=$err");
+      } else {
+        $insert = _insert("cart", "pid,cart_id,type,time", "$id,$cart_id,'product',$time");
+        if ($insert) {
+            $msg = "Successfully Added in Cart. Please Checkout";
+            header("location:index.php?msg=$msg");
         }
+      }
     }
 }
 ?>

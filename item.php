@@ -283,7 +283,7 @@ if (isset($_GET['cart'])) {
 
 
             <!-- Write Review Box -->
-            <div class="p-5 space-y-3 border bg-white shadow rounded">
+            <div id="review_box" class="p-5 space-y-3 border bg-white shadow rounded">
               <div class="flex items-center">
                 <img class="w-12 h-12 rounded-full overflow-hidden" src="admin/upload/<?php echo $person['file_name'];?>"
                   alt="">

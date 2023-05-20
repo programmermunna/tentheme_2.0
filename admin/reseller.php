@@ -301,7 +301,6 @@ if ($total_no_of_pages <= 10) {
   </div>
 </div>
 
-
 <script>
 $(document).ready(function() {
   $('#select_all').on('click', function() {
@@ -326,7 +325,5 @@ $(document).ready(function() {
 });
 </script>
 <script src="js/app.js"></script>
-
 </body>
-
 </html>

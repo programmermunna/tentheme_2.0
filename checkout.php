@@ -6,12 +6,6 @@
 if ($person['reseller'] = 'Accepted') {
     $reseller_discount = $reseller_docs['discount'];
 }
-
-// if ($id < 1) {
-//     $err = "Please Login First";
-//     header("location:index.php?err=$err");
-//     exit;
-// }
 ?>
 <!-- Sub Header -->
 <div class="container space-y-6 py-24">
@@ -40,6 +34,8 @@ if ($person['reseller'] = 'Accepted') {
   <div class="container flex items-start flex-col lg:flex-row justify-between gap-8">
 
     <div class="w-full space-y-6">
+
+      <?php if($id<1){?>
       <div class="p-5 bg-white rounded shadow space-y-6">
         <h2 class="text-2xl font-medium tracking-wide">Billing details</h2>
 
@@ -67,77 +63,71 @@ if ($person['reseller'] = 'Accepted') {
             <input id="Address" type="text" placeholder="Address"
               class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
           </div>
-        </div>
-
-        <div class="w-full">
-          <?php
-$cart = _get("cart", "pid=$id AND type='product' AND status=0");
-$total_price = 0;
-while ($data = mysqli_fetch_assoc($cart)) {
-    $cart_id = $data['cart_id'];
-    $product = _fetch("products", "id=$cart_id");
-
-    $sell_price = $product['sell_price'];
-    $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
-    $total_price += $product['sell_price'];
-    ?>
-          <div class="flex items-center justify-between gap-x-8 px-5 py-10 border-t relative">
-            <a href="?cart=<?php echo $data['id']; ?>" class="text-gray-500 absolute w-fit h-fit top-2 right-2 text-xl">
-              <i class="fa-solid fa-times"></i>
-            </a>
-            <a target="_blank" href="item.php?product_id=<?php echo $product['id']; ?>"><img
-                style="width:150px;border-radius:5px" src="admin/upload/<?php echo $product['file_name']; ?>"
-                alt=""></a>
-            <div class="space-y-2">
-              <a target="_blank" href="item.php?product_id=<?php echo $product['id']; ?>"
-                class="text-xl tracking-wide font-semibold text-blue-500">
-                <?php echo $product['title']; ?>
-              </a>
-              <div class="flex gap-x-6 text-gray-600">
-                <p>
-                  <b>License:</b>
-                  <span> Regular License </span>
-                </p>
-                <p>
-                  <b>Support:</b>
-                  <span> 6 months support </span>
-                </p>
-              </div>
-            </div>
-
-            <h3 class="flex items-start gap-x-0.5">
-              <span>$</span>
-              <span class="text-4xl font-semibold"><?php echo $product['sell_price']; ?></span>
-            </h3>
-          </div>
-          <?php }?>
-        </div>
-
-
+        </div>      
       </div>
+      <?php }?>
+
 
       <!-- Payment Method -->
       <div class="bg-white rounded shadow">
         <h3 class="p-4 text-lg font-medium text-gray-900">Select Payment Method</h3>
         <div class="flex justify-between">
 
-          <butto data-target="card" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+          <button id="manual_btn" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
             style="border:1px solid #e1e8ed; border-right:none; border-left:none; background:#ffffff;border-bottom:none;">
-            <img class="w-12" src="./assets/images/visa.svg" alt="">
-            <img class="w-12" src="./assets/images/mastercard.svg" alt="">
-          </butto n>
-          <button data-target="paypal" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
-            style="border:1px solid #e1e8ed;background:#fafafa;border-right:none;">
-            <img class="w-28" src="./assets/images/paypal.svg" alt="">
+            Manual
           </button>
 
+          <button id="fund_btn"  class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+            style="border:1px solid #e1e8ed;background:#fafafa;border-right:none;">
+            My Funds
+          </button>
 
-        </div>
-        <br>
-        <div>
+          <button id="automation_btn" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+            style="border:1px solid #e1e8ed;background:#fafafa;border-right:none;">
+            Automation
+          </button>
+        </div>        
+
+          <div>
           <div class="pay_with_car">
-            <div class="p-5 md:w-96 space-y-5">
+           
+          
+            <div id="manual_tab" class="p-5 space-y-5">
+
+              <div style="display:flex;flex-wrap:wrap;gap:5px">
+                <?php                   
+                  while($payment =  mysqli_fetch_assoc($payments)){ ?>
+                    <div  style="border:1px solid gray;border-radius:5px;width:20%;">
+                    <div style="cursor:pointer" class="manual_pmn_name" data-payment_method_id="<?php echo $payment['id'];?>">
+                      <img style="width:50%;height:40px;margin:auto" src="admin/upload/<?php echo $payment['file_name'];?>" alt="<?php echo $payment['pmn_method'];?>">
+                      <p style="text-align: center;"><?php echo $payment['pmn_method'];?></p>
+                    </div>
+                    </div>                    
+                <?php };?>
+              </div>
+
+              <div class="flex flex-col gap-1">                
+                  <div id="payment_description">
+                  
+                  </div>
+              </div>
+               
+            </div>
+          
+            <div id="fund_tab" class="p-5 space-y-5">
+
               <div class="flex flex-col gap-1">
+                <h3 style="text-align: center;font-size:25px">Balance: $<?php if($id<1){echo 0;}else{echo $person['balance'];}?>
+              </h3>
+              </div>
+
+            </div>
+
+
+            <div id="automation_tab" class="p-5 space-y-5">
+              <div class="flex flex-col gap-1">
+                <div class="flex flex-col gap-1">
                 <label for="card_number" class="text-sm font-medium">Card Number</label>
                 <input id="card_number" type="number" class="px-2 py-1 border outline-none">
               </div>
@@ -162,11 +152,14 @@ while ($data = mysqli_fetch_assoc($cart)) {
                 <input type="checkbox" id="save_card">
                 Save card for next time
               </label>
+
+
+              </div>
             </div>
 
             <div class="p-5 flex justify-end gap-8 border-t">
               <b>Total:</b>
-              <p class="text-xl">$890</p>
+              <p class="text-xl">$<?php if($id<1){echo $_SESSION['total_price'];}else{echo $person['balance'];}?></p>
             </div>
             <div class="bg-gray-200 p-4 flex justify-end">
               <button class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
@@ -183,82 +176,112 @@ while ($data = mysqli_fetch_assoc($cart)) {
 
     <div class="w-full lg:min-w-[450px] lg:w-[450px]">
       <div class="border p-5">
-        <h2 class="text-2xl text-center font-semibold text-gray-700 pb-4 border-b">Your Balance: <b
-            style="color:#000;">$<?php echo $person['balance'] ?></b></h2>
         <div class="py-5 space-y-4">
 
-          <?php
-          $cart = _get("cart", "pid=$id AND type='product' AND status=0");
-          $total_price = 0;
-          while ($data = mysqli_fetch_assoc($cart)) {
-          $cart_id = $data['cart_id'];
-          $product = _fetch("products", "id=$cart_id");
+          <?php  
+            $total_price = 0;
+              if($_SESSION['ses_cart']){
+              $ses_cart = explode(",",$ses_cart);
+              array_pop($ses_cart);
+              for($i=0;$i<count($ses_cart);$i++){ 
+                $product = _fetch("products","id=$ses_cart[$i]");
+                $total_price += $product['sell_price'];
+                ?>             
+              <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
+                <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
+                <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
+              </div>
+            <?php            
+            }}else{
+            $cart = _get("cart", "pid=$id AND type='product' AND status=0");
+            $total_price = 0;
+            while ($data = mysqli_fetch_assoc($cart)) {
+            $cart_id = $data['cart_id'];
+            $product = _fetch("products", "id=$cart_id");
 
-          $sell_price = $product['sell_price'];
-          $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
-          $total_price += $product['sell_price'];
-          ?>
-          <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
-            <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
-            <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
-          </div>
-          <?php }?>
+            $sell_price = $product['sell_price'];
+            $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
+            $total_price += $product['sell_price'];
+            ?>
+              <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
+                <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
+                <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
+              </div>
+          <?php }}?>
 
         </div>
 
         <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
           <span>Total:</span>
-          <span>USD <?php echo $total_price; ?></span>
+          <span>USD <?php
+          if($id<1){
+            echo $_SESSION['total_price'];
+          }else{
+            echo $total_price;
+          }
+           ?></span>
         </div>
       </div>
-
-      <?php
-        if (isset($_POST['submit'])) {
-        $total_amount = $_POST['total_amount'];
-        $old_balance = $person['balance'];
-        if ($old_balance > $total_amount) {
-
-        $icon = '<i class="fa-solid fa-box"></i>';
-        $title = 'Successfully Purchase a new products';
-        $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
-
-        $balance = _update("person", "balance=balance-$total_amount", "id=$id");
-        $carts = _get("cart", "status=0", "pid=$id");
-        while ($cart = mysqli_fetch_assoc($carts)) {
-            $product_id = $cart['cart_id'];
-            $update_product = _update("products", "sell=sell+1", "id=$product_id");
-            $total_order = _update("person", "total_order=total_order+1", "id=$id");
-
-            if ($person['investor_order'] > 0) {
-                $investor_order = _update("person", "investor_order=investor_order-1", "id=$id");
-            }
-        }
-        $update_cart = _update("cart", "status=1", "pid=$id AND type='product'");
-        if ($update_cart && $balance) {
-            $msg = "Congratulations for Purchase.";
-            header("location:dashboard.php?msg=$msg");
-        }} else {
-            $err = "Please Deposit First";
-            header("location:checkout.php?err=$err");
-        }
-    }
-    ?>
-      <form action="" method="POST">
-        <input type="hidden" name="total_amount" value="<?php echo $total_price; ?>">
-        <button type="submit" name="submit"
-          class="w-full py-3 shadow-lg rounded bg-blue-600 text-white focus:ring-2 ring-blue-600 ring-offset-1">Pay
-          Now</button>
-      </form>
-
 
       <div class="py-5 text-center flex items-center gap-x-2 justify-center text-gray-500">
         <i class="fa-solid fa-lock"></i>
         <p>Secure checkout</p>
       </div>
     </div>
+
+
+    
   </div>
 </div>
 
+
+<script>
+
+$("#fund_tab").hide();
+$("#automation_tab").hide();
+
+  $(document).on("click","#manual_btn",function(e){
+    e.preventDefault();    
+    $("#manual_tab").show();
+    $("#fund_tab").hide();
+    $("#automation_tab").hide();
+  })
+
+  $(document).on("click","#fund_btn",function(e){
+    e.preventDefault();    
+    $("#manual_tab").hide();
+    $("#fund_tab").show();
+    $("#automation_tab").hide();
+  })
+
+  $(document).on("click","#automation_btn",function(e){
+    e.preventDefault();    
+    $("#manual_tab").hide();
+    $("#fund_tab").hide();
+    $("#automation_tab").show();
+  })
+
+  $(".manual_pmn_name").on("click",function(){
+    $(this).addClass("pmn_block");
+    var payment_method_id = $(this).data("payment_method_id");
+    var payment_description = $("#payment_description").hide(); 
+
+      $.ajax({
+          url:"admin/config/ajax.php",
+          type:"POST",
+          data:
+          {
+            reference:"show manual payment method text in checkout page",
+            payment_method_id:payment_method_id,
+          },         
+          success:function(data){
+            $("#payment_description").slideDown("fast");
+            $("#payment_description").html(data);
+            }
+          });
+      });
+
+</script>
 
 <!-- Header area -->
 <?php include "common/footer.php";?>

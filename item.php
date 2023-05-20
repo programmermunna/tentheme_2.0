@@ -19,12 +19,16 @@ if (isset($_GET['product_id'])) {
     }
 }
 
-
-
 if (isset($_GET['cart'])) {
     if ($id < 1) {
-        $err = "Please Login or SignIn First";
-        header("location:item.php?product_id=$product_id&&err=$err");
+      $ses_cart = explode(",",$ses_cart);
+      $check = in_array($_GET['cart'], $ses_cart);
+      if($check){
+        header("location:cart.php?err=Already have in cart");
+      }else{          
+        $_SESSION['ses_cart'] = $_SESSION['ses_cart'].",".$_GET['cart'];
+        header("location:cart.php?msg=Successfully added in ");
+      }
     } else {
         $cart_id = $_GET['cart'];
         $check = _fetch("cart", "pid=$id AND type='product' AND cart_id=$cart_id AND status=0");

@@ -10,7 +10,15 @@
 // }
 
 if(isset($_GET['cart'])){
-  $cart_id = $_GET['cart'];  
+  $cart_id = $_GET['cart'];
+  if($id<1){   
+   if($cart_id == "All"){
+     unset($_SESSION['ses_cart']);
+    }else{
+      $_SESSION['ses_cart'] = str_replace($cart_id.',',"",$_SESSION['ses_cart']);
+    }
+    header("location:cart.php?msg=Successfully removed from cart");
+  }  
     if($cart_id == "All"){
       $delete = _delete("cart","pid=$id AND status=0 ");
     }else{
@@ -60,19 +68,54 @@ if(isset($_GET['cart'])){
           </div>
           <!-- Cart Items -->
           <div class="border">
-            <?php            
-            $cart = _get("cart","pid=$id AND type='product' AND status=0");
-            $total_price = 0;
-            while($data = mysqli_fetch_assoc($cart)){
-              $cart_id = $data['cart_id'];
-              $product = _fetch("products","id=$cart_id");
-                         
-              $sell_price = $product['sell_price'];
-              $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
 
-              $total_price += $product['sell_price'];
-            
-            ?>
+            <?php  
+            $total_price = 0;
+              if($_SESSION['ses_cart']){
+              $ses_cart = explode(",",$ses_cart);
+              array_pop($ses_cart);
+              for($i=0;$i<count($ses_cart);$i++){ 
+                $product = _fetch("products","id=$ses_cart[$i]");
+                $total_price += $product['sell_price'];
+                ?>             
+             <div class="flex items-center justify-between gap-x-8 px-5 py-10 border-t relative">
+                <a href="?cart=<?php echo $product['id'];?>" class="text-gray-500 absolute w-fit h-fit top-2 right-2 text-xl">
+                  <i class="fa-solid fa-times"></i>
+                </a>
+                <a target="_blank" href="item.php?product_id=<?php echo $product['id'];?>"><img style="width:150px;border-radius:5px" src="admin/upload/<?php echo $product['file_name'];?>" alt=""></a>
+                <div class="space-y-2">
+                  <a target="_blank" href="item.php?product_id=<?php echo $product['id'];?>" class="text-xl tracking-wide font-semibold text-blue-500">
+                    <?php echo $product['title'];?>
+                  </a>
+                  <div class="flex gap-x-6 text-gray-600">
+                    <p>
+                      <b>License:</b>
+                      <span> Regular License </span>
+                    </p>
+                    <p>
+                      <b>Support:</b>
+                      <span> 6 months support </span>
+                    </p>
+                  </div>
+                </div>
+
+                <h3 class="flex items-start gap-x-0.5">
+                  <span>$</span>
+                  <span class="text-4xl font-semibold"><?php echo $product['sell_price'];?></span>
+                </h3>
+              </div>
+
+            <?php            
+            }}else{
+              $cart = _get("cart","pid=$id AND type='product' AND status=0");
+              while($data = mysqli_fetch_assoc($cart)){
+                $cart_id = $data['cart_id'];
+                $product = _fetch("products","id=$cart_id");                
+                $sell_price = $product['sell_price'];
+                $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
+                $total_price += $product['sell_price'];
+              ?>
+
             <div class="flex items-center justify-between gap-x-8 px-5 py-10 border-t relative">
               <a href="?cart=<?php echo $data['id'];?>" class="text-gray-500 absolute w-fit h-fit top-2 right-2 text-xl">
                 <i class="fa-solid fa-times"></i>
@@ -99,14 +142,19 @@ if(isset($_GET['cart'])){
                 <span class="text-4xl font-semibold"><?php echo $product['sell_price'];?></span>
               </h3>
             </div>
-            <?php }?>
-          </div>       
+            <?php }}?>
 
+
+
+          </div>
       </div>
       <div class="min-w-[350px] w-[350px]">
         <div class="bg-white p-7 rounded border space-y-5">
           <h4 class="text-xl text-center font-normal">Your Cart Total</h4>
-          <h2 class="text-3xl font-bold text-center text-gray-800">USD <?php echo $total_price;?></h2>
+          <h2 class="text-3xl font-bold text-center text-gray-800">USD <?php
+            echo $_SESSION['total_price'] = $total_price;
+          // echo $total_price;
+          ?></h2>
           <a href="checkout.php" id="checkout_btn"
             class="bg-green-600 hover:bg-green-700 text-white py-3 w-full px-2 rounded shadow text-base focus:ring block text-center">Secure
             Checkout</a>

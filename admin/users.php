@@ -37,7 +37,6 @@ $users_list = mysqli_num_rows(_get("person", "role='User'"));
           </div>
 
 
-
           <!-- Table -->
           <?php
             if (isset($_POST['check'])) {

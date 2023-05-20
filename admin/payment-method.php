@@ -105,6 +105,7 @@ if ($data['status'] == 'Enable') {?>
                   </td>
                   <?php }?>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
+                  <a class="btn bg-blue-500 w-fit text-white" href="edit-payment-method.php?payment_id=<?php echo $data['id']; ?>">Edit</a>
                   <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('payment',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>

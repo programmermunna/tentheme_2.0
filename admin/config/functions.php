@@ -108,6 +108,7 @@
 $time = time();
 $rand = rand();    
 $website = _fetch("website", "id=1");
+$payments = _get("payment", "status='Enable'");
 $general_setting = _fetch("general_setting", "id=1");
 $limit_setting = _fetch("limit_setting", "id=1");
 $footer_1_2 = _fetch("footer_1_2", "id=1");

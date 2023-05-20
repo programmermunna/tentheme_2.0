@@ -226,7 +226,7 @@ if(isset($_POST['payment_method']) && isset($_POST['pmn_id'])){
 
 
  
-//show section for village  in admin/tax-holder page
+//show product or service in ticket page
 if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid'])){ 
   if($_POST['reference'] == 'show product or service in ticket page'){
       $item_name = $_POST['item_name'];
@@ -290,6 +290,26 @@ if(isset($_POST['reference']) && isset($_POST['del_val']) && isset($_POST['table
     $del_val = $_POST['del_val'];
     $delete = _delete("$table","id=$del_val");
     ?>
+  <?php }exit; }
+
+//show manual payment method text in checkout page
+if(isset($_POST['reference']) && isset($_POST['payment_method_id'])){  
+  if($_POST['reference'] == 'show manual payment method text in checkout page'){
+  $payment_method_id = $_POST['payment_method_id'];
+  $payment_method =_fetch("payment","id=$payment_method_id");
+  echo $payment_method['description']; ?>
+  <br>
+  <br>
+    <div class="flex flex-col gap-1">
+      <label style="opacity: .8;" for="Email">Payment Address</label>
+      <input name="payment_address" type="text" placeholder="Payment Address"
+        class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+    </div>
+    <div class="flex flex-col gap-1">
+      <label style="opacity: .8;" for="Email">Transection Id</label>
+      <input name="payment_transection" type="text" placeholder="Transection Id"
+        class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+    </div>
   <?php }exit; }
 
   

@@ -30,7 +30,22 @@ if ($id > 0) {
     }
 } else {
     $sell_discount = 0;
+    
+    if(isset($_SESSION['ses_cart'])){
+      $ses_cart = $_SESSION['ses_cart'];
+      // $ses_cart = str_replace("0,","",$ses_cart);
+      // header("location:index.php");
+      // unset($_SESSION['ses_cart']);
+    }else{
+      $ses_cart = $_SESSION['ses_cart'] = "";
+
+    }
+    
+    echo $ses_cart;
 }
+
+
+
 
 $paginations = _fetch("pagination", "id=1");
 include("head.php");

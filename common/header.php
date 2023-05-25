@@ -6,8 +6,21 @@ if (isset($_SESSION['user_id'])) {
     $id = $_COOKIE['user_id'];
 } else {
     $id = 0;
-}
 
+    if(isset($_SESSION['ses_cart'])){
+      $ses_cart = $_SESSION['ses_cart'];
+      // $ses_cart = str_replace("0,","",$ses_cart);
+      // header("location:index.php");
+      // unset($_SESSION['ses_cart']);
+    }else{
+      $ses_cart = $_SESSION['ses_cart'] = "";
+      
+    }
+    
+    echo $ses_cart;
+  }
+  
+$sell_discount = 0;    
 $person = _fetch("person", "id=$id");
 $reseller_docs = _fetch("reseller_docs", "id=1");
 $investor_docs = _fetch("investor_docs", "id=1");
@@ -28,20 +41,6 @@ if ($id > 0) {
         $sell_discount = 0;
         $user_status = "Normal User";
     }
-} else {
-    $sell_discount = 0;
-    
-    if(isset($_SESSION['ses_cart'])){
-      $ses_cart = $_SESSION['ses_cart'];
-      // $ses_cart = str_replace("0,","",$ses_cart);
-      // header("location:index.php");
-      // unset($_SESSION['ses_cart']);
-    }else{
-      $ses_cart = $_SESSION['ses_cart'] = "";
-
-    }
-    
-    echo $ses_cart;
 }
 
 

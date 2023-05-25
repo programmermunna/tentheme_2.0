@@ -300,6 +300,7 @@ if(isset($_POST['reference']) && isset($_POST['payment_method_id'])){
   echo $payment_method['description']; ?>
   <br>
   <br>
+    <input type="hidden" name="payment_method" value="<?php echo $payment_method['pmn_method'];?>">
     <div class="flex flex-col gap-1">
       <label style="opacity: .8;" for="Email">Payment Address</label>
       <input name="payment_address" type="text" placeholder="Payment Address"

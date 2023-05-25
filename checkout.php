@@ -1,7 +1,112 @@
 <!-- Header area -->
 <?php include "common/header.php";?>
 <!-- Header area -->
-<?php
+<?php 
+
+if (isset($_POST['submit'])) {
+   $method_type = $_POST['method_type'];
+   $pmn_amount = $_POST['payment_amount'];
+   $order_id = rand(100,10000000);
+   $type = 'product';
+
+   $name = $_POST['name'];
+   $email = $_POST['email'];
+   $pass = md5($_POST['pass']);
+   $cpass = md5($_POST['cpass']);
+   $address = $_POST['address'];
+
+    if($method_type == 'manual'){
+     $pmn_method =  $_POST['payment_method'];
+     $pmn_address = $_POST['payment_address']; 
+     $pmn_transection = $_POST['payment_transection']; 
+
+     if($id<1){
+       if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+         $check = _fetch("person", "email='$email'");
+         if ($check > 0) {
+           $err = "Alrady Have Account. Please Login";
+           header("location:checkout.php?msg=$err");
+          } else {
+            if ($pass == $cpass) {              
+              $insert = _insert("person", "name, email, password, address, time", "'$name', '$email', '$pass','$address','$time'");             
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                $user_id = $row['id'];
+                $_SESSION['user_id'] = $user_id;
+                setcookie('user_id', $user_id, time() + 2580000);
+                $pid = $user_id;
+                  $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+                  $ses_cart = explode(",",$ses_cart);
+                  array_pop($ses_cart);
+                  for($i=0;$i<count($ses_cart);$i++){ 
+                    $cart_id = $ses_cart[$i];
+                    $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+                  }
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! You are Created new Account';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
+
+                  $icon2 = '<i class="fa-solid fa-user-check"></i>';
+                  $title2 = 'Congratulations! You are Created new Account';
+                  $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+
+                  header('location:dashboard.php?msg=Congratulations Purchase order');
+                  }
+              } else {
+                  $err = "Password and Confirm Password are not match!";
+                  header("location:checkout.php?msg=$err");
+              }
+          }
+      }
+    }else{
+
+      $cart = _get("cart","pid=$id AND type='product' AND status=0");
+      while($data = mysqli_fetch_assoc($cart)){
+      $cart_id = $data['cart_id'];
+      $product = _fetch("products","id=$cart_id");                
+      $sell_price = $product['sell_price'];
+      $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
+      $total_price += $product['sell_price'];
+
+      $update_cart = _update("cart","order_id='$order_id',status='Success'","id=$cart_id");
+      $update_product = _update("products","sell=sell+1","id=$cart_id");
+      }
+
+      $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+
+      $icon2 = '<i class="fa-solid fa-user-check"></i>';
+      $title2 = 'Congratulations! You are Created new Account';
+      $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+      header('location:dashboard.php?msg=Congratulations Purchase order'); 
+    }
+
+
+
+  }elseif($method_type == 'fund'){
+    if($id>0){
+      $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+      $ses_cart = explode(",",$ses_cart);
+      array_pop($ses_cart);
+      for($i=0;$i<count($ses_cart);$i++){ 
+        $cart_id = $ses_cart[$i];
+        $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+      }
+      $icon2 = '<i class="fa-solid fa-user-check"></i>';
+      $title2 = 'Congratulations! You are Created new Account';
+      $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+      header('location:dashboard.php?msg=Congratulations Purchase order');      
+    }else{
+      header('location:checkout.php?err=Please Signup First'); 
+    }
+    
+  }elseif($method_type == 'automation'){
+    header('location:checkout.php?err=This method comming soon!');
+  }else{}
+}
+
+
+
 
 if ($person['reseller'] = 'Accepted') {
     $reseller_discount = $reseller_docs['discount'];
@@ -31,6 +136,7 @@ if ($person['reseller'] = 'Accepted') {
 </header>
 
 <div class="bg-gray-50 w-full py-12">
+<form action="" method="POST">  
   <div class="container flex items-start flex-col lg:flex-row justify-between gap-8">
 
     <div class="w-full space-y-6">
@@ -41,26 +147,28 @@ if ($person['reseller'] = 'Accepted') {
 
         <div class="p-6 space-y-6">
           <div class="flex flex-col gap-1">
-            <label for="Email">Email</label>
-            <input id="Email" type="email" placeholder="Email"
+            <label for="name">Name</label>
+            <input name="name" id="name" type="text" placeholder="Name"
               class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
           </div>
-
+          <div class="flex flex-col gap-1">
+            <label for="Email">Email</label>
+            <input name="email" id="Email" type="email" placeholder="Email"
+              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
           <div class="flex flex-col gap-1">
             <label for="Password">Password</label>
-            <input id="Password" type="password" placeholder="Password"
+            <input name="pass" id="Password" type="password" placeholder="Password"
               class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
           </div>
-
-
           <div class="flex flex-col gap-1">
-            <label for="name">Name</label>
-            <input id="name" type="text" placeholder="Name"
+            <label for="Password">Confirm Password</label>
+            <input name="cpass" id="Password" type="password" placeholder="Confirm Password"
               class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
           </div>
           <div class="flex flex-col gap-1">
             <label for="Address">Address</label>
-            <input id="Address" type="text" placeholder="Address"
+            <input name="address" id="Address" type="text" placeholder="Address"
               class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
           </div>
         </div>      
@@ -90,11 +198,9 @@ if ($person['reseller'] = 'Accepted') {
         </div>        
 
           <div>
-          <div class="pay_with_car">
-           
-          
+          <div class="pay_with_car">                  
             <div id="manual_tab" class="p-5 space-y-5">
-
+              <input type="hidden" id="method_type" name="method_type" value="manual">
               <div style="display:flex;flex-wrap:wrap;gap:5px">
                 <?php                   
                   while($payment =  mysqli_fetch_assoc($payments)){ ?>
@@ -103,7 +209,7 @@ if ($person['reseller'] = 'Accepted') {
                       <img style="width:50%;height:40px;margin:auto" src="admin/upload/<?php echo $payment['file_name'];?>" alt="<?php echo $payment['pmn_method'];?>">
                       <p style="text-align: center;"><?php echo $payment['pmn_method'];?></p>
                     </div>
-                    </div>                    
+                    </div>
                 <?php };?>
               </div>
 
@@ -159,12 +265,23 @@ if ($person['reseller'] = 'Accepted') {
 
             <div class="p-5 flex justify-end gap-8 border-t">
               <b>Total:</b>
-              <p class="text-xl">$<?php if($id<1){echo $_SESSION['total_price'];}else{echo $person['balance'];}?></p>
+              <p class="text-xl">$<?php if($id<1){echo $_SESSION['total_price'];}else{
+                 $cart = _get("cart", "pid=$id AND type='product' AND status=0");
+                 $total_price = 0;
+                 while ($data = mysqli_fetch_assoc($cart)) {
+                 $cart_id = $data['cart_id'];
+                 $product = _fetch("products", "id=$cart_id");
+                 $sell_price = $product['sell_price'];
+                 $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
+                 $total_price += $product['sell_price'];
+                 }
+                echo $total_price;
+                }?></p>
+              <input type="hidden" name="payment_amount" value="<?php if($id<1){echo $_SESSION['total_price'];}else{echo $total_price;}?>">
             </div>
             <div class="bg-gray-200 p-4 flex justify-end">
-              <button class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
+              <button type="submit" id="submit_btn" name="submit" class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
             </div>
-
           </div>
         </div>
 
@@ -178,8 +295,9 @@ if ($person['reseller'] = 'Accepted') {
       <div class="border p-5">
         <div class="py-5 space-y-4">
 
-          <?php  
-            $total_price = 0;
+          <?php 
+              if($id<1){
+              $total_price = 0;
               if($_SESSION['ses_cart']){
               $ses_cart = explode(",",$ses_cart);
               array_pop($ses_cart);
@@ -191,14 +309,14 @@ if ($person['reseller'] = 'Accepted') {
                 <span class="w-8/12 truncate overflow-hidden"><?php echo $product['title']; ?></span>
                 <span class="w-fit">$<?php echo $product['sell_price']; ?></span>
               </div>
-            <?php            
-            }}else{
+              
+            <?php 
+            }}}else{
             $cart = _get("cart", "pid=$id AND type='product' AND status=0");
             $total_price = 0;
             while ($data = mysqli_fetch_assoc($cart)) {
             $cart_id = $data['cart_id'];
             $product = _fetch("products", "id=$cart_id");
-
             $sell_price = $product['sell_price'];
             $product['sell_price'] = $sell_price - ($sell_price * $sell_discount) / 100;
             $total_price += $product['sell_price'];
@@ -213,12 +331,7 @@ if ($person['reseller'] = 'Accepted') {
 
         <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
           <span>Total:</span>
-          <span>USD <?php
-          if($id<1){
-            echo $_SESSION['total_price'];
-          }else{
-            echo $total_price;
-          }
+          <span>USD <?php if($id<1){echo $_SESSION['total_price'];}else{echo $total_price;}
            ?></span>
         </div>
       </div>
@@ -232,30 +345,35 @@ if ($person['reseller'] = 'Accepted') {
 
     
   </div>
+</from>
 </div>
-
 
 <script>
 
 $("#fund_tab").hide();
 $("#automation_tab").hide();
 
+
   $(document).on("click","#manual_btn",function(e){
     e.preventDefault();    
+    $("#method_type").attr("value","manual");
+
     $("#manual_tab").show();
     $("#fund_tab").hide();
     $("#automation_tab").hide();
   })
 
   $(document).on("click","#fund_btn",function(e){
-    e.preventDefault();    
+    e.preventDefault();
+    $("#method_type").attr("value","fund");
     $("#manual_tab").hide();
     $("#fund_tab").show();
     $("#automation_tab").hide();
   })
 
   $(document).on("click","#automation_btn",function(e){
-    e.preventDefault();    
+    e.preventDefault();
+    $("#method_type").attr("value","automation");
     $("#manual_tab").hide();
     $("#fund_tab").hide();
     $("#automation_tab").show();

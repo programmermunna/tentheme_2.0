@@ -92,16 +92,16 @@
               <li><a href="team.php"
                   class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">Team </a></li>
               <?php
-$pages = _get("pages", "status='Published'");
-while ($page = mysqli_fetch_assoc($pages)) {
-    $pg_name = $page['pg_name'];
-    ?>
+              $pages = _get("pages", "status='Published'");
+              while ($page = mysqli_fetch_assoc($pages)) {
+              $pg_name = $page['pg_name'];
+              ?>
               <li><a href="page.php?page=<?php echo $pg_name; ?>"
-                  class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">
-                  <?php
-$pg_name = str_replace("-", " ", "$pg_name");
-    echo ucwords($pg_name);
-    ?>
+                class="custom_li_hover hover:text-white rounded shadow-sm px-3 py-2 block w-full">
+              <?php
+              $pg_name = str_replace("-", " ", "$pg_name");
+                echo ucwords($pg_name);
+              ?>
                 </a></li>
               <?php }?>
             </ul>
@@ -146,6 +146,20 @@ $pg_name = str_replace("-", " ", "$pg_name");
 
         <?php if ($id < 1) {?>
         <li>
+            <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="cart.php">
+            <i class="fa-solid fa-cart-shopping"></i><span class="cart_items_wrapper">
+            <?php 
+            if($_SESSION['ses_cart']){
+              $ses_cart_count = explode(",",$ses_cart);
+              array_pop($ses_cart_count);
+              $ses_cart_count = count($ses_cart_count);
+              echo $ses_cart_count;
+            }
+            ?>
+
+            </span>
+            </a>
+        </li>
         <li>
           <a class="flex items-center px-3 h-[44px] text-white space-x-2 rounded focus:ring-1 focus:ring-[#11987d] ring-offset-2 shadow"
             style=" background-image: conic-gradient(from 1turn, #0e9479, #16a085);" href="login.php">

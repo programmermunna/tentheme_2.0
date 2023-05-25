@@ -70,8 +70,8 @@ if(isset($_GET['cart'])){
           <div class="border">
 
             <?php  
-            $total_price = 0;
-              if($_SESSION['ses_cart']){
+              $total_price = 0;
+              if($id<1){
               $ses_cart = explode(",",$ses_cart);
               array_pop($ses_cart);
               for($i=0;$i<count($ses_cart);$i++){ 

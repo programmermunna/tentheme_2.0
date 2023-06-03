@@ -65,7 +65,7 @@ if(isset($_GET['cart'])){
 
             <?php  
               $total_price = 0;
-              if($id<1){
+              if($_SESSION['ses_cart'] != ''){
               $ses_cart = explode(",",$ses_cart);
               array_pop($ses_cart);
               for($i=0;$i<count($ses_cart);$i++){ 

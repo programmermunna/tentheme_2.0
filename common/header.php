@@ -5,15 +5,15 @@ if (isset($_SESSION['user_id'])) {
 } elseif (isset($_COOKIE['user_id'])) {
     $id = $_COOKIE['user_id'];
 } else {
-    $id = 0;
-
-    if(isset($_SESSION['ses_cart'])){
-      $ses_cart = $_SESSION['ses_cart'];
-    }else{
-      $ses_cart = $_SESSION['ses_cart'] = "";      
-    }
+    $id = 0;    
   }
-  echo $ses_cart;
+
+  if(isset($_SESSION['ses_cart'])){
+    $ses_cart = $_SESSION['ses_cart'];
+    echo $ses_cart;
+  }else{
+    $ses_cart = $_SESSION['ses_cart'] = "";      
+  }
   
 $sell_discount = 0;    
 $person = _fetch("person", "id=$id");

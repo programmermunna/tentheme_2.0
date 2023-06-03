@@ -2,9 +2,6 @@
 <?php include "common/header.php";?>
 <!-- Header area -->
 <?php 
-// if($ses_cart == ""){
-//   header("location:index.php");
-// }
 
 //============login========//
 if (isset($_POST['login'])) {
@@ -67,22 +64,31 @@ if (isset($_POST['submit'])) {
    $order_id = rand(100,10000000);
    $type = 'product';
 
+   $name = $_POST['name'];
+   $email = $_POST['email'];
+   $pass = md5($_POST['pass']);
+   $cpass = md5($_POST['cpass']);
+   $address = $_POST['address'];
+
     if($method_type == 'manual'){
      $pmn_method =  $_POST['payment_method'];
      $pmn_address = $_POST['payment_address']; 
      $pmn_transection = $_POST['payment_transection']; 
 
-      if($ses_cart != ""){
-       $ses_cart = explode(",",$ses_cart);
-       array_pop($ses_cart);
-       print_r($ses_cart);
-       for($i=0;$i<count($ses_cart);$i++){ 
-         $cart_id = $ses_cart[$i];
-         $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
-        }
-        $_SESSION['ses_cart'] = "";
-        $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
-      }else{
+     if($id>0){
+
+
+
+      $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+      $ses_cart = explode(",",$ses_cart);
+      array_pop($ses_cart);
+      for($i=0;$i<count($ses_cart);$i++){ 
+        $cart_id = $ses_cart[$i];
+        $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+      }
+      unset($_SESSION['ses_cart']);
+
+
       $cart = _get("cart","pid=$id AND type='product' AND status=0");
       while($data = mysqli_fetch_assoc($cart)){
       $cart_id = $data['cart_id'];
@@ -95,13 +101,76 @@ if (isset($_POST['submit'])) {
       $update_product = _update("products","sell=sell+1","id=$cart_id");
       }
       $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
-      }
 
-      
       $icon2 = '<i class="fa-solid fa-user-check"></i>';
       $title2 = 'Congratulations! Order are Pending Now.';
       $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
-      header('location:dashboard.php?msg=Congratulations Purchase order');    
+      header('location:dashboard.php?msg=Congratulations Purchase order');
+    }else{
+          if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if(!empty($_POST['is_login'])){
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                $user_id = $row['id'];
+                $_SESSION['user_id'] = $user_id;
+                setcookie('user_id', $user_id, time() + 2580000);
+                $pid = $user_id;
+                  $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+                  $ses_cart = explode(",",$ses_cart);
+                  array_pop($ses_cart);
+                  for($i=0;$i<count($ses_cart);$i++){ 
+                    $cart_id = $ses_cart[$i];
+                    $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+                  }
+                  unset($_SESSION['ses_cart']);
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! purchuse order successfull';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
+
+                  header('location:dashboard.php?msg=Congratulations Purchase order');
+                  }
+            }else{
+            $check = _fetch("person", "email='$email'");
+            if ($check > 0) {
+            $err = "Alrady Have Account. Please Login";
+            header("location:checkout.php?login=true&&msg=$err");
+            } else {
+            if ($pass == $cpass) {              
+              $insert = _insert("person", "name, email, password, address, time", "'$name', '$email', '$pass','$address','$time'");             
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                $user_id = $row['id'];
+                $_SESSION['user_id'] = $user_id;
+                setcookie('user_id', $user_id, time() + 2580000);
+                $pid = $user_id;
+                  $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+                  $ses_cart = explode(",",$ses_cart);
+                  array_pop($ses_cart);
+                  for($i=0;$i<count($ses_cart);$i++){ 
+                    $cart_id = $ses_cart[$i];
+                    $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+                  }
+                  unset($_SESSION['ses_cart']);
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! You are Created new Account';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
+
+                  $icon2 = '<i class="fa-solid fa-user-check"></i>';
+                  $title2 = 'Congratulations! You are Created new Account';
+                  $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+
+                  header('location:dashboard.php?msg=Congratulations Purchase order');
+                  }
+              } else {
+                  $err = "Password and Confirm Password are not match!";
+                  header("location:checkout.php?msg=$err");
+              }
+            }
+          }
+      }
+    }
   }elseif($method_type == 'fund'){
       if($person['balance'] >= $pmn_amount){
         $cart = _get("cart","pid=$id AND type='product' AND status=0");
@@ -230,8 +299,6 @@ if ($person['reseller'] = 'Accepted') {
 
 
       <!-- Payment Method -->
-      <?php if($id>0){?>
-      <form action="" method="POST">
       <div class="bg-white rounded shadow">
         <h3 class="p-4 text-lg font-medium text-gray-900">Select Payment Method</h3>
         <div class="flex justify-between">
@@ -253,7 +320,7 @@ if ($person['reseller'] = 'Accepted') {
         </div>        
 
           <div>
-          <div class="pay_with_card">                  
+          <div class="pay_with_car">                  
             <div id="manual_tab" class="p-5 space-y-5">
               <input type="hidden" id="method_type" name="method_type" value="manual">
               <div style="display:flex;flex-wrap:wrap;gap:5px">
@@ -320,7 +387,7 @@ if ($person['reseller'] = 'Accepted') {
 
             <div class="p-5 flex justify-end gap-8 border-t">
               <b>Total:</b>
-              <p class="text-xl">$<?php if($_SESSION['ses_cart'] != ''){echo $_SESSION['total_price'];}else{
+              <p class="text-xl">$<?php if($id<1){echo $_SESSION['total_price'];}else{
                  $cart = _get("cart", "pid=$id AND type='product' AND status=0");
                  $total_price = 0;
                  while ($data = mysqli_fetch_assoc($cart)) {
@@ -332,21 +399,18 @@ if ($person['reseller'] = 'Accepted') {
                  }
                 echo $total_price;
                 }?></p>
-              <input type="hidden" name="payment_amount" value="<?php if($_SESSION['ses_cart'] != ''){echo $_SESSION['total_price'];}else{echo $total_price;}?>">
+              <input type="hidden" name="payment_amount" value="<?php if($id<1){echo $_SESSION['total_price'];}else{echo $total_price;}?>">
             </div>
             <div class="bg-gray-200 p-4 flex justify-end">
-                <button type="submit" id="submit_btn" name="submit" class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
+              <button type="submit" id="submit_btn" name="submit" class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
             </div>
           </div>
         </div>
+
+
       </div>
-      </form>
-      <?php }else{?>        
-      <div>
-        <img style="width:30%;margin:auto" src="admin/upload/online-payment.gif" alt="">
-      </div>
-        <?php }?>
-        <!-- Payment Method -->
+      <!-- Payment Method -->
+
     </div>
 
     <div class="w-full lg:min-w-[450px] lg:w-[450px]">
@@ -354,7 +418,7 @@ if ($person['reseller'] = 'Accepted') {
         <div class="py-5 space-y-4">
 
           <?php 
-              if($_SESSION['ses_cart'] != ''){
+              if($id<1){
               $total_price = 0;
               if($_SESSION['ses_cart']){
               $ses_cart = explode(",",$ses_cart);
@@ -389,7 +453,7 @@ if ($person['reseller'] = 'Accepted') {
 
         <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
           <span>Total:</span>
-          <span>USD <?php if($_SESSION['ses_cart'] != ''){echo $_SESSION['total_price'];}else{echo $total_price;}
+          <span>USD <?php if($id<1){echo $_SESSION['total_price'];}else{echo $total_price;}
            ?></span>
         </div>
       </div>

@@ -22,11 +22,34 @@ if (isset($_POST['submit'])) {
 
      if($id<1){
        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-         $check = _fetch("person", "email='$email'");
-         if ($check > 0) {
-           $err = "Alrady Have Account. Please Login";
-           header("location:checkout.php?msg=$err");
-          } else {
+            if(!empty($_POST['is_login'])){
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                $user_id = $row['id'];
+                $_SESSION['user_id'] = $user_id;
+                setcookie('user_id', $user_id, time() + 2580000);
+                $pid = $user_id;
+                  $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+                  $ses_cart = explode(",",$ses_cart);
+                  array_pop($ses_cart);
+                  for($i=0;$i<count($ses_cart);$i++){ 
+                    $cart_id = $ses_cart[$i];
+                    $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+                  }
+                  unset($_SESSION['ses_cart']);
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! purchuse order successfull';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
+
+                  header('location:dashboard.php?msg=Congratulations Purchase order');
+                  }
+            }else{
+            $check = _fetch("person", "email='$email'");
+            if ($check > 0) {
+            $err = "Alrady Have Account. Please Login";
+            header("location:checkout.php?login=true&&msg=$err");
+            } else {
             if ($pass == $cpass) {              
               $insert = _insert("person", "name, email, password, address, time", "'$name', '$email', '$pass','$address','$time'");             
               $row = _fetch("person", "email='$email' AND password='$pass'");
@@ -35,13 +58,14 @@ if (isset($_POST['submit'])) {
                 $_SESSION['user_id'] = $user_id;
                 setcookie('user_id', $user_id, time() + 2580000);
                 $pid = $user_id;
-                  $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+                  $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
                   $ses_cart = explode(",",$ses_cart);
                   array_pop($ses_cart);
                   for($i=0;$i<count($ses_cart);$i++){ 
                     $cart_id = $ses_cart[$i];
                     $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
                   }
+                  unset($_SESSION['ses_cart']);
 
                   $icon = '<i class="fa-solid fa-user-check"></i>';
                   $title = 'Congratulations! You are Created new Account';
@@ -57,10 +81,10 @@ if (isset($_POST['submit'])) {
                   $err = "Password and Confirm Password are not match!";
                   header("location:checkout.php?msg=$err");
               }
+            }
           }
       }
     }else{
-
       $cart = _get("cart","pid=$id AND type='product' AND status=0");
       while($data = mysqli_fetch_assoc($cart)){
       $cart_id = $data['cart_id'];
@@ -69,40 +93,43 @@ if (isset($_POST['submit'])) {
       $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
       $total_price += $product['sell_price'];
 
-      $update_cart = _update("cart","order_id='$order_id',status='Success'","id=$cart_id");
+      $update_cart = _update("cart","order_id=$order_id,status=1","cart_id=$cart_id");
       $update_product = _update("products","sell=sell+1","id=$cart_id");
       }
-
-      $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+      $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
 
       $icon2 = '<i class="fa-solid fa-user-check"></i>';
-      $title2 = 'Congratulations! You are Created new Account';
+      $title2 = 'Congratulations! Order are Pending Now.';
       $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
-      header('location:dashboard.php?msg=Congratulations Purchase order'); 
+      header('location:dashboard.php?msg=Congratulations Purchase order');
     }
-
-
-
   }elseif($method_type == 'fund'){
-    if($id>0){
-      $orders = _insert("orders", "pid, order_id, type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$pid', '$order_id', '$type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
-      $ses_cart = explode(",",$ses_cart);
-      array_pop($ses_cart);
-      for($i=0;$i<count($ses_cart);$i++){ 
-        $cart_id = $ses_cart[$i];
-        $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+      if($person['balance'] >= $pmn_amount){
+        $cart = _get("cart","pid=$id AND type='product' AND status=0");
+        while($data = mysqli_fetch_assoc($cart)){
+        $cart_id = $data['cart_id'];
+        $product = _fetch("products","id=$cart_id");                
+        $sell_price = $product['sell_price'];
+        $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
+        $total_price += $product['sell_price'];
+
+        $update_cart = _update("cart","order_id=$order_id,status=2","cart_id=$cart_id");
+        $update_product = _update("products","sell=sell+1","id=$cart_id");
       }
-      $icon2 = '<i class="fa-solid fa-user-check"></i>';
-      $title2 = 'Congratulations! You are Created new Account';
-      $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
-      header('location:dashboard.php?msg=Congratulations Purchase order');      
-    }else{
-      header('location:checkout.php?err=Please Signup First'); 
-    }
+        $update_person = _update("person","balance=balance-$pmn_amount","id=$id");
+        $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type',  '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+
+        $icon2 = '<i class="fa-solid fa-user-check"></i>';
+        $title2 = 'Congratulations! Order are Pending Now.';
+        $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+        header('location:dashboard.php?msg=Congratulations Purchase order');
+      }else{
+        header("location:checkout.php?err=Your balance is low. Please diposit first.");
+      }
+    }elseif($method_type == 'automation'){
+          header('location:checkout.php?err=This method comming soon!');
+    }else{}
     
-  }elseif($method_type == 'automation'){
-    header('location:checkout.php?err=This method comming soon!');
-  }else{}
 }
 
 
@@ -142,37 +169,58 @@ if ($person['reseller'] = 'Accepted') {
     <div class="w-full space-y-6">
 
       <?php if($id<1){?>
-      <div class="p-5 bg-white rounded shadow space-y-6">
-        <h2 class="text-2xl font-medium tracking-wide">Billing details</h2>
+        <?php if(isset($_GET['login'])){ ?>          
+          <div class="p-5 bg-white rounded shadow space-y-6">
+            <h2 class="text-2xl font-medium tracking-wide">Login Now</h2>
+            <div class="p-6 space-y-6">
+              <div class="flex flex-col gap-1">
+                <label for="Email">Email</label>
+                <input name="email" id="Email" type="email" placeholder="Email"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Password</label>
+                <input name="pass" id="Password" type="password" placeholder="Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <input type="hidden" name="is_login" value="<?php if(isset($_GET['login'])){echo $_GET['login'];}?>">
+            </div>
+            <p>You have no account? <a href="checkout.php"> Register here</a></p>
+          </div>
+        <?php }else{ ?>
+          <div class="p-5 bg-white rounded shadow space-y-6">
+            <h2 class="text-2xl font-medium tracking-wide">Create Account</h2>
+            <div class="p-6 space-y-6">
+              <div class="flex flex-col gap-1">
+                <label for="name">Name</label>
+                <input name="name" id="name" type="text" placeholder="Name"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Email">Email</label>
+                <input name="email" id="Email" type="email" placeholder="Email"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Password</label>
+                <input name="pass" id="Password" type="password" placeholder="Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Confirm Password</label>
+                <input name="cpass" id="Password" type="password" placeholder="Confirm Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Address">Address</label>
+                <input name="address" id="Address" type="text" placeholder="Address"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+            </div>
+            <p>You have no account? <a href="?login=true"> Login here</a></p>
+          </div>
+        <?php }?>
 
-        <div class="p-6 space-y-6">
-          <div class="flex flex-col gap-1">
-            <label for="name">Name</label>
-            <input name="name" id="name" type="text" placeholder="Name"
-              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
-          </div>
-          <div class="flex flex-col gap-1">
-            <label for="Email">Email</label>
-            <input name="email" id="Email" type="email" placeholder="Email"
-              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
-          </div>
-          <div class="flex flex-col gap-1">
-            <label for="Password">Password</label>
-            <input name="pass" id="Password" type="password" placeholder="Password"
-              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
-          </div>
-          <div class="flex flex-col gap-1">
-            <label for="Password">Confirm Password</label>
-            <input name="cpass" id="Password" type="password" placeholder="Confirm Password"
-              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
-          </div>
-          <div class="flex flex-col gap-1">
-            <label for="Address">Address</label>
-            <input name="address" id="Address" type="text" placeholder="Address"
-              class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
-          </div>
-        </div>      
-      </div>
       <?php }?>
 
 

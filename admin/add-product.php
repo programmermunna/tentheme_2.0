@@ -83,7 +83,6 @@ if (isset($_POST['submit'])) {
 
       <div class="space-y-6 bg-white shadow-xl p-6 rounded-sm">
 
-
         <div class="flex flex-col gap-y-1">
           <label for="regular_price Coin">Regular Price</label>
           <input name="regular_price" class="input" type="number" id="Regular Price" placeholder="Regular Price"
@@ -95,7 +94,6 @@ if (isset($_POST['submit'])) {
           <input name="sell_price" class="input" type="number" id="Visitor" placeholder="Sell Price"  required>
         </div>
 
-
         <div class="flex flex-col gap-y-1">
           <label for="theme_preview_link">Live Preview Link</label>
           <input name="theme_preview_link" class="input" type="url" id="Link" placeholder="Live Preview Link"  required>
@@ -106,10 +104,14 @@ if (isset($_POST['submit'])) {
           <input name="video_preview_link" class="input" type="url" id="Link" placeholder="Video Preview Link" >
         </div>
 
-
         <div class="flex flex-col gap-y-1">
           <label for="Documentation Link">Documentation Link</label>
           <input name="doc_preview_link" class="input" type="url" id="Link" placeholder="Documentation Link" >
+        </div>
+
+        <div class="flex flex-col gap-y-1">
+          <label for="Documentation Link">Download Link</label>
+          <input name="file" class="input" type="file" id="Link">
         </div>
 
 

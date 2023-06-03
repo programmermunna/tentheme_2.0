@@ -26,8 +26,8 @@ if (isset($_GET['cart'])) {
       if($check){
         header("location:cart.php?err=Already have in cart");
       }else{          
-        $_SESSION['ses_cart'] = $_SESSION['ses_cart'].",".$_GET['cart'];
-        header("location:cart.php?msg=Successfully added in ");
+        $_SESSION['ses_cart'] = $_SESSION['ses_cart'].$_GET['cart'].","; 
+        header("location:cart.php?msg=Successfully added in cart");
       }
     } else {
         $cart_id = $_GET['cart'];
@@ -512,11 +512,11 @@ if (isset($_POST['send_message'])) {
             <h3 class="bg-green-600 text-white p-3 rounded-t">Recommended Products</h3>
             <div class="bg-[#f3f3f3] pb-6">
 
-              <?php
-$category = $data['category'];
-    $similars = _get("products", "category='$category' LIMIT 3");
-    while ($similar = mysqli_fetch_assoc($similars)) {
-        ?>
+            <?php
+            $category = $data['category'];
+            $similars = _get("products", "category='$category' LIMIT 3");
+            while ($similar = mysqli_fetch_assoc($similars)) {
+            ?>
               <a href="item.php?id=<?php echo $similar['id'] ?>" class="block px-4 py-6 pb-0 hover:bg-green-100">
                 <div class="flex items-start gap-x-4">
                   <h2 class="text-base font-semibold text-gray-700 text-left w-7/12"><?php echo $similar['title'] ?>

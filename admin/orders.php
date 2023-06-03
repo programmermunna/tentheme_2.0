@@ -35,17 +35,17 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
           </div>
 
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("cart", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:orders.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("cart", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:orders.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <!-- Table -->
             <div class="top_link">
@@ -61,18 +61,18 @@ if (isset($_POST['check'])) {
                     <input id="select_all" style="background:red;padding:5px 10px;color:#fff;border-radius:2px;"
                       type="checkbox">
                   </th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Image</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Title</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Price</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">User Name
-                  </th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">User Mail
-                  </th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Date</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Order Id</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Name</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Email</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Type</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment Method</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment Address</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Transection Id</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Amount</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Time</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Status</th>
                   <th scope="col" class="text-center p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">
                     Actions</th>
-
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -103,38 +103,43 @@ if (isset($_POST['check'])) {
                       $next_page = $page_no + 1;
                       $adjacents = "2";
 
-                      $cart = _get("cart", "status=1 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-                      $total_records = mysqli_num_rows(_getAll("cart", "status=1"));
+                      $cart = _get("orders", "status='Pending' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_getAll("cart", "status='Pending'"));
 
                       $total_no_of_pages = ceil($total_records / $total_records_per_page);
                       $second_last = $total_no_of_pages - 1;
                   }
                   while ($data = mysqli_fetch_assoc($cart)) {
-                      $product_id = $data['cart_id'];
                       $person_id = $data['pid'];
-                      $product = _fetch("products", "id=$product_id");
                       $person = _fetch("person", "id=$person_id");
                       ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
                   </td>
-                  <td><img style="margin:0 auto;width:100;height:50px;object-fit:cover"
-                      src="upload/<?php echo $product['file_name'] ?>"></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $product['title'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    $<?php echo $product['sell_price'] ?></td>
+                    <?php echo $data['order_id'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person['name'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $person['email'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo date("d-M-y", $data['time']); ?></td>
+                    <?php echo $person['email'] ?></td>                   
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo ucfirst($data['type']) ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    <?php echo $data['pmn_method'] ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    <?php echo $data['pmn_address'] ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    <?php echo $data['pmn_transection'] ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    <b>$<?php echo $data['pmn_amount'] ?></b></td>
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                      <?php echo date("d-M-y h:ma", $data['time']); ?></td>
+                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    <?php echo $data['status'] ?></td>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
-                  <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('cart',<?php echo $data['id'];?>)">Delete</button>
+                  <a class="btn bg-blue-500 w-fit text-white" href="order-edit.php?id=<?php echo $data['id'];?>">Edit</a>
+                  <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('orders',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>

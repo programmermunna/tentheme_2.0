@@ -1,44 +1,44 @@
 <?php ob_start();
     require('database.php');
     // <!-- ===================Sortcut for query=========== -->     
-    //made by php_munna
+    
     function _fetch($table,$condition){
     global $conn;
     $query = "SELECT * FROM $table WHERE $condition";
     return mysqli_fetch_assoc(mysqli_query($conn,$query));
     }
-    //made by php_munna     
+         
     function _getAll($table){
     global $conn;
     $query = "SELECT * FROM $table ORDER BY id DESC";
     return mysqli_query($conn,$query);
     }
-    //made by php_munna 
+     
     function _get($table,$condition){
     global $conn;
     $query = "SELECT * FROM $table WHERE $condition";
     return mysqli_query($conn,$query);
     }
-    //made by php_munna 
+     
     function _query($table){
     global $conn;
     $query = "$table";
     return mysqli_query($conn,$query);
     }   
-    //made by php_munna     
+         
     function _delete($table,$condition){
     global $conn;
     $query = "DELETE FROM $table WHERE $condition";
     return mysqli_query($conn,$query);
     }
 
-    //made by php_munna     
+         
     function _update($table,$data,$condition){
     global $conn;
     $query = "UPDATE $table SET $data WHERE $condition";
     return mysqli_query($conn,$query);
     }
-    //made by php_munna     
+         
     function _insert($table,$data,$value){
     global $conn;
     $query = "INSERT INTO $table($data) VALUE($value)";

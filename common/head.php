@@ -145,21 +145,21 @@
         <?php }?>
 
         <?php if ($id < 1) {?>
-        <li>
-            <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="cart.php">
-            <i class="fa-solid fa-cart-shopping"></i><span class="cart_items_wrapper">
-            <?php 
-            if($_SESSION['ses_cart']){
-              $ses_cart_count = explode(",",$ses_cart);
-              array_pop($ses_cart_count);
-              $ses_cart_count = count($ses_cart_count);
-              echo $ses_cart_count;
-            }
-            ?>
 
-            </span>
-            </a>
+        <?php if($_SESSION['ses_cart']){ ?>
+        <li>
+          <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="cart.php">
+          <i class="fa-solid fa-cart-shopping"></i><span class="cart_items_wrapper">
+          <?php 
+            $ses_cart_count = explode(",",$ses_cart);
+            array_pop($ses_cart_count);
+            $ses_cart_count = count($ses_cart_count);
+            echo $ses_cart_count;
+          ?>
+          </span>
+          </a>
         </li>
+        <?php }?>
         <li>
           <a class="flex items-center px-3 h-[44px] text-white space-x-2 rounded focus:ring-1 focus:ring-[#11987d] ring-offset-2 shadow"
             style=" background-image: conic-gradient(from 1turn, #0e9479, #16a085);" href="login.php">

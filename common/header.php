@@ -9,16 +9,11 @@ if (isset($_SESSION['user_id'])) {
 
     if(isset($_SESSION['ses_cart'])){
       $ses_cart = $_SESSION['ses_cart'];
-      // $ses_cart = str_replace("0,","",$ses_cart);
-      // header("location:index.php");
-      // unset($_SESSION['ses_cart']);
     }else{
-      $ses_cart = $_SESSION['ses_cart'] = "";
-      
+      $ses_cart = $_SESSION['ses_cart'] = "";      
     }
-    
-    echo $ses_cart;
   }
+  echo $ses_cart;
   
 $sell_discount = 0;    
 $person = _fetch("person", "id=$id");

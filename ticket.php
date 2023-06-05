@@ -89,8 +89,7 @@
 
 
             <div class="col-span-12">
-              <select name="item" id="item" required
-                class="border-8 border-white bg-white ring-2 ring-gray-200 focus:ring-blue-600 w-full h-11 rounded outline-none">
+              <select name="item" id="item" required class="border-8 border-white bg-white ring-2 ring-gray-200 focus:ring-blue-600 w-full h-11 rounded outline-none">
                 
               </select>
             </div>

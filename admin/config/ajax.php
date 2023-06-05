@@ -1,4 +1,5 @@
 <?php include("functions.php");
+
 if(isset($_POST['chat_load']) && isset($_POST['uid']) && isset($_POST['ticket_id']) ){ 
           $ticket_id = $_POST['ticket_id']; 
           $uid = $_POST['uid']; 
@@ -231,7 +232,7 @@ if(isset($_POST['reference']) && isset($_POST['item_name']) && isset($_POST['pid
   if($_POST['reference'] == 'show product or service in ticket page'){
       $item_name = $_POST['item_name'];
       $pid = $_POST['pid'];
-      $items = _get("cart","status=1 AND type='$item_name' AND pid=$pid");
+      $items = _get("cart","status=2 AND type='$item_name' AND pid=$pid");
       while($item = mysqli_fetch_assoc($items)){
         $type = $item['type'];
         if($type == 'product'){
@@ -283,12 +284,23 @@ if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  
   <?php }exit; }
 
 
+
 //delete single data by id
 if(isset($_POST['reference'])&& isset($_POST['table'])  && isset($_POST['del_val']) ){ 
   if($_POST['reference'] == 'delete single data by id'){
     $table = $_POST['table'];
     $del_val = $_POST['del_val'];
     $delete = _delete("$table","id=$del_val");
+    ?>
+  <?php }exit; }
+
+//delete_multiple
+if(isset($_POST['reference']) && isset($_POST['table2'])  && isset($_POST['col_name'])  && isset($_POST['del_val']) ){ 
+  if($_POST['reference'] == 'delete_multiple'){
+    $table = $_POST['table2'];
+    $col_name = $_POST['col_name'];
+    $del_val = $_POST['del_val'];
+    $delete = _delete("$table","$col_name=$del_val");
     ?>
   <?php }exit; }
 

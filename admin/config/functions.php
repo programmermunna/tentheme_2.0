@@ -125,40 +125,5 @@ $team_social = $general_setting['team_social'];
 $cr_url = $_SERVER['SCRIPT_NAME'];
 $cr_url = substr($cr_url, strrpos($cr_url, '/') + 1);
 ?>
-
-
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-  const popup_msg = document.getElementById("popup_msg");
-  if (popup_msg) {
-    popup_msg.innerHTML = `
-  <div id="popup_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:#31B0D5; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-  <span style="font-size:18px;">
-  <i class="fa-solid fa-check"></i>
-  </span>
-  <h6 style="background:black;color:white;">
-  ${popup_msg?.dataset?.text} </div>
-  </h6> `;
-    setTimeout(() => {
-      popup_msg.innerHTML = "";
-    }, popup_msg?.dataset?.time || 2000);
-  }
-
-  const error_msg = document.getElementById("error_msg");
-  if (error_msg) {
-    error_msg.innerHTML = `
-    <div id="error_msg" style="position: fixed; top: 100px; right: 20px; z-index:999; background:red; color:white; display:flex; padding:12px; align-items:center; gap:6px; border-radius: 5px; line-height: 0px; ">
-    <span style="font-size:18px;">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    </span>
-    <h6 style="background:black;color:white;">
-    ${error_msg?.dataset?.text} </div>
-    </h6> `;
-    setTimeout(() => {
-      error_msg.innerHTML = "";
-    }, error_msg?.dataset?.time || 2000);
-  }
-});
-</script>
 <?php if (isset($_GET['msg'])) {?><div id="popup_msg" data-text="<?php echo $_GET['msg']; ?>"></div><?php }?>
 <?php if (isset($_GET['err'])) {?><div id="error_msg" data-text="<?php echo $_GET['err']; ?>"></div><?php }?>

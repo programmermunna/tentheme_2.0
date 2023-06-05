@@ -3,7 +3,7 @@
 $notify_check = mysqli_num_rows(_get("withdraw", "status='Pending' AND notify='New'"));
 if ($notify_check > 0) {
     $update_notify = _update("withdraw", "notify='Old'", "notify='New'");
-    header("location:pending-withdraw.php");
+    header("location:withdraw.php");
 }
 ?>
 <?php
@@ -38,17 +38,17 @@ $pending_item = mysqli_num_rows(_get("withdraw", "status='Pending'"));
 
           <!-- Table -->
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("withdraw", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:withdraw.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("withdraw", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:withdraw.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <div class="top_link">
               <a href="withdraw.php">All (<?php echo $all_item ?>)</a>
@@ -66,7 +66,6 @@ if (isset($_POST['check'])) {
                   </th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Image</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Name</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Phone</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Method</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment
                     Address</th>
@@ -79,35 +78,35 @@ if (isset($_POST['check'])) {
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <?php
-if (isset($_GET['src'])) {
-    $src = trim($_GET['src']);
-    $withdraw = _query("SELECT * FROM withdraw INNER JOIN person ON withdraw.pid=person.id WHERE (person.name='$src' OR person.phone='$src' OR withdraw.method='$src' OR withdraw.pmn_address='$src' OR withdraw.amount='$src')");
-} elseif (isset($_GET['status'])) {
-    if ($_GET['status'] == 'Pending') {
-        $withdraw = _get("withdraw", "status='Pending'");
-    } else {
-        $withdraw = _get("withdraw", "status='Success'");
-    }} else {
-    $pagination = "ON";
-    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-        $page_no = $_GET['page_no'];} else { $page_no = 1;}
-    $total_records_per_page = 10;
-    $offset = ($page_no - 1) * $total_records_per_page;
-    $previous_page = $page_no - 1;
-    $next_page = $page_no + 1;
-    $adjacents = "2";
+                if (isset($_GET['src'])) {
+                    $src = trim($_GET['src']);
+                    $withdraw = _query("SELECT * FROM withdraw INNER JOIN person ON withdraw.pid=person.id WHERE (person.name='$src' OR person.phone='$src' OR withdraw.method='$src' OR withdraw.pmn_address='$src' OR withdraw.amount='$src')");
+                } elseif (isset($_GET['status'])) {
+                    if ($_GET['status'] == 'Pending') {
+                        $withdraw = _get("withdraw", "status='Pending'");
+                    } else {
+                        $withdraw = _get("withdraw", "status='Success'");
+                    }} else {
+                    $pagination = "ON";
+                    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                        $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $total_records_per_page = 10;
+                    $offset = ($page_no - 1) * $total_records_per_page;
+                    $previous_page = $page_no - 1;
+                    $next_page = $page_no + 1;
+                    $adjacents = "2";
 
-    $withdraw = _query("SELECT * FROM withdraw WHERE id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-    $total_records = mysqli_num_rows(_getAll("withdraw"));
+                    $withdraw = _query("SELECT * FROM withdraw WHERE id!='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_getAll("withdraw"));
 
-    $total_no_of_pages = ceil($total_records / $total_records_per_page);
-    $second_last = $total_no_of_pages - 1;
-}
-$i = 0;
-while ($data = mysqli_fetch_assoc($withdraw)) {$i++;
-    $person_id = $data['pid'];
-    $person_info = _fetch("person", "id=$person_id");
-    ?>
+                    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                    $second_last = $total_no_of_pages - 1;
+                }
+                $i = 0;
+                while ($data = mysqli_fetch_assoc($withdraw)) {$i++;
+                    $person_id = $data['pid'];
+                    $person_info = _fetch("person", "id=$person_id");
+                    ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
@@ -116,8 +115,6 @@ while ($data = mysqli_fetch_assoc($withdraw)) {$i++;
                       src="upload/<?php echo $person_info['file_name'] ?>"></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person_info['name'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $person_info['phone'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['method'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">

@@ -50,7 +50,7 @@
               $min_withdraw = $limit_setting['min_withdraw'];
               $max_withdraw = $limit_setting['max_withdraw'];
 
-              if($balance >= $max_withdraw){
+              if($balance <= $max_withdraw){
                 $err = "Maximum Withdraw $$max_withdraw";
                 header("location:withdraw.php?err=$err");
               }else{

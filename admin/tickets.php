@@ -65,7 +65,7 @@ $solved_item = mysqli_num_rows(_get("tickets", "status='Solved' AND subject !=''
                   if (isset($_POST['check_list'])) {
                       $check_list = $_POST['check_list'];
                       for ($i = 0; $i < count($check_list); $i++) {
-                          $delete = _delete("tickets", "id=$check_list[$i]");
+                          $delete = _delete("tickets", "ticket_id=$check_list[$i]");
                       }
                       $msg = "Delete Successfully";
                       header("location:tickets.php?msg=$msg");
@@ -135,7 +135,7 @@ $solved_item = mysqli_num_rows(_get("tickets", "status='Solved' AND subject !=''
                       ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
+                    <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['ticket_id'] ?>">
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['ticket_id'] ?></td>
@@ -161,8 +161,9 @@ $solved_item = mysqli_num_rows(_get("tickets", "status='Solved' AND subject !=''
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a href="view-ticket.php?ticket_id=<?php echo $data['ticket_id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">View</a>
-                    <a href="tickets.php?action=delete&&ticket_id=<?php echo $data['ticket_id'] ?>"
-                      class="popup_show btn bg-red-500 w-fit text-white">Delete</a>
+
+                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_multiple('tickets','ticket_id','<?php echo $data['ticket_id'] ?>')">Delete</button>
+
                     <a href="tickets.php?action=solved&&ticket_id=<?php echo $data['ticket_id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Solved</a>
                   </td>
@@ -288,6 +289,36 @@ if ($total_no_of_pages <= 10) {
 </main>
 
 
+<script>
+  function delete_multiple(table,col_name,del_val){
+      swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+        url:"config/ajax.php",
+        method:"POST",
+        data:
+        {
+          reference:"delete_multiple",
+          table2:table,
+          col_name:col_name,
+          del_val:del_val,
+        },
+        success:function(data){
+          swal("Success","Poof! Your imaginary file has been deleted!","success"),
+          location.reload(true)
+        }
+      });
+    }    
+    });    
+   }
+</script>
 
 <script>
 $(document).ready(function() {

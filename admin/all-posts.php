@@ -32,17 +32,17 @@ $pending_item = mysqli_num_rows(_get("post", "status ='Draft'"));
           </div>
 
           <?php
-if (isset($_POST['check'])) {
-    if (isset($_POST['check_list'])) {
-        $check_list = $_POST['check_list'];
-        for ($i = 0; $i < count($check_list); $i++) {
-            $delete = _delete("post", "id=$check_list[$i]");
-        }
-        $msg = "Delete Successfully";
-        header("location:all-posts.php?msg=$msg");
-    }
-}
-?>
+            if (isset($_POST['check'])) {
+                if (isset($_POST['check_list'])) {
+                    $check_list = $_POST['check_list'];
+                    for ($i = 0; $i < count($check_list); $i++) {
+                        $delete = _delete("post", "id=$check_list[$i]");
+                    }
+                    $msg = "Delete Successfully";
+                    header("location:all-posts.php?msg=$msg");
+                }
+            }
+            ?>
           <form action="" method="POST">
             <!-- Table -->
             <div class="top_link">
@@ -121,7 +121,7 @@ if (isset($_POST['check'])) {
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
                       <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('post',<?php echo $data['id'];?>)">Delete</button>
                     <a target="_blank"
-                      href="../all-post.php?src=pending-products&&table=products&&id=<?php echo $data['id'] ?>"
+                      href="../blog.php?src=pending-products&&table=products&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">View</a>
                   </td>
                 </tr>

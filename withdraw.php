@@ -73,21 +73,21 @@
                   <tbody>
 
                     <?php
-$pagination = "ON";
-if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-    $page_no = $_GET['page_no'];} else { $page_no = 1;}
-$total_records_per_page = 10;
-$offset = ($page_no - 1) * $total_records_per_page;
-$previous_page = $page_no - 1;
-$next_page = $page_no + 1;
-$adjacents = "2";
-$deposits = _get("withdraw", "pid=$id ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-$total_records = mysqli_num_rows(_get("withdraw", "pid=$id"));
-$total_no_of_pages = ceil($total_records / $total_records_per_page);
-$second_last = $total_no_of_pages - 1;
+                    $pagination = "ON";
+                    if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                    $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $total_records_per_page = 10;
+                    $offset = ($page_no - 1) * $total_records_per_page;
+                    $previous_page = $page_no - 1;
+                    $next_page = $page_no + 1;
+                    $adjacents = "2";
+                    $deposits = _get("withdraw", "pid=$id ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_get("withdraw", "pid=$id"));
+                    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                    $second_last = $total_no_of_pages - 1;
 
-while ($data = mysqli_fetch_assoc($deposits)) {
-    ?>
+                    while ($data = mysqli_fetch_assoc($deposits)) {
+                        ?>
                     <tr>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap"><?php echo $data['method'] ?></p>

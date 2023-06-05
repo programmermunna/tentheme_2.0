@@ -48,6 +48,15 @@
         </li>
 
         <li>
+          <a href="my-orders.php"
+            class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
+            <span class="text-xs"><i class="fa-solid fa-file-arrow-down"></i>
+            </span>
+            <span>My Orders</span>
+          </a>
+        </li>
+
+        <li>
           <a href="download.php"
             class="text-sm flex items-center justify-start w-full gap-2 text-[#2a3744] hover:bg-[#2a3744] hover:bg-[#2a3744] hover:text-white rounded-sm p-2 uppercase">
             <span class="text-xs"><i class="fa-solid fa-file-arrow-down"></i>

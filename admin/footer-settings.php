@@ -122,7 +122,7 @@ if (isset($_POST['update_f2'])) {
 
       <h2 class="text-2xl font-semibold">Footer 3</h2>
       <div class="flex gap-4 py-6">
-        <input id=" f3_title" type="text" class="input" placeholder="Enter Title">
+        <input id="f3_title" type="text" class="input" placeholder="Enter Title">
         <input id="f3_url" type="text" class="input" placeholder="Enter URL">
         <button id="f3_btn" class="button">Add Now</button>
       </div>
@@ -284,7 +284,7 @@ $(document).ready(function() {
   })
 
 
-  //footer 5
+  //footer 4
   function load_footer_4() {
     $.ajax({
       url: "config/ajax.php",

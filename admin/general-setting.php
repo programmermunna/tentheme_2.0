@@ -71,24 +71,6 @@ $general_setting = _fetch("general_setting", "id=1");
         <div class="general_setting">
           <ul>
             <li>
-              <h3><b>Visible or Invisible <span style="color:green">Product Share Link </span></b></h3>
-              <label>
-                <input name="share_product"
-                  <?php if (isset($general_setting['share_product'])) {echo $general_setting['share_product'];}?>
-                  type="checkbox">
-                <span class="toggle_background">
-                  <div class="circle-icon"></div>
-                  <div class="vertical_line"></div>
-                </span>
-              </label>
-            </li>
-          </ul>
-        </div>
-
-
-        <div class="general_setting">
-          <ul>
-            <li>
               <h3><b>Visible or Invisible <span style="color:green">Related Product</span> IN The Single Product</b>
               </h3>
               <label>
@@ -113,23 +95,6 @@ $general_setting = _fetch("general_setting", "id=1");
               <label>
                 <input name="review_service"
                   <?php if (isset($general_setting['review_service'])) {echo $general_setting['review_service'];}?>
-                  type="checkbox">
-                <span class="toggle_background">
-                  <div class="circle-icon"></div>
-                  <div class="vertical_line"></div>
-                </span>
-              </label>
-            </li>
-          </ul>
-        </div>
-
-        <div class="general_setting">
-          <ul>
-            <li>
-              <h3><b>Visible or Invisible <span style="color:green">Service Share Link </span></b></h3>
-              <label>
-                <input name="share_service"
-                  <?php if (isset($general_setting['share_service'])) {echo $general_setting['share_service'];}?>
                   type="checkbox">
                 <span class="toggle_background">
                   <div class="circle-icon"></div>

@@ -5,15 +5,16 @@ _login("index","person");
 if(isset($_POST['submit'])){
   $email =$_POST['email'];
   $pass = md5($_POST['pass']);
-          $row = _fetch("person","email='$email' AND password='$pass' AND role='Admin'");
-          if($row>0){
-              $id = $row['id'];
-              $_SESSION['person_id'] = $id;
-              setcookie('person_id', $id , time()+2580000);
-              header('location:index.php?msg=Successfully Logged In');
-          }else{
-              $msg = "You have no account! Please Sign Up.";
-          } 
+  $row = _fetch("person","email='$email' AND password='$pass' AND role='Admin'");
+  if($row>0){
+      $id = $row['id'];
+      $_SESSION['person_id'] = $id;
+      setcookie('person_id', $id , time()+2580000);
+      header('location:index.php?msg=Successfully Logged In');
+  }else{
+      $msg = "You have no account! Please Sign Up.";
+      header("location:login.php?err=Email Or Password is wrong.");
+  } 
 }
 ?>
 

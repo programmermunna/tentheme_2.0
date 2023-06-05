@@ -41,7 +41,7 @@
       <!-- Body Content -->
       <div class="w-full bg-white shadow rounded-sm overflow-hidden">
 
-        <div class="px-5 py-4 text-blue-600 text-2xl font-medium tracking-wide border-b">Download</div>
+        <div class="px-5 py-4 text-blue-600 text-2xl font-medium tracking-wide border-b">My Products</div>
 
         <div class="flex flex-col">
           <div class="overflow-x-auto">
@@ -61,14 +61,14 @@
                     <?php
                     $pagination = "ON";
                     if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-                        $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                    $page_no = $_GET['page_no'];} else { $page_no = 1;}
                     $total_records_per_page = 10;
                     $offset = ($page_no - 1) * $total_records_per_page;
                     $previous_page = $page_no - 1;
                     $next_page = $page_no + 1;
                     $adjacents = "2";
-                    $cart = _get("cart", "pid=$id AND type='product' AND status=1 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-                    $total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='product' AND status=1"));
+                    $cart = _get("cart", "pid=$id AND type='product' AND status=2 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                    $total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='product' AND status=2"));
                     $total_no_of_pages = ceil($total_records / $total_records_per_page);
                     $second_last = $total_no_of_pages - 1;
 
@@ -94,8 +94,8 @@
                         echo date("d-M-y", $time);?></td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">$
                         <?php echo $product['sell_price'] ?></td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"><a
-                          target="_blank" href="item.php?product_id=<?php echo $product['id'] ?>"
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <a href="item.php?product_id=<?php echo $product['id'] ?>"
                           class="block bg-[#f75389] text-white px-4 py-2 rounded shadow focus:ring-2 ring-[#f75389] ring-offset-1">View</a>
                       </td>
                     </tr>

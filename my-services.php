@@ -77,23 +77,23 @@ if (isset($_GET['cart_id'])) {
                   </thead>
                   <tbody>
                     <?php
-$pagination = "ON";
-if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-    $page_no = $_GET['page_no'];} else { $page_no = 1;}
-$total_records_per_page = 10;
-$offset = ($page_no - 1) * $total_records_per_page;
-$previous_page = $page_no - 1;
-$next_page = $page_no + 1;
-$adjacents = "2";
-$cart = _get("cart", "pid=$id AND type='service' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-$total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='service'"));
-$total_no_of_pages = ceil($total_records / $total_records_per_page);
-$second_last = $total_no_of_pages - 1;
+                      $pagination = "ON";
+                      if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $total_records_per_page = 10;
+                      $offset = ($page_no - 1) * $total_records_per_page;
+                      $previous_page = $page_no - 1;
+                      $next_page = $page_no + 1;
+                      $adjacents = "2";
+                      $cart = _get("cart", "pid=$id AND type='service' AND status=2 ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_get("cart", "pid=$id AND type='service' AND status=2"));
+                      $total_no_of_pages = ceil($total_records / $total_records_per_page);
+                      $second_last = $total_no_of_pages - 1;
 
-while ($data = mysqli_fetch_assoc($cart)) {
-    $cart_id = $data['cart_id'];
-    $service = _fetch("service", "id=$cart_id");
-    ?>
+                      while ($data = mysqli_fetch_assoc($cart)) {
+                        $cart_id = $data['cart_id'];
+                        $service = _fetch("service", "id=$cart_id");
+                      ?>
                     <tr class="border-b">
                       
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f75389]">                        
@@ -103,7 +103,9 @@ while ($data = mysqli_fetch_assoc($cart)) {
 
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f75389]">
                         <div class="w-[200px] truncate hover:text-blue-500">
-                          <?php echo $service['title'] ?>
+                        <a href="service.php?service_id=<?php echo $data['cart_id']; ?>">
+                          <?php echo $service['title']; ?>
+                        </a>
                         </div>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -115,7 +117,7 @@ while ($data = mysqli_fetch_assoc($cart)) {
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
 
                         <div class="flex itmes-center justify-start gap-x-1">
-                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]" target="_blank" href="service.php?service_id=<?php echo $data['cart_id'] ?>">View</a>
+                          <a class="block text-sm font-semibold tracking-wide text-[#f75389]" href="service.php?service_id=<?php echo $data['cart_id'] ?>">View</a>
                           <span>|</span>
                           <a class="block text-sm font-semibold tracking-wide text-[#f75389]"
                             href="?cart_id=<?php echo $data['cart_id'] ?>">Chat</a>
@@ -125,10 +127,6 @@ while ($data = mysqli_fetch_assoc($cart)) {
                     <?php }?>
                 </table>
                 <br>
-
-
-
-
 
                 <!-- Paginations -->
                 <?php if (isset($pagination)) {?>

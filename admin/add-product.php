@@ -15,13 +15,20 @@ if (isset($_POST['submit'])) {
     $content = $_POST['content'];
     $description = $_POST['description'];
     $status = $_POST['status'];
-    $rand = rand(1000,99999999);
- 
+    $rand = rand(1000,99999999);   
+    
+    
+    $d_link = $_POST['d_link'];
+    $d_file = $_FILES['d_file']['name'];
+    $d_file_tmp = $_FILES['d_file']['tmp_name'];
+    move_uploaded_file($d_file_tmp, "upload/$d_file");
+
+
+
 
     $file_name = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
     move_uploaded_file($file_tmp, "upload/$file_name");
-
 
     $img_count = count($_FILES['files']['name']);
     for($i=0;$i<$img_count;$i++){
@@ -32,7 +39,7 @@ if (isset($_POST['submit'])) {
     _insert("screenshots","item_id,title,type,time","'$rand','$file_name2','product','$time'");
     }
 
-    $insert = _insert("products", "pid, item_id, title, regular_price, sell_price, category, mini_content, content, description,status, file_name,theme_preview_link,video_preview_link,doc_preview_link, time", "'$pid', '$rand', '$title','$regular_price', '$sell_price', '$category', '$mini_content', '$content', '$description','$status','$file_name','$theme_preview_link','$video_preview_link','$doc_preview_link', '$time'");
+    $insert = _insert("products", "pid, item_id, title, regular_price, sell_price, category, mini_content, content, description,status, file_name,d_file,d_link,theme_preview_link,video_preview_link,doc_preview_link, time", "'$pid', '$rand', '$title','$regular_price', '$sell_price', '$category', '$mini_content', '$content', '$description','$status','$file_name','$d_file','$d_link','$theme_preview_link','$video_preview_link','$doc_preview_link', '$time'");
     if ($insert) {
         $msg = "Successfully Inserted";
         header("Location:add-product.php?msg=$msg");
@@ -110,13 +117,6 @@ if (isset($_POST['submit'])) {
         </div>
 
         <div class="flex flex-col gap-y-1">
-          <label for="Documentation Link">Download Link</label>
-          <input name="file" class="input" type="file" id="Link">
-        </div>
-
-
-
-        <div class="flex flex-col gap-y-1">
           <label for="category">Category</label>
           <select name="category" class="input"  required>
             <?php $category_all = _getAll("category");
@@ -125,6 +125,12 @@ if (isset($_POST['submit'])) {
             <?php }?>
           </select>
         </div>
+        
+        <div class="flex flex-col gap-y-1">
+            <label for="">Download Link/File</label>
+            <input name="d_link" class="input" type="url">
+            <input name="d_file" class="input" type="file">
+          </div>     
 
         <label for="product Description">Upload Some Screenshot</label>
         <div class="flex items-center gap-4">

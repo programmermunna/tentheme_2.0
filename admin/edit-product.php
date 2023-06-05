@@ -28,7 +28,15 @@ if (isset($_POST['submit'])) {
     $description = $_POST['description'];
     $status = $_POST['status'];
     $rand = $data['item_id']; 
- 
+    
+    
+    $d_link = $_POST['d_link'];
+    $d_file = $_FILES['d_file']['name'];
+    $d_file_tmp = $_FILES['d_file']['tmp_name'];
+    move_uploaded_file($d_file_tmp, "upload/$d_file");
+    if(empty($d_file)){
+      $d_file = $data['d_file'];
+    }
 
     $file_name = $_FILES['file']['name'];
     $file_tmp = $_FILES['file']['tmp_name'];
@@ -53,7 +61,7 @@ if (isset($_POST['submit'])) {
       }
     }    
 
-    $update = _update("products","pid= '$pid',title= '$title',regular_price= '$regular_price',sell_price= '$sell_price',category= '$category',mini_content= '$mini_content',content= '$content',description= '$description',status= '$status',file_name= '$file_name',theme_preview_link= '$theme_preview_link',video_preview_link= '$video_preview_link',doc_preview_link= '$doc_preview_link'","id=$id");
+    $update = _update("products","pid= '$pid',title= '$title',regular_price= '$regular_price',sell_price= '$sell_price',category= '$category',mini_content= '$mini_content',content= '$content',description= '$description',status= '$status',file_name= '$file_name',d_file= '$d_file',d_link= '$d_link',theme_preview_link= '$theme_preview_link',video_preview_link= '$video_preview_link',doc_preview_link= '$doc_preview_link'","id=$id");
     if ($update) {
         $msg = "Successfully Updated";
         header("Location:products.php?msg=$msg");
@@ -136,6 +144,14 @@ if (isset($_POST['submit'])) {
           <input name="doc_preview_link" class="input" type="url" id="Link" placeholder="Documentation Link"  value="<?php echo $data['doc_preview_link']?>">
         </div>
 
+        <div class="flex flex-col gap-y-1">
+          <label for="product">Download Link/File</label>
+          <input name="d_link" class="input" type="url" value="<?php echo $data['d_link']?>">
+          <input disabled style="padding-top:10px;" class="input" type="text" value=" <?php echo $data['d_file']?>">
+          <input name="d_file" style="padding-top:10px;" class="input" type="file">
+          
+        </div>
+
 
 
         <div class="flex flex-col gap-y-1">
@@ -148,7 +164,7 @@ if (isset($_POST['submit'])) {
           </select>
         </div>
 
-        <label for="product Description" id="pu">Upload Featured Image</label>
+        <label for="product Description" id="pu">Upload Some Screenshot</label>
         <div class="flex items-center gap-4">
           <input style="padding:20px 10px;" type="file" name="files[]" multiple class="input flex h-fit py-2 items-center w-full">
         </div>
@@ -159,7 +175,7 @@ if (isset($_POST['submit'])) {
         <div style="text-align: center;opacity:.5;margin:0;">Press Double-click for Remove</div>
 
         <div class="flex flex-col gap-y-1">
-          <label for="product">Upload Product</label>
+          <label for="product">Upload Featured Image</label>
           <input name="file" style="padding-top:10px;" class="input" type="file">
           <img style="height:200px;object-fit:cover" src="upload/<?php echo $data['file_name']?>" alt="" required>
         </div>

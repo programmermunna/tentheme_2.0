@@ -95,12 +95,12 @@ $pending_item = mysqli_num_rows(_get("pages", "status='unpublished'"));
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php
-                    $pg_name = $data['pg_name'];
+                        $pg_name = $data['pg_name'];
                         $pg_name = str_replace("-", " ", "$pg_name");
                         echo ucwords($pg_name);
                         ?>
-                                      </td>
-                                      <?php
+                  </td>
+                  <?php
                     if ($data['status'] == 'Published') {?>
                   <td class="p-4 text-sm font-bold text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>

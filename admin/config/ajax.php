@@ -284,13 +284,23 @@ if(isset($_POST['reference']) && isset($_POST['pid']) && isset($_POST['star'])  
 
 
 //delete single data by id
-if(isset($_POST['reference']) && isset($_POST['del_val']) && isset($_POST['table'])){ 
+if(isset($_POST['reference'])&& isset($_POST['table'])  && isset($_POST['del_val']) ){ 
   if($_POST['reference'] == 'delete single data by id'){
     $table = $_POST['table'];
     $del_val = $_POST['del_val'];
     $delete = _delete("$table","id=$del_val");
     ?>
   <?php }exit; }
+
+//delete order
+if(isset($_POST['table']) && isset($_POST['table2'])  && isset($_POST['del_val']) ){ 
+    $table = $_POST['table'];
+    $table2 = $_POST['table2'];
+    $del_val = $_POST['del_val'];
+    $delete = _delete("$table","order_id=$del_val");
+    $delete2 = _delete("$table2","order_id=$del_val");
+    ?>
+  <?php exit; }
 
 //show manual payment method text in checkout page
 if(isset($_POST['reference']) && isset($_POST['payment_method_id'])){  

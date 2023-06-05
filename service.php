@@ -406,9 +406,7 @@ if (isset($_POST['send_message'])) {
           <!-- Necessary Information -->
           <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
           rgba(0, 0, 0, 0.06) 0px 0px 0px 1px !important;" class="border bg-white p-4 space-y-4">
-
             <?php echo $data['content'] ?>
-
           </div>
 
           <br>

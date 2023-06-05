@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
         
         <div class="flex flex-col gap-y-1">
           <label for="product">Upload Featured Image</label>
-          <input name="file" style="padding-top:10px;" class="input" type="file" required>
+          <input name="file" style="padding-top:10px;" class="input" type="file">
           <img style="height:200px;object-fit:cover" src="upload/<?php echo $data['file_name']?>" alt="">
         </div>
 

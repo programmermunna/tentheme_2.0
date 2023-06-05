@@ -1,181 +1,398 @@
 <!-- Header area -->
-<?php include("common/header.php");?>
+<?php include "common/header.php";?>
 <!-- Header area -->
 <?php 
+if (isset($_POST['service_id'])) {
+  $service_id = $_POST['service_id'];
+  $service = _fetch("service","id=$service_id");
+}
+
+//============login========//
+if (isset($_POST['login'])) {
+  $email = $_POST['email'];
+  $pass = md5($_POST['pass']);
+  $row = _fetch("person", "email='$email' AND password='$pass'");
+  if ($row > 0) {
+      $id = $row['id'];
+      $_SESSION['user_id'] = $id;
+      setcookie('user_id', $id, time() + 2580000);
+
+      $icon = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
+      $title = 'You are Logged in Successfull';
+      $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
+      header('location:checkout.php?msg=Successfully Logged In');
+  } else {
+      $err = "Email Or Password is wrong";
+  }
+}
+
+//============sign in========//
+if (isset($_POST['register'])) {
+  $name = $_POST['name'];
+  $phone = $_POST['phone'];
+  $email = $_POST['email'];
+  $pass = md5($_POST['pass']);
+  $cpass = md5($_POST['cpass']);
+
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $check = _fetch("person", "email='$email'");
+      if ($check > 0) {
+          $err = "Alrady Have Account. Please Login";
+      } else {
+          if ($pass == $cpass) {
+              $insert = _insert("person", "name, phone, email, password, time", "'$name','$phone', '$email', '$pass', '$time'");
+              $row = _fetch("person", "email='$email' AND password='$pass'");
+              if ($row > 0) {
+                  $user_id = $row['id'];
+                  $_SESSION['user_id'] = $user_id;
+                  setcookie('user_id', $user_id, time() + 2580000);
+
+                  $icon = '<i class="fa-solid fa-user-check"></i>';
+                  $title = 'Congratulations! You are Created new Account';
+                  $activitie = _insert("activities","pid,icon,title,time","'$user_id','$icon','$title','$time'");
+                  header('location:checkout.php?msg=Congratulations for Signup Account');
+              } else {
+                  $msg = "Something is worng!";
+                  header("location:signup.php?msg=$msg");
+              }
+          } else {
+              $err = "Password and Confirm Password are not match!";
+          }
+      }
+  }
+}
+
+if (isset($_POST['submit'])) {
+   $method_type = $_POST['method_type'];
+   $pmn_amount = $_POST['payment_amount'];
+   $cart_id = $_POST['cart_id'];
+   $order_id = rand(100,10000000);
+   $type = 'service';
+
+    if($method_type == 'manual'){
+     $pmn_method =  $_POST['payment_method'];
+     $pmn_address = $_POST['payment_address']; 
+     $pmn_transection = $_POST['payment_transection']; 
+
+     $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$id','$order_id', '$cart_id', '$type',  '1', '$time'");
+     $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+      
+      $icon2 = '<i class="fa-solid fa-user-check"></i>';
+      $title2 = 'Congratulations! Order are Pending Now.';
+      $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+      header('location:dashboard.php?msg=Congratulations Purchase order');    
+  }elseif($method_type == 'fund'){
+      if($person['balance'] >= $pmn_amount){
+        $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$id','$order_id', '$cart_id', '$type',  '2', '$time'");
+        $update_person = _update("person","balance=balance-$pmn_amount","id=$id");
+
+        $pmn_type = "Fund"; 
+        $method_type = "Fund"; 
+        $pmn_method = "Fund";
+        $pmn_address = "Fund"; 
+        $pmn_transection = "Fund";
+        $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, status, time", "'$id', '$order_id', '$type', '$method_type',  '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount','Success', '$time'");
+
+        $icon2 = '<i class="fa-solid fa-user-check"></i>';
+        $title2 = 'Congratulations! Order are Successfullly.';
+        $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+        header('location:dashboard.php?msg=Congratulations Purchase order');
+      }else{
+        header("location:checkout.php?err=Your balance is low. Please diposit first.");
+      }
+    }elseif($method_type == 'automation'){
+          header('location:checkout.php?err=This method comming soon!');
+    }else{}
+    
+}
 
 
-  if(isset($_POST['service_id'])){
-    $service_id = $_POST['service_id'];
-    $service = _fetch("service","id=$service_id");
-  }
-  if($id<1){
-    header("location:service.php?service_id=$service_id&&err=Please Login First");
-  }
+if ($person['reseller'] = 'Accepted') {
+    $reseller_discount = $reseller_docs['discount'];
+}
 ?>
+<!-- Sub Header -->
+<div class="container space-y-6 py-24">
 
-    <!-- Sub Header -->
-    <div class="container space-y-6 py-24">
+  <!-- Item Title -->
+  <h3 class="text-4xl font-medium tracking-wide">Checkout</h3>
 
-      <!-- Item Title -->
-      <h3 class="text-4xl font-medium tracking-wide">Checkout</h3>
+  <!-- Page Tree Links -->
+  <div class="items-center justify-start space-x-2 text-gray-500">
 
-      <!-- Page Tree Links -->
-      <div class="items-center justify-start space-x-2 text-gray-500">
+    <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
+      class="text-white px-4 py-1.5 rounded shadow-sm" href="index.php">
+      <i class="fa-solid fa-house"></i>
+    </a>
+    <small class="text-xs"> <i class="fa-solid fa-chevron-right"></i></small>
 
-        <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
-          class="text-white px-4 py-1.5 rounded shadow-sm" href="index.php">
-          <i class="fa-solid fa-house"></i>
-        </a>
-        <small class="text-xs"> <i class="fa-solid fa-chevron-right"></i></small>
+    <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
+      class="text-white px-4 py-1.5 rounded shadow-sm" href="checkout.php"> checkout
+    </a>
+  </div>
 
-        <a style="background-image: conic-gradient(from 1turn, #0e9479, #16a085)"
-          class="text-white px-4 py-1.5 rounded shadow-sm" href="checkout.php"> checkout
-        </a>
-      </div>
+</div>
+</header>
 
-    </div>
-  </header>
+<div class="bg-gray-50 w-full py-12">
+  <div class="container flex items-start flex-col lg:flex-row justify-between gap-8">
 
-  <div class="bg-gray-50 w-full py-12">
-    <div class="container flex items-start flex-col lg:flex-row justify-between gap-8">
+    <div class="w-full space-y-6">
+      <?php if($id<1){?>
+        <?php if(isset($_GET['login'])){ ?>
+          <form action="" method="POST">   
+          <div class="p-5 bg-white rounded shadow space-y-6">
+            <h2 class="text-2xl font-medium tracking-wide">Login Now</h2>
+            <div class="p-6 space-y-6">
+              <div class="flex flex-col gap-1">
+                <label for="Email">Email</label>
+                <input name="email" id="Email" type="email" placeholder="Email"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Password</label>
+                <input name="pass" id="Password" type="password" placeholder="Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <input name="login" id="login" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+            </div>
+            <p>You have no account? <a href="checkout.php"> Register here</a></p>
+          </div>
+          </form>
+        <?php }else{ ?>
+          <form action="" method="POST"> 
+          <div class="p-5 bg-white rounded shadow space-y-6">
+            <h2 class="text-2xl font-medium tracking-wide">Create Account</h2>
+            <div class="p-6 space-y-6">
+              <div class="flex flex-col gap-1">
+                <label for="name">Name</label>
+                <input name="name" id="name" type="text" placeholder="Name"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Phone">Phone</label>
+                <input name="phone" id="Phone" type="number" placeholder="Phone"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Email">Email</label>
+                <input name="email" id="Email" type="email" placeholder="Email"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Password</label>
+                <input name="pass" id="Password" type="password" placeholder="Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="Password">Confirm Password</label>
+                <input name="cpass" id="Password" type="password" placeholder="Confirm Password"
+                  class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+              <div class="flex flex-col gap-1">
+                <input name="register" id="register" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
+              </div>
+            </div>
+            <p>You have no account? <a href="?login=true"> Login here</a></p>
+          </div>
+        </form> 
+        <?php }?>
+      <?php }?>
 
-      <div class="w-full space-y-6">
 
-        <div class="p-5 bg-white rounded shadow space-y-6">
-          <h2 class="text-2xl font-medium tracking-wide">Billing details</h2>
-          <div class="w-full">
+      <!-- Payment Method -->
+      <?php if($id>0){?>
+      <form action="" method="POST">
+      <div class="bg-white rounded shadow">
+        <h3 class="p-4 text-lg font-medium text-gray-900">Select Payment Method</h3>
+        <div class="flex justify-between">
+
+          <button id="manual_btn" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+            style="border:1px solid #e1e8ed; border-right:none; border-left:none; background:#ffffff;border-bottom:none;">
+            Manual
+          </button>
+
+          <button id="fund_btn"  class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+            style="border:1px solid #e1e8ed;background:#fafafa;border-right:none;">
+            My Funds
+          </button>
+
+          <button id="automation_btn" class="select_pay_btn w-full p-4 flex justify-center items-center cursor-pointer"
+            style="border:1px solid #e1e8ed;background:#fafafa;border-right:none;">
+            Automation
+          </button>
+        </div>        
+
+          <div>
+          <div class="pay_with_card">                  
+            <div id="manual_tab" class="p-5 space-y-5">
+              <input type="hidden" id="method_type" name="method_type" value="manual">
+              <div style="display:flex;flex-wrap:wrap;gap:5px">
+                <?php                   
+                  while($payment =  mysqli_fetch_assoc($payments)){ ?>
+                    <div  style="border:1px solid gray;border-radius:5px;width:20%;">
+                    <div style="cursor:pointer" class="manual_pmn_name" data-payment_method_id="<?php echo $payment['id'];?>">
+                      <img style="width:50%;height:40px;margin:auto" src="admin/upload/<?php echo $payment['file_name'];?>" alt="<?php echo $payment['pmn_method'];?>">
+                      <p style="text-align: center;"><?php echo $payment['pmn_method'];?></p>
+                    </div>
+                    </div>
+                <?php };?>
+              </div>
+
+              <div class="flex flex-col gap-1">                
+                  <div id="payment_description">
+                  
+                  </div>
+              </div>
+               
+            </div>
+          
+            <div id="fund_tab" class="p-5 space-y-5">
+
+              <div class="flex flex-col gap-1">
+                <h3 style="text-align: center;font-size:25px">Balance: $<?php if($id<1){echo 0;}else{echo $person['balance'];}?>
+              </h3>
+              </div>
+
+            </div>
 
 
+            <div id="automation_tab" class="p-5 space-y-5">
+              <div class="flex flex-col gap-1">
+                <div class="flex flex-col gap-1">
+                <label for="card_number" class="text-sm font-medium">Card Number</label>
+                <input id="card_number" type="number" class="px-2 py-1 border outline-none">
+              </div>
 
+              <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-1">
+                  <label class="text-sm font-medium">Expiry Date</label>
+                  <div class="flex gap-x-2 items-center">
+                    <input type="number" class="w-20 px-2 py-1 border outline-none">
+                    /
+                    <input type="number" class="w-20 px-2 py-1 border outline-none">
+                  </div>
+                </div>
 
-            <div class="flex items-center justify-between gap-x-8 px-5 py-10 border-t relative">              
-              <a target="_blank" href="item.php?service_id=<?php echo $service['id'];?>"><img style="width:150px;border-radius:5px" src="admin/upload/<?php echo $service['file_name'];?>" alt=""></a>
-              <div class="space-y-2">
-                <a target="_blank" href="item.php?service_id=<?php echo $service['id'];?>" class="text-xl tracking-wide font-semibold text-blue-500">
-                  <?php echo $service['title'];?>
-                </a>
-                <div class="flex gap-x-6 text-gray-600">
-                  <p>
-                    <b>License:</b>
-                    <span> Regular License </span>
-                  </p>
-                  <p>
-                    <b>Support:</b>
-                    <span> 6 months support </span>
-                  </p>
+                <div class="flex flex-col gap-1">
+                  <label class="text-sm font-medium">CVV</label>
+                  <input type="number" class="w-28 px-2 py-1 border outline-none">
                 </div>
               </div>
 
-              <h3 class="flex items-start gap-x-0.5">
-                <span>$</span>
-                <span class="text-4xl font-semibold"><?php echo $service['sell_price'];?></span>
-              </h3>
+              <label for="save_card" class="flex items-center gap-x-2 mt-2">
+                <input type="checkbox" id="save_card">
+                Save card for next time
+              </label>
+
+
+              </div>
+            </div>
+
+            <div class="p-5 flex justify-end gap-8 border-t">
+              <b>Total:</b>
+              <p class="text-xl">$
+                <?php echo $total_price = $service['sell_price'];?></p>
+              <input type="hidden" name="payment_amount" value="<?php echo $total_price;?>">
+              <input type="hidden" name="cart_id" value="<?php echo $service_id;?>">
+            </div>
+            <div class="bg-gray-200 p-4 flex justify-end">
+                <button type="submit" id="submit_btn" name="submit" class="px-4 py-2 rounded bg-green-600 text-white focus:ring-2">Pay Securely</button>
             </div>
           </div>
-    
         </div>
       </div>
+      </form>
+      <?php }else{?>        
+      <div>
+        <img style="width:30%;margin:auto" src="admin/upload/online-payment.gif" alt="">
+      </div>
+        <?php }?>
+        <!-- Payment Method -->
+    </div>
 
-
-      <div class="w-full lg:min-w-[450px] lg:w-[450px]">
-        <div class="border p-5">
-        <h2 class="text-2xl text-center font-semibold text-gray-700 pb-4 border-b">Your Balance: <b style="color:#000;">$<?php echo $person['balance']?></b></h2>
-          <div class="py-5 space-y-4">            
+    <div class="w-full lg:min-w-[450px] lg:w-[450px]">
+      <div class="border p-5">
+        <div class="py-5 space-y-4">              
             <div class="text-lg font-medium tracking-wide text-gray-500 justify-between flex items-center">
               <span class="w-8/12 truncate overflow-hidden"><?php echo $service['title'];?></span>
-              <span class="w-fit">$<?php echo $service['sell_price'];?></span>
+              <span class="w-fit"><?php echo $service['sell_price'];?></span>
             </div>
-          </div>
-          <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
-            <span>Total:</span>
-            <span>USD <?php echo $service['sell_price'];?></span>
-          </div>
-
         </div>
 
-        <?php 
-        if(isset($_POST['submit'])){
-          $total_amount = $_POST['total_amount'];
-          $service_id = $_POST['service_id'];
-          $service = _fetch("service","id=$service_id");
-
-          if($person['balance']>$total_amount){
-            $check = _fetch("cart","pid=$id AND cart_id=$service_id AND type='service'");
-            if(!$check){
-
-              $icon = '<i class="fa-solid fa-server"></i>';
-              $title = 'Successfully Purchase a new Service';
-              $activitie = _insert("activities","pid,icon,title,time","'$id','$icon','$title','$time'");
-      
-              $balance = _update("person","balance=balance-$total_amount","id=$id");
-              $update_service = _update("service","sell=sell+1","id=$service_id");
-              $insert = _insert("cart","pid,cart_id,type,status,time","$id,$service_id,'service',1,$time");
-
-              $ticket_id = rand(1000,99999999);
-              $subject = $service['title'];
-              $message = "New Chat started";
-              $ticket = _insert("tickets","ticket_id,uid,pid,item_id,subject,message,time","'$ticket_id','$id','$id','$service_id','$subject','$message','$time'");
-
-              if($balance && $insert && $ticket){
-                $msg = "Congratulations for Purchase.";
-                header("location:my-services.php?msg=$msg");
-                }
-              }else{
-                $err = "Already Purchased";
-                header("location:my-services.php?err=$err");
-              }          
-          }else{
-            $err = "Your Balance is low. Please Deposit now";
-            header("location:deposit.php?err=$err");
-        }
-        }
-        ?>
-        <form action="" method="POST">
-          <input type="hidden" name="total_amount" value="<?php echo $service['sell_price'];?>">
-          <input type="hidden" name="service_id" value="<?php echo $service['id'];?>">
-          <button type="submit" name="submit" class="w-full py-3 shadow-lg rounded bg-blue-600 text-white focus:ring-2 ring-blue-600 ring-offset-1">Pay Now</button>
-        </form>
-        
-        
-        <div class="py-5 text-center flex items-center gap-x-2 justify-center text-gray-500">
-          <i class="fa-solid fa-lock"></i>
-          <p>Secure checkout</p>
-        </div>
-        <div class="p-5 rounded text-white space-y-4"
-          style="background: linear-gradient(144deg,#1C004B 0,#020B2D 100%);">
-          <h2 class="text-3xl">Need Help?</h2>
-
-          <p>Any confusion about your order? <br> We are here to help.</p>
-
-          <div class="flex justify-between">
-            <div class="flex justify-start text-lg flex-col gap-y-0.5 font-medium text-gray-300 cursor-pointer">
-              <span class="text-2xl"><i class="fa-solid fa-comments"></i>
-              </span>
-              <span class="text-white font-bold">Start A Chat</span>
-            </div>
-
-            <a href="mailto:support@bs.com"
-              class="flex justify-start text-lg flex-col gap-y-0.5 font-medium text-gray-300 cursor-pointer">
-              <span class="text-2xl">
-                <i class="fa-solid fa-envelope"></i>
-              </span>
-              <i>support@bs.com</i>
-            </a>
-          </div>
-
-          <div class="flex gap-2">
-            <span>See our</span>
-            <a class="underline italic" href="#">Refund Policy</a>
-            <span>or</span>
-            <a class="underline italic" href="#">FAQs</a>
-          </div>
-
+        <div class="text-2xl font-semibold text-gray-700 items-center justify-between flex pt-5 border-t">
+          <span>Total:</span>
+          <span>USD <?php echo $total_price;?></span>
         </div>
       </div>
-    </div>
-  </div>
 
+      <div class="py-5 text-center flex items-center gap-x-2 justify-center text-gray-500">
+        <i class="fa-solid fa-lock"></i>
+        <p>Secure checkout</p>
+      </div>
+    </div>
+
+
+    
+  </div>
+</from>
+</div>
+
+<script>
+
+$("#fund_tab").hide();
+$("#automation_tab").hide();
+
+
+  $(document).on("click","#manual_btn",function(e){
+    e.preventDefault();    
+    $("#method_type").attr("value","manual");
+
+    $("#manual_tab").show();
+    $("#fund_tab").hide();
+    $("#automation_tab").hide();
+  })
+
+  $(document).on("click","#fund_btn",function(e){
+    e.preventDefault();
+    $("#method_type").attr("value","fund");
+    $("#manual_tab").hide();
+    $("#fund_tab").show();
+    $("#automation_tab").hide();
+  })
+
+  $(document).on("click","#automation_btn",function(e){
+    e.preventDefault();
+    $("#method_type").attr("value","automation");
+    $("#manual_tab").hide();
+    $("#fund_tab").hide();
+    $("#automation_tab").show();
+  })
+
+  $(".manual_pmn_name").on("click",function(){
+    $(this).addClass("pmn_block");
+    var payment_method_id = $(this).data("payment_method_id");
+    var payment_description = $("#payment_description").hide(); 
+
+      $.ajax({
+          url:"admin/config/ajax.php",
+          type:"POST",
+          data:
+          {
+            reference:"show manual payment method text in checkout page",
+            payment_method_id:payment_method_id,
+          },         
+          success:function(data){
+            $("#payment_description").slideDown("fast");
+            $("#payment_description").html(data);
+            }
+          });
+      });
+
+</script>
 
 <!-- Header area -->
-<?php include("common/footer.php");?>
+<?php include "common/footer.php";?>
 <!-- Header area -->

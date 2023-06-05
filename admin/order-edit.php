@@ -10,27 +10,28 @@ if(isset($_GET['id'])){
 
 
 if (isset($_POST['submit'])) {
-    $status = $_POST['status'];
-
-    if($status == 'Success'){
+    $status = $_POST['status']; 
 
     if($order['type'] == "product"){
         $item = "products";
-    }else{
-        $item = "service";
-    }
-    
-    $cart = _get("cart","order_id=$order_id");
-    while($items = mysqli_fetch_assoc($cart)){
+        $cart = _get("cart","order_id=$order_id");
+        while($items = mysqli_fetch_assoc($cart)){
         $cart_id = $items['cart_id'];
         $update_item = _update("$item","sell = sell+1","id=$cart_id");
     }
+    }else{
+        $item = "service";
+        $update_item = _update("$item","sell = sell+1","id=$cart_id");
+    }   
 
-    $update_cart = _update("cart","status=2","order_id=$order_id");
-    $update_order = _update("orders","status='Success',notify='Old'","order_id=$order_id");
-    }else {
-      $err = "Something is wrong!";
-      header("Location:add-product.php?err=$err");
+    if($status == 'Success'){
+      $update_cart = _update("cart","status=2","order_id=$order_id");
+    }else{
+      $update_cart = _update("cart","status=1","order_id=$order_id");
+    }
+    $update_order = _update("orders","status='$status',notify='Old'","order_id=$order_id");
+    if($update_order){
+      header("location:orders.php?msg=Successfully Updated");
     }
   }
 
@@ -78,7 +79,7 @@ if (isset($_POST['submit'])) {
                     <img style="width: 70px;" src="upload/<?php echo $item['file_name']?>" alt="">
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $data['type']; ?>
+                    <?php echo strtoupper($type); ?>
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo sort_str($item['title'],2)."...";?>

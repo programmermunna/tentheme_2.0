@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
        print_r($ses_cart);
        for($i=0;$i<count($ses_cart);$i++){ 
          $cart_id = $ses_cart[$i];
-         $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', 'product',  'Pending', '$time'");
+         $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$pid','$order_id', '$cart_id', '$type',  'Pending', '$time'");
         }
         $_SESSION['ses_cart'] = "";
         $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
@@ -91,8 +91,7 @@ if (isset($_POST['submit'])) {
       $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
       $total_price += $product['sell_price'];
 
-      $update_cart = _update("cart","order_id=$order_id,status=1","cart_id=$cart_id");
-      $update_product = _update("products","sell=sell+1","id=$cart_id");
+      $update_cart = _update("cart","order_id=$order_id,status=1","cart_id=$cart_id AND status=0");
       }
       $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
       }
@@ -112,11 +111,17 @@ if (isset($_POST['submit'])) {
         $product['sell_price'] = $sell_price - ($sell_price*$sell_discount)/100;
         $total_price += $product['sell_price'];
 
-        $update_cart = _update("cart","order_id=$order_id,status=2","cart_id=$cart_id");
+        $update_cart = _update("cart","order_id=$order_id,status=2","cart_id=$cart_id AND status=0");
         $update_product = _update("products","sell=sell+1","id=$cart_id");
       }
         $update_person = _update("person","balance=balance-$pmn_amount","id=$id");
-        $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type',  '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+
+        $pmn_type = "Fund"; 
+        $method_type = "Fund"; 
+        $pmn_method = "Fund"; 
+        $pmn_address = "Fund"; 
+        $pmn_transection = "Fund";
+        $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, status, time", "'$id', '$order_id', '$type', '$method_type',  '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount','Success', '$time'");
 
         $icon2 = '<i class="fa-solid fa-user-check"></i>';
         $title2 = 'Congratulations! Order are Pending Now.';

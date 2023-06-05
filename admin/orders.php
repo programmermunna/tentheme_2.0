@@ -7,9 +7,9 @@ if ($notify_check > 0) {
     header("location:orders.php");
 }
 
-$all_item = mysqli_num_rows(_getAll("cart"));
-$published_item = mysqli_num_rows(_get("cart", "status=1 AND type='product'"));
-$pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
+$all_item = mysqli_num_rows(_getAll("orders"));
+$published_item = mysqli_num_rows(_get("orders", "status='Success'"));
+$pending_item = mysqli_num_rows(_get("orders", "status='Pending'"));
 ?>
 <div class="x_container space-y-10 py-10">
   <div class="flex flex-col rounded-lg shadow-md border border-[] shadow-gray-200 bg-white">
@@ -39,7 +39,8 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
                 if (isset($_POST['check_list'])) {
                     $check_list = $_POST['check_list'];
                     for ($i = 0; $i < count($check_list); $i++) {
-                        $delete = _delete("cart", "id=$check_list[$i]");
+                        $delete = _delete("cart", "order_id=$check_list[$i]");
+                        $delete = _delete("orders", "order_id=$check_list[$i]");
                     }
                     $msg = "Delete Successfully";
                     header("location:orders.php?msg=$msg");
@@ -50,8 +51,8 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
             <!-- Table -->
             <div class="top_link">
               <a href="orders.php">All (<?php echo $all_item ?>)</a>
-              <a href="orders.php?status=product">Product (<?php echo $published_item ?>)</a>
-              <a href="orders.php?status=service">Services (<?php echo $pending_item ?>)</a>
+              <a href="orders.php?status=Success">Success (<?php echo $published_item ?>)</a>
+              <a href="orders.php?status=Pending">Pending (<?php echo $pending_item ?>)</a>
               <input type="submit" onclick="return confirm('Are you sure! Want to delte?')"  name="check" value="Delete">
             </div>
             <table class="min-w-full divide-y divide-gray-200 table-fixed">
@@ -63,10 +64,9 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
                   </th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Order Id</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Name</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Email</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Type</th>
+                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment Type</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment Method</th>
-                  <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Payment Address</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Transection Id</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Amount</th>
                   <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5">Time</th>
@@ -79,56 +79,54 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
                 <?php
                   if (isset($_GET['src'])) {
                       $src = trim($_GET['src']);
-                      $cart = _query("SELECT cart.*,person.*,products.* FROM cart JOIN person ON cart.pid=person.id JOIN products ON cart.cart_id = products.id
-                                        WHERE (
-                                            person.name='$src'
-                                        OR person.email='$src'
-                                        OR products.title='$src'
-                                        OR products.sell_price='$src'
-                                        )
-                                        ");
+                      $orders = _query("SELECT cart.*,person.*,products.* FROM cart JOIN person ON cart.pid=person.id JOIN products ON cart.cart_id = products.id
+                      WHERE (
+                          person.name='$src'
+                      OR person.email='$src'
+                      OR products.title='$src'
+                      OR products.sell_price='$src'
+                      )
+                      ");
                   } elseif (isset($_GET['status'])) {
-                      if ($_GET['status'] == 'product') {
-                          $cart = _get("cart", "type='product'");
+                      if ($_GET['status'] == 'Pending') {
+                          $orders = _get("orders", "status='Pending'");
                       } else {
-                          $cart = _get("cart", "type='service'");
+                          $orders = _get("orders", "status='Success'");
                       }
                   } else {
                       $pagination = "ON";
                       if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-                          $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
                       $total_records_per_page = 10;
                       $offset = ($page_no - 1) * $total_records_per_page;
                       $previous_page = $page_no - 1;
                       $next_page = $page_no + 1;
                       $adjacents = "2";
 
-                      $cart = _get("orders", "status='Pending' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
-                      $total_records = mysqli_num_rows(_getAll("cart", "status='Pending'"));
+                      $orders = _get("orders", "id !='' ORDER BY id DESC LIMIT $offset, $total_records_per_page");
+                      $total_records = mysqli_num_rows(_getAll("orders", "id !=''"));
 
                       $total_no_of_pages = ceil($total_records / $total_records_per_page);
                       $second_last = $total_no_of_pages - 1;
                   }
-                  while ($data = mysqli_fetch_assoc($cart)) {
+                  while ($data = mysqli_fetch_assoc($orders)) {
                       $person_id = $data['pid'];
                       $person = _fetch("person", "id=$person_id");
                       ?>
                 <tr class="hover:bg-gray-100">
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['id'] ?>">
+                    <input name="check_list[]" class="checkbox" type="checkbox" value="<?php echo $data['order_id'] ?>">
                   </td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['order_id'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $person['name'] ?></td>
-                  <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $person['email'] ?></td>                   
+                    <?php echo $person['name'] ?></td>                 
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo ucfirst($data['type']) ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $data['pmn_method'] ?></td>
+                    <?php echo strtoupper($data['pmn_type'])?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
-                    <?php echo $data['pmn_address'] ?></td>
+                    <?php echo $data['pmn_method'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['pmn_transection'] ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
@@ -139,7 +137,7 @@ $pending_item = mysqli_num_rows(_get("cart", "status=1 AND type='service'"));
                     <?php echo $data['status'] ?></td>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <a class="btn bg-blue-500 w-fit text-white" href="order-edit.php?id=<?php echo $data['id'];?>">Edit</a>
-                  <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('orders',<?php echo $data['id'];?>)">Delete</button>
+                  <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_orders('orders','cart',<?php echo $data['order_id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>
@@ -259,6 +257,40 @@ if ($total_no_of_pages <= 10) {
 </div>
 </div>
 </main>
+
+
+
+<script>
+  function delete_orders(table,table2,del_val){
+      swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+        url:"config/ajax.php",
+        method:"POST",
+        data:
+        {
+          table:table,
+          table2:table2,
+          del_val:del_val,
+        },
+        success:function(data){
+          swal("Success","Poof! Your imaginary file has been deleted!","success"),
+          location.reload(true)
+        }
+      });
+    }    
+    });    
+   }
+</script>
+
+
 
 <script>
 $(document).ready(function() {

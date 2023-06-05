@@ -145,8 +145,7 @@
         <?php }?>
 
         <?php if ($id < 1) {?>
-
-        <?php if($_SESSION['ses_cart']){ ?>
+        <?php if($ses_cart != ""){ ?>
         <li>
           <a class="flex items-center px-3 h-[44px] rounded text-gray-900 hover:bg-white" href="cart.php">
           <i class="fa-solid fa-cart-shopping"></i><span class="cart_items_wrapper">
@@ -176,10 +175,18 @@
               class="flex items-center gap-x-2 px-3 h-[44px] rounded bg-white hover:bg-gray-100 transition-all focus:ring-2 ring-offset-2 focus:ring-gray-200"
               href="#">
 
+              
               <a href="cart.php" class="mr-1 relative flex items-center gap-x-1 text-sm">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span class="cart_items_wrapper">
+                <?php if($ses_cart != ""){ 
+                  $ses_cart_count = explode(",",$ses_cart);
+                  array_pop($ses_cart_count);
+                  $ses_cart_count = count($ses_cart_count);
+                  echo $ses_cart_count;
+                }else{?>
                   <?php echo $cart_number = mysqli_num_rows(_get("cart", "pid=$id AND type='product' AND status=0")); ?>
+               <?php }?>
                 </span>
               </a>
               <small><?php echo $person['name'] ?></small>

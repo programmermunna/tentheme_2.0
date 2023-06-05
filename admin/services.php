@@ -88,7 +88,7 @@ $pending_item = mysqli_num_rows(_get("service", "status='Pending'"));
 
                       $pagination = "ON";
                       if (isset($_GET['page_no']) && $_GET['page_no'] != "") {
-                          $page_no = $_GET['page_no'];} else { $page_no = 1;}
+                      $page_no = $_GET['page_no'];} else { $page_no = 1;}
                       $total_records_per_page = 10;
                       $offset = ($page_no - 1) * $total_records_per_page;
                       $previous_page = $page_no - 1;
@@ -139,7 +139,7 @@ if ($data['status'] == 'Publish') {?>
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                     <a href="edit-service.php?src=services&&table=service&&id=<?php echo $data['id'] ?>"
                       class="popup_show btn bg-red-500 w-fit text-white" style="background:#4ade80;">Edit</a>
-                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('footer_3_4_5',<?php echo $data['id'];?>)">Delete</button>
+                      <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('service',<?php echo $data['id'];?>)">Delete</button>
                   </td>
                 </tr>
                 <?php }?>

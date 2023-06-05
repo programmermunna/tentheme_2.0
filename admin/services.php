@@ -130,7 +130,7 @@ $pending_item = mysqli_num_rows(_get("service", "status='Pending'"));
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                     <?php echo $person_info['name'] ?></td>
                   <?php
-if ($data['status'] == 'Publish') {?>
+                  if ($data['status'] == 'Publish') {?>
                   <td class="p-4 text-sm font-normal text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>
                   <?php } else {?>

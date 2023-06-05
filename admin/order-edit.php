@@ -10,25 +10,30 @@ if(isset($_GET['id'])){
 
 
 if (isset($_POST['submit'])) {
-    $status = $_POST['status']; 
+    $status = $_POST['status'];    
 
-    if($order['type'] == "product"){
-        $item = "products";
+    if($status == 'Success'){
+
+
+      if($order['type'] == "product"){
         $cart = _get("cart","order_id=$order_id");
         while($items = mysqli_fetch_assoc($cart)){
         $cart_id = $items['cart_id'];
-        $update_item = _update("$item","sell = sell+1","id=$cart_id");
-    }
-    }else{
-        $item = "service";
-        $update_item = _update("$item","sell = sell+1","id=$cart_id");
-    }   
+        $update_item = _update("products","sell = sell+1","id=$cart_id");
+      }}else{
+          $cart = _fetch("cart","order_id=$order_id");
+          $cart_id = $cart['cart_id']; 
+          $update_service = _update("service","sell=sell+1","id=$cart_id");
+      } 
 
-    if($status == 'Success'){
+
+
       $update_cart = _update("cart","status=2","order_id=$order_id");
     }else{
       $update_cart = _update("cart","status=1","order_id=$order_id");
     }
+
+
     $update_order = _update("orders","status='$status',notify='Old'","order_id=$order_id");
     if($update_order){
       header("location:orders.php?msg=Successfully Updated");

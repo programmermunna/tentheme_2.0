@@ -2,8 +2,8 @@
 <?php include "common/header.php";?>
 <!-- Header area -->
 <?php 
-if (isset($_POST['service_id'])) {
-  $service_id = $_POST['service_id'];
+if (isset($_GET['service_id'])) {
+  $service_id = $_GET['service_id'];
   $service = _fetch("service","id=$service_id");
 }
 
@@ -70,25 +70,32 @@ if (isset($_POST['submit'])) {
    $type = 'service';
 
     if($method_type == 'manual'){
+
      $pmn_method =  $_POST['payment_method'];
      $pmn_address = $_POST['payment_address']; 
      $pmn_transection = $_POST['payment_transection']; 
 
-     $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$id','$order_id', '$cart_id', '$type',  '1', '$time'");
-     $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
-      
-      $icon2 = '<i class="fa-solid fa-user-check"></i>';
-      $title2 = 'Congratulations! Order are Pending Now.';
-      $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
-      header('location:dashboard.php?msg=Congratulations Purchase order');    
+     if(empty($pmn_method) || empty($pmn_address) || empty($pmn_transection)){
+      header("location:service-checkout.php?service_id=$cart_id&&err=Please fillup carefully");
+      }else{
+       $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$id','$order_id', '$cart_id', '$type',  '1', '$time'");
+       $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
+       
+       $icon2 = '<i class="fa-solid fa-user-check"></i>';
+       $title2 = 'Congratulations! Order are Pending Now.';
+       $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
+       header('location:dashboard.php?msg=Congratulations Purchase order');    
+      }
   }elseif($method_type == 'fund'){
       if($person['balance'] >= $pmn_amount){
+
         $insert_cart = _insert("cart","pid, order_id, cart_id, type, status, time","'$id','$order_id', '$cart_id', '$type',  '2', '$time'");
         $update_person = _update("person","balance=balance-$pmn_amount","id=$id");
+        $update_service = _update("service","sell=sell+1","id=$cart_id");
 
         $pmn_type = "Fund"; 
         $method_type = "Fund"; 
-        $pmn_method = "Fund";
+        $pmn_method = "Fund"; 
         $pmn_address = "Fund"; 
         $pmn_transection = "Fund";
         $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, status, time", "'$id', '$order_id', '$type', '$method_type',  '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount','Success', '$time'");

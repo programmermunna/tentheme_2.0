@@ -372,7 +372,7 @@ if (isset($_POST['send_message'])) {
 
         <div class="w-full sticky top-0 pt-12">
           <!-- Price&Cart-Button area -->
-          <form action="service-checkout.php" method="POST">
+          <form action="service-checkout.php" method="GET">
             <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
           rgba(0, 0, 0, 0.06) 0px 0px 0px 1px !important;" class="w-full border p-6 space-y-5">
               <div class="flex justify-between items-center relative">

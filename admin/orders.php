@@ -134,7 +134,17 @@ $pending_item = mysqli_num_rows(_get("orders", "status='Pending'"));
                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                       <?php echo date("d-M-y h:ma", $data['time']); ?></td>
                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                    
+                  <?php
+                  if ($data['status'] == 'Success') {?>
+                  <td class="p-4 text-sm font-normal text-green-500 whitespace-nowrap lg:p-5">
                     <?php echo $data['status'] ?></td>
+                  <?php } else {?>
+                  <td class="p-4 text-sm font-normal text-red-500 whitespace-nowrap lg:p-5">
+                  <?php echo $data['status'] ?></td>
+                  </td>
+                  <?php }?>
+                    
                   <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <a class="btn bg-blue-500 w-fit text-white" href="order-edit.php?id=<?php echo $data['id'];?>">Edit</a>
                   <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_orders('orders','cart',<?php echo $data['order_id'];?>)">Delete</button>

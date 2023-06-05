@@ -313,12 +313,12 @@ if(isset($_POST['reference']) && isset($_POST['payment_method_id'])){
     <input type="hidden" name="payment_method" value="<?php echo $payment_method['pmn_method'];?>">
     <div class="flex flex-col gap-1">
       <label style="opacity: .8;" for="Email">Payment Address</label>
-      <input name="payment_address" type="text" placeholder="Payment Address"
+      <input required name="payment_address" type="text" placeholder="Payment Address"
         class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
     </div>
     <div class="flex flex-col gap-1">
       <label style="opacity: .8;" for="Email">Transection Id</label>
-      <input name="payment_transection" type="text" placeholder="Transection Id"
+      <input required name="payment_transection" type="text" placeholder="Transection Id"
         class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
     </div>
   <?php }exit; }

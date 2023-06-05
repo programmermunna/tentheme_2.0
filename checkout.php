@@ -65,13 +65,16 @@ if (isset($_POST['submit'])) {
    $method_type = $_POST['method_type'];
    $pmn_amount = $_POST['payment_amount'];
    $order_id = rand(100,10000000);
-   $type = 'product';
+   $type = 'product';   
 
     if($method_type == 'manual'){
      $pmn_method =  $_POST['payment_method'];
      $pmn_address = $_POST['payment_address']; 
      $pmn_transection = $_POST['payment_transection']; 
 
+     if(empty($pmn_method) || empty($pmn_address) || empty($pmn_transection)){
+      header("location:checkout.php?err=Please fillup carefully");
+     }else{
       if($ses_cart != ""){
        $ses_cart = explode(",",$ses_cart);
        array_pop($ses_cart);
@@ -96,11 +99,13 @@ if (isset($_POST['submit'])) {
       $orders = _insert("orders", "pid, order_id, type, pmn_type, pmn_method, pmn_address, pmn_transection, pmn_amount, time", "'$id', '$order_id', '$type', '$method_type', '$pmn_method', '$pmn_address', '$pmn_transection', '$pmn_amount', '$time'");
       }
 
-      
       $icon2 = '<i class="fa-solid fa-user-check"></i>';
       $title2 = 'Congratulations! Order are Pending Now.';
       $activitie2 = _insert("activities","pid,icon,title,time","'$user_id','$icon2','$title2','$time'");
       header('location:dashboard.php?msg=Congratulations Purchase order');    
+    }
+
+      
   }elseif($method_type == 'fund'){
       if($person['balance'] >= $pmn_amount){
         $cart = _get("cart","pid=$id AND type='product' AND status=0");
@@ -178,16 +183,16 @@ if ($person['reseller'] = 'Accepted') {
             <div class="p-6 space-y-6">
               <div class="flex flex-col gap-1">
                 <label for="Email">Email</label>
-                <input name="email" id="Email" type="email" placeholder="Email"
+                <input required name="email" id="Email" type="email" placeholder="Email"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
                 <label for="Password">Password</label>
-                <input name="pass" id="Password" type="password" placeholder="Password"
+                <input required name="pass" id="Password" type="password" placeholder="Password"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
-                <input name="login" id="login" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
+                <input required name="login" id="login" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
             </div>
             <p>You have no account? <a href="checkout.php"> Register here</a></p>
@@ -200,31 +205,31 @@ if ($person['reseller'] = 'Accepted') {
             <div class="p-6 space-y-6">
               <div class="flex flex-col gap-1">
                 <label for="name">Name</label>
-                <input name="name" id="name" type="text" placeholder="Name"
+                <input required name="name" id="name" type="text" placeholder="Name"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
                 <label for="Phone">Phone</label>
-                <input name="phone" id="Phone" type="number" placeholder="Phone"
+                <input required name="phone" id="Phone" type="number" placeholder="Phone"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
                 <label for="Email">Email</label>
-                <input name="email" id="Email" type="email" placeholder="Email"
+                <input required name="email" id="Email" type="email" placeholder="Email"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
                 <label for="Password">Password</label>
-                <input name="pass" id="Password" type="password" placeholder="Password"
+                <input required name="pass" id="Password" type="password" placeholder="Password"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
                 <label for="Password">Confirm Password</label>
-                <input name="cpass" id="Password" type="password" placeholder="Confirm Password"
+                <input required name="cpass" id="Password" type="password" placeholder="Confirm Password"
                   class="p-2.5 rounded border focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
               <div class="flex flex-col gap-1">
-                <input name="register" id="register" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
+                <input required name="register" id="register" type="submit" class="p-2.5 rounded border bg-blue-500 text-white focus:ring-2 focus:ring-blue-600 outline-none">
               </div>
             </div>
             <p>You have no account? <a href="?login=true"> Login here</a></p>

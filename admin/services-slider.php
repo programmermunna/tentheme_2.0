@@ -60,7 +60,7 @@ while ($data = mysqli_fetch_assoc($slider)) {$i++
                 </td>
                 <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
                   <a href="edit-slider.php?src=services-slider&&table=slider&&id=<?php echo $data['id'] ?>"
-                    class="popup_show btn bg-red-500 w-fit text-white">Edit</a>
+                    class="px-6 py-2 rounded focus:ring bg-blue-600 text-white">Edit</a>
                     <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('service',<?php echo $data['id'];?>)">Delete</button>
                 </td>
               </tr>

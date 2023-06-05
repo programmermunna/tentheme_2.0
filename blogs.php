@@ -65,7 +65,7 @@
                         <h3 class="text-lg font-semibold tracking-wide my-4"><?php echo $data['title']?></h3>
                         <div class="flex items-center gap-2 relative z-50 truncate flex-wrap w-full"
                             style="justify-content: space-between;">
-                            <a href="?category=<?php echo $data['category']?>"
+                            <a href="#!"
                                 class="px-2 py-1 bg-[#f75389] text-white rounded-sm shadow-sm focus:ring-1 focus:ring-offset-1"><?php echo $data['category']?></a>
                             <a href="#!"
                                 class="px-2 py-1 rounded-sm "><?php echo $author['name']." ". date("d-M-y",$data['time']);?></a>

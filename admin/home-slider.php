@@ -55,6 +55,8 @@
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5"><?php echo $data['btn2'] ?>
                 </td>
                 <td class="text-center p-4 space-x-2 whitespace-nowrap lg:p-5">
+                <a href="edit-slider.php?src=home-slider&&table=products&&id=<?php echo $data['id'] ?>"
+                    class="px-6 py-2 rounded focus:ring bg-blue-600 text-white">Edit</a>
                 <button type="button" class="btn bg-red-500 w-fit text-white" onclick="delete_alert('slider',<?php echo $data['id'];?>)">Delete</button>
                 </td>
               </tr>

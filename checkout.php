@@ -1,6 +1,6 @@
 <!-- Header area -->
 <?php include "common/header.php";?>
-<!-- Header area -->
+<!-- Header area --> 
 <?php 
 // if($ses_cart == ""){
 //   header("location:index.php");

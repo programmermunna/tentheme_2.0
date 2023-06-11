@@ -1,7 +1,7 @@
 <!-- Header area -->
 <?php include "common/header.php";?>
 <!-- Header area -->
-<?php 
+<?php  
 
 //============login========//
 if (isset($_POST['login'])) {

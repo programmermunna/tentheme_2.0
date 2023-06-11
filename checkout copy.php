@@ -1,7 +1,7 @@
 <!-- Header area -->
 <?php include "common/header.php";?>
 <!-- Header area -->
-<?php
+<?php 
 
 if ($person['reseller'] = 'Accepted') {
     $reseller_discount = $reseller_docs['discount'];

@@ -1,6 +1,6 @@
 <!-- Header area -->
 <?php include("common/header.php");?>
-<!-- Header area -->
+<!-- Header area --> 
 <?php
 if(isset($_GET['ticket_id'])){
   $ticket_id = $_GET['ticket_id'];

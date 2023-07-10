@@ -1,7 +1,7 @@
 <!-- Header area -->
 <?php include("common/header.php");?>
 <!-- Header area -->
-
+ 
 <!-- Sub Header -->
 <div class="container space-y-6 pt-6 pb-12 lg:py-24">
 

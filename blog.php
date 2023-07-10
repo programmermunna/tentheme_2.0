@@ -2,7 +2,7 @@
 <?php include "common/header.php";?>
 <!-- Header area -->
 <?php
-if (isset($_GET['id'])) {
+if (isset($_GET['id'])) { 
     $id = $_GET['id'];
 }
 $data = _fetch("post", "id=$id");

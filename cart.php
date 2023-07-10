@@ -1,7 +1,7 @@
 <!-- Header area -->
 <?php include("common/header.php");?>
 <!-- Header area -->
-<?php  
+<?php   
 
 if(isset($_GET['cart'])){
   $cart_id = $_GET['cart'];

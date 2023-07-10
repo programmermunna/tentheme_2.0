@@ -1,7 +1,7 @@
 <!-- Header area -->
 <?php include("common/header.php");?>
 <!-- Header area --> 
-<?php
+<?php 
 if(isset($_GET['ticket_id'])){
   $ticket_id = $_GET['ticket_id'];
   $ticket = _fetch("tickets","ticket_id=$ticket_id limit 1");
